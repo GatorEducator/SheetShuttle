@@ -1,1 +1,1 @@
-"""Define an empty file for linting purposes."""
+"""Standard init file."""
