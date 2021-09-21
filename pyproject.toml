@@ -11,6 +11,9 @@ converter = "converter.main:cli"
 python = "^3.8"
 typer = {extras = ["all"], version = "^0.3.2"}
 rich = "^10.9.0"
+google-api-python-client = "^2.21.0"
+google-auth-httplib2 = "^0.1.0"
+google-auth-oauthlib = "^0.4.6"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
