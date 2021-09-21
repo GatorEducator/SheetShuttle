@@ -1,0 +1,19 @@
+# ID of the sheet to be retrieved
+# TODO: define a schema for this structure
+source_id: 1jBN-UhmwGr_zjj0pZ5J6Gci4JKlHaHmrcdG4YvsH608
+# path where output will be saved as csv file
+output_path: output/lab1
+# sheets must be literal key
+sheets:
+    - name: sheet1
+    start: A1
+    end: C3
+    columns:
+      - Name
+      - Class
+  - name: sheet2
+    start: A1
+    end: B3
+    columns:
+      - Name
+      - Room
