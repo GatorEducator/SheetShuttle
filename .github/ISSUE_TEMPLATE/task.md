@@ -23,7 +23,7 @@ Add estimate here
 
 ## Person/People involved (who is working on this?)
 
-*Please use @ symbol with user names*
+@
 
 ## Other information
 
