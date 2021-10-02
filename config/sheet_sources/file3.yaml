@@ -1,0 +1,14 @@
+# ID of the sheet to be retrieved
+# TODO: define a schema for this structure
+source_id: 1k5y_ynGC8_2cBrcnXZtT2OgoOjmQrl1oT4BEGy90H38
+# path where output will be saved as csv file
+output_path: output/lab1
+# sheets must be literal key
+sheets:
+    - name: toldya
+      start: A1
+      end: C3
+      columns:
+        - Name
+        - Class
+
