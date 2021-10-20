@@ -3,7 +3,7 @@ Set up object oriented structure for Google Sheet data retrieval
 """
 
 import json
-import pandas
+import pandas as pd
 import pathlib
 import yaml
 
@@ -108,6 +108,12 @@ class SheetCollector:
         """
 
         return directory.glob("*.yaml")
+
+    def pandas_to_JSON(path):
+        '''Converts a pandas data frame into a JSON format.'''
+        Json = pd.to_json(path)
+        return Json
+
 
 
 collector = SheetCollector()
