@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "GatorGopher"
+name = "GridGopher"
 version = "0.1.0"
 description = ""
 authors = ["Noor Buchi <buchin@allegheny.edu>"]
@@ -27,11 +27,11 @@ pylint = "^2.10.2"
 mypy = "^0.910"
 
 [tool.taskipy.tasks]
-black = { cmd = "black gatorgopher tests --check", help = "Run the black checks for source code format" }
-flake8 = { cmd = "flake8 gatorgopher tests", help = "Run the flake8 checks for source code documentation" }
-mypy = { cmd = "poetry run mypy gatorgopher", help = "Run the mypy type checker for potential type errors" }
-pydocstyle = { cmd = "pydocstyle gatorgopher tests", help = "Run the pydocstyle checks for source code documentation" }
-pylint = { cmd = "pylint gatorgopher tests", help = "Run the pylint checks for source code documentation" }
+black = { cmd = "black gridgopher tests --check", help = "Run the black checks for source code format" }
+flake8 = { cmd = "flake8 gridgopher tests", help = "Run the flake8 checks for source code documentation" }
+mypy = { cmd = "poetry run mypy gridgopher", help = "Run the mypy type checker for potential type errors" }
+pydocstyle = { cmd = "pydocstyle gridgopher tests", help = "Run the pydocstyle checks for source code documentation" }
+pylint = { cmd = "pylint gridgopher tests", help = "Run the pylint checks for source code documentation" }
 test = { cmd = "pytest -x -s", help = "Run the pytest test suite" }
 test-silent = { cmd = "pytest -x --show-capture=no", help = "Run the pytest test suite without showing output" }
 all = "task black && task flake8 && task pydocstyle && task pylint && task mypy && task test"

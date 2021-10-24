@@ -4,7 +4,7 @@ Test cases for sheet_collector Module
 
 import pathlib
 
-from gatorgopher import sheet_collector
+from gridgopher import sheet_collector
 
 
 def test_get_yaml_files_empty():
