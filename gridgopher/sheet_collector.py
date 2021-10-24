@@ -1,29 +1,30 @@
-"""
-Set up object oriented structure for Google Sheet data retrieval
-"""
+"""Set up object oriented structure for Google Sheet data retrieval."""
 # FIXME: ensure typechecking in the module
 
 import json
-import pandas as pd
 import pathlib
 import pickle
-from typing import List, Set, Dict, Tuple, Optional
+from typing import List, Dict
 import yaml
 
-from googleapiclient.discovery import build
+import pandas as pd  # type: ignore[import]
 
-# from google.oauth2.credentials import Credentials
 
-from google.oauth2 import service_account
+from googleapiclient.discovery import build  # type: ignore[import]
 
+from google.oauth2 import service_account  # type: ignore[import]
 
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 SOURCES_DIR = "config/sheet_sources"
 
 
 class SheetCollector:
+    """Authenticate Sheets api and store retrieved data."""
+
     def __init__(self, key_file="private/keys.json") -> None:
-        """Create a SheetCollector object that stores a dictionary of sheets.
+        """
+        Create a SheetCollector object that stores a dictionary of sheets.
+
         Uses the yaml files in the config/sheet_sources directory.
 
         Args:
@@ -31,22 +32,24 @@ class SheetCollector:
             tokens. Defaults to "private/keys.json".
         """
         self.key_file: str = key_file
-        self.credentials, self.service, self.sheets = SheetCollector.authenticate_api(
-            self.key_file
-        )
+        (
+            self.credentials,
+            self.service,
+            self.sheets,
+        ) = SheetCollector.authenticate_api(self.key_file)
         self.config_dir = pathlib.Path(SOURCES_DIR)
-        self.sheets_data: dict[str, Sheet] = {}
+        self.sheets_data: Dict[str, Sheet] = {}
 
     def print_contents(self) -> None:
-        """
-        Print all Sheet objects in self.sheets_data
-        """
-        for sheet_key, sheet in self.sheets_data.items():
+        """Print all Sheet objects in self.sheets_data."""
+        for _, sheet in self.sheets_data.items():
             sheet.print_sheet()
 
     def collect_files(self) -> None:
-        """Update self.sheets_data with Sheet objects containing the data from
-        Google Sheets. Requires that the API was authenticated successfully.
+        """
+        Update sheets_data with Sheet objects from Google Sheets.
+
+        Requires that the API was authenticated successfully.
 
         Raises:
             Exception: thrown when the Google Sheets API is not authenticated.
@@ -57,11 +60,12 @@ class SheetCollector:
         config_files = SheetCollector.get_yaml_files(self.config_dir)
         for yaml_file in config_files:
             # Open yaml file as read
-            with open(yaml_file, "r") as f:
-                config_data = yaml.safe_load(f)
+            with open(yaml_file, "r", encoding="utf-8") as config_file:
+                config_data = yaml.safe_load(config_file)
                 # create sheet object using the yaml data
                 sheet_obj = Sheet(config_data, self.sheets)
-                # fill the sheet object with the regions by excecuting API calls
+                # fill the sheet object with the regions
+                # by excecuting API calls
                 sheet_obj.collect_regions()
                 # store the sheet object in sheet_data, use the yaml file name
                 # as key
@@ -78,7 +82,6 @@ class SheetCollector:
         Returns:
             list of path objects: paths to all found yaml files
         """
-
         return directory.glob("*.yaml")
 
     @staticmethod
@@ -99,19 +102,23 @@ class SheetCollector:
 
 
 class Sheet:
-    def __init__(self, config: dict, sheets_api) -> None:
-        """Initialize a Sheet object
+    """Retrieve Google Sheets data and store as Regions."""
+
+    def __init__(self, config: Dict, sheets_api) -> None:
+        """Initialize a Sheet object.
 
         Args:
-            config (dict): a dictionary containing file sheets file retrieval configuration
+            config (Dict): a dictionary containing file
+                sheets file retrieval configuration
             sheets_api: authenticated sheets api object
         """
         self.api = sheets_api
-        self.config: dict = config
+        self.config: Dict = config
         Sheet.check_config_schema(self.config)
-        self.regions: dict[str, Region] = {}
+        self.regions: Dict[str, Region] = {}
 
     def collect_regions(self):
+        """Iterate through configuration and request data through API."""
         for sheet in self.config["sheets"]:
             for region in sheet["regions"]:
                 region_data = Sheet.execute_sheets_call(
@@ -126,7 +133,9 @@ class Sheet:
                     data = Sheet.to_dataframe(region_data)
                 else:
                     data = Sheet.to_dataframe(
-                        region_data, headers_in_data=False, headers=region["headers"]
+                        region_data,
+                        headers_in_data=False,
+                        headers=region["headers"],
                     )
                 region_object = Region(
                     region["name"],
@@ -138,7 +147,7 @@ class Sheet:
                 self.regions[region["name"]] = region_object
 
     def get_region(self, region_name: str):
-        """Return a region object from the regions dictionary
+        """Return a region object from the regions dictionary.
 
         Args:
             region_name (str): name of the region to get
@@ -154,23 +163,47 @@ class Sheet:
         for region_id, region in self.regions.items():
             print(f"******\t {region_id} \t ******")
             region.print_region()
-            print(f"*********************************")
+            print("*********************************")
 
-    # def region_to_pickle(self, region_name, directory):
-    #     # TODO: change storing directory
-    #     with open(f"{region_object.region_name}.pkl", "wb") as outfile:
-    #         pickle.dump(region_object, outfile)
+    def region_to_pickle(self, region_name: str, directory: pathlib.PosixPath):
+        """Write the region object to a Pickle file.
 
-    # def region_to_json(self, region_name, directory):
-    #     # TODO: change storing directory
-    #     with open(f"{region_object.region_name}.pkl", "wb") as outfile:
-    #         pickle.dump(region_object, outfile)
+        Args:
+            region_name (str): name of the Region object in the regions
+                dictionary
+            directory (pathlib.PosixPath): path to the directory where the file
+                be stored
+        """
+        region_object = self.regions[region_name]
+        with open(
+            directory / f"{region_object.region_name}.pkl",
+            "wb",
+            encoding="utf-8",
+        ) as outfile:
+            pickle.dump(region_object, outfile)
+
+    def region_to_json(self, region_name: str, directory: pathlib.PosixPath):
+        """Write the region object to a JSON file.
+
+        Args:
+            region_name (str): name of the Region object in the regions
+                dictionary
+            directory (pathlib.PosixPath): path to the directory where the file
+                be stored
+        """
+        region_object = self.regions[region_name]
+        with open(
+            directory / f"{region_object.region_name}.json",
+            "w+",
+            encoding="utf-8",
+        ) as outfile:
+            json.dump(region_object, outfile)
 
     @staticmethod
     def to_dataframe(
-        data: List[List], headers_in_data=True, headers=[]
+        data: List[List], headers_in_data=True, headers=None
     ) -> pd.DataFrame:
-        """Convert the data from Sheets API from List[List] format to a pandas dataframe
+        """Convert the data from Sheets API from List[List] pandas dataframe.
 
         Args:
             data (List[List]): Retrieved data from Sheets API
@@ -180,7 +213,8 @@ class Sheet:
             the headers in this list. Defaults to [].
 
         Raises:
-            Exception: thrown when headers is empty and headers_in_data is False
+            Exception: thrown when headers is empty and headers_in_data
+            is False
 
         Returns:
             pd.DataFrame: The pandas dataframe after resulting from the data
@@ -188,21 +222,22 @@ class Sheet:
         if headers_in_data:
             # FIXME: possible indexing error here
             return pd.DataFrame(data[1:], columns=data[0])
-        else:
-            if not headers:
-                raise Exception("No passed table headers")
-            return pd.DataFrame(data, columns=headers)
+        if not headers:
+            raise Exception("No passed table headers")
+        return pd.DataFrame(data, columns=headers)
 
     @staticmethod
-    def check_config_schema(config):
-        """Validate the yaml configuration against a preset schema.add()
+    def check_config_schema(config: Dict):
+        """Validate the yaml configuration against a preset schema.add().
 
         Args:
-            config (dict): the configuration to validate
+            config (Dict): the configuration to validate
 
         Raises:
-            Exception: The schema doesn't validate agains the preset json schema
+            Exception: The schema doesn't validate agains the preset
+            json schema
         """
+        assert config
         # TODO: implement me
         # TODO: should throw an error if format not accurate
         # Don't do anything if it's accurate
@@ -226,13 +261,18 @@ class Sheet:
         # TODO: add try statement for API errors
         return (
             api.values()
-            .get(spreadsheetId=file_id, range=f"{sheet_name}!{start_range}:{end_range}")
+            .get(
+                spreadsheetId=file_id,
+                range=f"{sheet_name}!{start_range}:{end_range}",
+            )
             .execute()
             .get("values", [])
         )
 
 
 class Region:
+    """Store data frame and metadata about Google Sheet region."""
+
     def __init__(
         self,
         region_name: str,
