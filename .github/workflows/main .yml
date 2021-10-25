@@ -1,0 +1,39 @@
+# This GitHub Actions workflow contains two jobs:
+# -- First, Lint uses the latest Ubuntu image and Python 3.8 to check the code
+# and writing for defects, using poetry and its installed packages as well as mdl
+#
+# -- Second, Test using pytest
+name: Lint and Test
+
+on: [push, pull_request]
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Setup Python 3.9.6
+        uses: actions/setup-python@v2
+        id: setup-python
+        with:
+          python-version: 3.9.6
+      - name: Setup poetry
+        uses: Gr1N/setup-poetry@v7
+      - name: Install dependencies
+        run: poetry install
+      - name: Run black
+        run: poetry run task black
+      - name: Run flake8
+        run: poetry run task flake8
+      - name: Run mypy
+        run: poetry run task mypy
+      - name: Run pydocstyle
+        run: poetry run task pydocstyle
+      - name: Run pylint
+        run: poetry run task pylint
+      - name: Lint writing
+        uses: actionshub/markdownlint@main
+
+# TODO: add job for running test suite
