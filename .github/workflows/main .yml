@@ -44,19 +44,12 @@ jobs:
 
   test:
       name: Test
-      runs-on: ${{ matrix.os }}
+      runs-on: ubuntu-latest
       strategy:
         # Turning fail-fast off ensures the entire strategy matrix is allowed to
         # run to completion, allowing detection of individual platform issues
         # regardless of the status of the other platforms.
         fail-fast: false
-        matrix:
-          os: [ubuntu-latest]
-          python-version: [3.9.6]
-      env:
-        # These environment variables are passed to CodeCov to identify each build
-        OS: ${{ matrix.os }}
-        PYTHON: ${{ matrix.python-version }}
       steps:
         - name: Checkout repository
           uses: actions/checkout@v2
@@ -64,7 +57,7 @@ jobs:
           uses: actions/setup-python@v2
           id: setup-python
           with:
-            python-version: ${{ matrix.python-version }}
+            python-version: 3.9.6
         - name: Setup poetry
           uses: Gr1N/setup-poetry@v7
         - name: Install dependencies
