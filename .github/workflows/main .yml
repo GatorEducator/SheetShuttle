@@ -42,4 +42,39 @@ jobs:
         if: always()
         uses: actionshub/markdownlint@main
 
-# TODO: add job for running test suite
+  test:
+      name: Test
+      runs-on: ${{ matrix.os }}
+      strategy:
+        # Turning fail-fast off ensures the entire strategy matrix is allowed to
+        # run to completion, allowing detection of individual platform issues
+        # regardless of the status of the other platforms.
+        fail-fast: false
+        matrix:
+          os: [ubuntu-latest]
+          python-version: [3.9.6]
+      env:
+        # These environment variables are passed to CodeCov to identify each build
+        OS: ${{ matrix.os }}
+        PYTHON: ${{ matrix.python-version }}
+      steps:
+        - name: Checkout repository
+          uses: actions/checkout@v2
+        - name: Setup Python ${{ matrix.python-version }}
+          uses: actions/setup-python@v2
+          id: setup-python
+          with:
+            python-version: ${{ matrix.python-version }}
+        - name: Setup poetry
+          uses: Gr1N/setup-poetry@v7
+        - name: Install dependencies
+          run: poetry install
+        - name: Execute tests
+          run: poetry run task test
+        # - name: Upload coverage
+        #   uses: codecov/codecov-action@v1
+        #   with:
+        #     files: ./coverage.xml
+        #     flags: unittests
+        #     env_vars: OS,PYTHON
+        #     fail_ci_if_error: true
