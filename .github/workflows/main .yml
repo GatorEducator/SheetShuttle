@@ -24,16 +24,22 @@ jobs:
       - name: Install dependencies
         run: poetry install
       - name: Run black
+        if: always()
         run: poetry run task black
       - name: Run flake8
+        if: always()
         run: poetry run task flake8
       - name: Run mypy
+        if: always()
         run: poetry run task mypy
       - name: Run pydocstyle
+        if: always()
         run: poetry run task pydocstyle
       - name: Run pylint
+        if: always()
         run: poetry run task pylint
       - name: Lint writing
+        if: always()
         uses: actionshub/markdownlint@main
 
 # TODO: add job for running test suite
