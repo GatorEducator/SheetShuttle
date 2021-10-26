@@ -6,14 +6,24 @@ output_path: output/lab1
 # sheets must be literal key
 sheets:
     - name: sheet1
-      start: A1
-      end: C3
-      columns:
-        - Name
-        - Class
-    - name: sheet2
-      start: A1
-      end: B3
-      columns:
-        - Name
-        - Room
+      regions:
+        - name: names
+          start: A1
+          end: B2
+          contains_headers: true
+        - name: labs
+          start: C1
+          end: E2
+          contains_headers: true
+        - name: practicals
+          start: F1
+          end: H2
+          contains_headers: true
+        - name: random
+          start: D11
+          end: F13
+          contains_headers: false
+          headers:
+            - assignment1
+            - assignment2
+            - assignment3
