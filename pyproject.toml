@@ -19,6 +19,7 @@ PyYAML = "^5.4.1"
 tabulate = "^0.8.9"
 types-PyYAML = "^6.0.0"
 pytest-cov = "^3.0.0"
+jsonschema = "^4.1.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

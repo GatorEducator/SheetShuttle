@@ -13,8 +13,39 @@ import pandas as pd  # type: ignore[import]
 from googleapiclient.discovery import build  # type: ignore[import]
 
 from google.oauth2 import service_account  # type: ignore[import]
+from jsonschema import validate
 
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
+CONFIG_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "source_id": {"type": "string"},
+        "sheets": {"type": "array", "items": {"$ref": "#/$defs/sheet"}},
+    },
+    "required": ["source_id", "sheets"],
+    "$defs": {
+        "region": {
+            "type": "object",
+            "properties": {
+                "name": {"type": "string"},
+                "start": {"type": "string"},
+                "end": {"type": "string"},
+                "contains_headers": {"type": "boolean"},
+                "headers": {"type": "array", "items": {"type": "string"}},
+                # TODO: will possibly need conditional logic for headers key
+            },
+            "required": ["name", "start", "end", "contains_headers"],
+            "additionalProperties": False,
+        },
+        "sheet": {
+            "type": "object",
+            "properties": {
+                "name": {"type": "string"},
+                "sheets": {"type": "array", "items": {"$ref": "#/$defs/region"}},
+            },
+        },
+    },
+}
 
 
 class SheetCollector:
@@ -202,14 +233,10 @@ class Sheet:
             config (Dict): the configuration to validate
 
         Raises:
-            Exception: The schema doesn't validate agains the preset
+            ValidationError: The schema doesn't validate agains the preset
             json schema
         """
-        assert type(config) == dict
-        # TODO: implement me
-        # TODO: should throw an error if format not accurate
-        # Don't do anything if it's accurate
-        return True
+        validate(instance=config, schema=CONFIG_SCHEMA)
 
     @staticmethod
     def execute_sheets_call(
