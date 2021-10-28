@@ -38,6 +38,9 @@ jobs:
       - name: Run pylint
         if: always()
         run: poetry run task pylint
+      - name: Run mypy
+        if: always()
+        run: poetry run task mypy
       - name: Lint writing
         if: always()
         uses: actionshub/markdownlint@main

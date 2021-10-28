@@ -1,2 +1,3 @@
 # GridGopher
-A placeholder repository for Allegheny College automated grade transfer tool  
+
+A placeholder repository for Allegheny College automated grade transfer tool

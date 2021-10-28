@@ -1,16 +1,17 @@
 """Test cases for sheet_collector Module."""
 
 import json
-import pandas as pd
 import pathlib
 import pickle
 import pytest
 
+import pandas as pd
 
 from gridgopher import sheet_collector
 
 
 def test_region_initialize():
+    """Check that a Region object is correctly initialized with instance variables."""
     my_dataframe = pd.DataFrame([["name", "class", "grade"], ["Noor", "2022", "94"]])
     my_region = sheet_collector.Region("lab1", "CMPCS101", "A1", "Z20", my_dataframe)
     assert my_region.region_name == "lab1"
@@ -20,6 +21,7 @@ def test_region_initialize():
 
 
 def test_region_print(capfd):
+    """Check that region object is printed correctly."""
     my_dataframe = pd.DataFrame([["name", "class", "grade"], ["Noor", "2022", "94"]])
     my_region = sheet_collector.Region("lab1", "CMPCS101", "A1", "Z20", my_dataframe)
     my_region.print_region()
@@ -36,6 +38,7 @@ end range: Z20
 
 
 def test_region_to_json(tmpdir):
+    """Use temporary directory to test regions storage as json file."""
     tempdir = tmpdir.mkdir("temp")
     temp_path = str(tempdir)
     my_dataframe = pd.DataFrame([["name", "class", "grade"], ["Noor", "2022", "94"]])
@@ -60,6 +63,7 @@ def test_region_to_json(tmpdir):
 
 
 def test_region_to_pickle(tmpdir):
+    """Use temporary directory to test regions storage as pickle file."""
     tempdir = tmpdir.mkdir("temp")
     temp_path = str(tempdir)
     my_dataframe = pd.DataFrame([["name", "class", "grade"], ["Noor", "2022", "94"]])
@@ -73,10 +77,11 @@ def test_region_to_pickle(tmpdir):
     assert out_data.start_range == my_region.start_range
     assert out_data.end_range == my_region.end_range
     # TODO: should probably check values in out_data
-    assert type(out_data.data) == pd.DataFrame
+    assert isinstance(out_data.data, pd.DataFrame)
 
 
 def test_sheet_check_config_schema_no_error(test_data):
+    """Use the test_data fixture to check json schema validation."""
     # TODO: add more data to this test case
     passing_data = test_data["sheets_schema_test"]["passing"]
     for config in passing_data:
@@ -85,6 +90,7 @@ def test_sheet_check_config_schema_no_error(test_data):
 
 
 def test_sheet_check_config_schema_throws_error(test_data):
+    """Use the test_data fixture to check json schema validation."""
     # TODO: add more data to this test case
     failing_data = test_data["sheets_schema_test"]["failing"]
     for config in failing_data:
@@ -94,12 +100,14 @@ def test_sheet_check_config_schema_throws_error(test_data):
 
 
 def test_sheet_initialize_empty_config():
+    """Check that initializing a sheet with empty config throws error."""
     sample_config = {}
     with pytest.raises(Exception):
-        my_sheet = sheet_collector.Sheet(sample_config, None)
+        sheet_collector.Sheet(sample_config, None)
 
 
 def test_sheet_initialize_correct_config(test_data):
+    """Check that a Sheet object is correctly initialized with instance variables."""
     sample_config = test_data["sheets_schema_test"]["passing"][0]
     my_sheet = sheet_collector.Sheet(sample_config, None)
     assert not my_sheet.api
@@ -108,6 +116,7 @@ def test_sheet_initialize_correct_config(test_data):
 
 
 def test_print_sheet_empty(capfd, test_data):
+    """Check that sheets are printed correctly when no regions exist."""
     sample_config = test_data["sheets_schema_test"]["passing"][0]
     my_sheet = sheet_collector.Sheet(sample_config, None)
     my_sheet.print_sheet()
@@ -116,6 +125,7 @@ def test_print_sheet_empty(capfd, test_data):
 
 
 def test_print_sheet_with_data(capfd, test_data):
+    """Check that sheets are printed correctly when regions data exist."""
     sample_config = test_data["sheets_schema_test"]["passing"][0]
     my_sheet = sheet_collector.Sheet(sample_config, None)
     first_data = pd.DataFrame([["name", "class", "grade"], ["Noor", "2022", "94"]])
@@ -151,20 +161,26 @@ end range: H20
 
 
 def test_to_dataframe_no_error_with_headers():
+    """Check that conversion to data frame using preset headers is done correctly."""
     # TODO: implement me
     assert True
 
 
 def test_to_dataframe_no_error_no_headers():
+    """Check that conversion to data frame without using preset headers is done correctly."""
     # TODO: implement me
     assert True
 
 
 def test_to_dataframe_throws_error():
+    """Check that an error is thrown by to_dataframe when using headers.
+
+    headerslist is empty."""
     # TODO: implement me
     assert True
 
 
 def test_to_dataframe_empty_input():
+    """Check that error is thrown when passed data is empty."""
     # TODO: implement me
     assert True

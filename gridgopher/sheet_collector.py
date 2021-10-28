@@ -13,7 +13,7 @@ import pandas as pd  # type: ignore[import]
 from googleapiclient.discovery import build  # type: ignore[import]
 
 from google.oauth2 import service_account  # type: ignore[import]
-from jsonschema import validate
+from jsonschema import validate  # type: ignore[import]
 
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 CONFIG_SCHEMA = {
@@ -129,6 +129,7 @@ class SheetCollector:
             key_file, scopes=SCOPES
         )
         service = build("sheets", "v4", credentials=credentials)
+        # pylint: disable=E1101
         sheets = service.spreadsheets()
         return credentials, service, sheets
 
@@ -268,6 +269,7 @@ class Sheet:
 class Region:
     """Store data frame and metadata about Google Sheet region."""
 
+    # pylint: disable=R0913
     def __init__(
         self,
         region_name: str,
