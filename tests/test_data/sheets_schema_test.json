@@ -1,0 +1,54 @@
+{
+    "passing": [{
+        "source_id": "someSourceID",
+        "sheets": [{
+                "name": "sheet1",
+                "start": "A1",
+                "end": "Z10",
+                "contains_headers": true
+            },
+            {
+                "name": "sheet2",
+                "start": "A1",
+                "end": "Z10",
+                "contains_headers": true
+            }
+        ]
+    }],
+    "failing": [{
+            "source_id": 234,
+            "sheets": [{
+                    "name": "sheet1",
+                    "start": "A1",
+                    "end": "Z10",
+                    "contains_headers": true
+                },
+                {
+                    "name": "sheet2",
+                    "start": "A1",
+                    "end": "Z10",
+                    "contains_headers": true
+                }
+            ]
+        },
+        {
+            "source_id": "someSourceID",
+            "sheet": [{
+                    "name": "sheet1",
+                    "start": "A1",
+                    "end": "Z10",
+                    "contains_headers": true
+                },
+                {
+                    "name": "sheet2",
+                    "start": "A1",
+                    "end": "Z10",
+                    "contains_headers": true
+                }
+            ]
+        },
+        {
+            "source_id": "someSourceID"
+        }
+    ]
+}

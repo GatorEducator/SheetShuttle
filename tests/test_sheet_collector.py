@@ -4,6 +4,8 @@ import json
 import pandas as pd
 import pathlib
 import pickle
+import pytest
+
 
 from gridgopher import sheet_collector
 
@@ -74,25 +76,47 @@ def test_region_to_pickle(tmpdir):
     assert type(out_data.data) == pd.DataFrame
 
 
+def test_sheet_check_config_schema_no_error(test_data):
+    # TODO: add more data to this test case
+    passing_data = test_data["sheets_schema_test"]["passing"]
+    for config in passing_data:
+        sheet_collector.Sheet.check_config_schema(config)
+    assert True
+
+
+def test_sheet_check_config_schema_throws_error(test_data):
+    # TODO: add more data to this test case
+    failing_data = test_data["sheets_schema_test"]["failing"]
+    for config in failing_data:
+        with pytest.raises(Exception):
+            sheet_collector.Sheet.check_config_schema(config)
+    assert True
+
+
 def test_sheet_initialize_empty_config():
     sample_config = {}
+    with pytest.raises(Exception):
+        my_sheet = sheet_collector.Sheet(sample_config, None)
+
+
+def test_sheet_initialize_correct_config(test_data):
+    sample_config = test_data["sheets_schema_test"]["passing"][0]
     my_sheet = sheet_collector.Sheet(sample_config, None)
     assert not my_sheet.api
-    assert len(my_sheet.config) == 0
-    # TODO: this will thrown an error when check_config_schema is implemented
+    assert not len(my_sheet.config) == 0
     assert not my_sheet.regions
 
 
-def test_print_sheet_empty(capfd):
-    sample_config = {}
+def test_print_sheet_empty(capfd, test_data):
+    sample_config = test_data["sheets_schema_test"]["passing"][0]
     my_sheet = sheet_collector.Sheet(sample_config, None)
     my_sheet.print_sheet()
     captured = capfd.readouterr()
     assert captured.out == """"""
 
 
-def test_print_sheet_with_data(capfd):
-    sample_config = {}
+def test_print_sheet_with_data(capfd, test_data):
+    sample_config = test_data["sheets_schema_test"]["passing"][0]
     my_sheet = sheet_collector.Sheet(sample_config, None)
     first_data = pd.DataFrame([["name", "class", "grade"], ["Noor", "2022", "94"]])
     first_region = sheet_collector.Region(
@@ -124,17 +148,6 @@ end range: H20
 *********************************
 """
     )
-
-
-def test_sheet_initialize_correct_config():
-    # TODO: implement me
-    assert True
-
-
-def test_check_config_schema():
-    # TODO: implement me after function is completed
-    # TODO: use parameterized testing and files for this
-    assert True
 
 
 def test_to_dataframe_no_error_with_headers():
