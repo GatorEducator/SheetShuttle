@@ -15,13 +15,14 @@ from googleapiclient.discovery import build  # type: ignore[import]
 from google.oauth2 import service_account  # type: ignore[import]
 
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
-SOURCES_DIR = "config/sheet_sources"
 
 
 class SheetCollector:
     """Authenticate Sheets api and store retrieved data."""
 
-    def __init__(self, key_file="private/keys.json") -> None:
+    def __init__(
+        self, key_file="private/keys.json", sources_dir="config/sheet_sources"
+    ) -> None:
         """
         Create a SheetCollector object that stores a dictionary of sheets.
 
@@ -37,7 +38,7 @@ class SheetCollector:
             self.service,
             self.sheets,
         ) = SheetCollector.authenticate_api(self.key_file)
-        self.config_dir = pathlib.Path(SOURCES_DIR)
+        self.config_dir = pathlib.Path(sources_dir)
         self.sheets_data: Dict[str, Sheet] = {}
 
     def print_contents(self) -> None:
@@ -144,6 +145,7 @@ class Sheet:
                     region["end"],
                     data,
                 )
+                # FIXME: region naming discrepency
                 self.regions[region["name"]] = region_object
 
     def get_region(self, region_name: str):
@@ -164,40 +166,6 @@ class Sheet:
             print(f"******\t {region_id} \t ******")
             region.print_region()
             print("*********************************")
-
-    def region_to_pickle(self, region_name: str, directory: pathlib.PosixPath):
-        """Write the region object to a Pickle file.
-
-        Args:
-            region_name (str): name of the Region object in the regions
-                dictionary
-            directory (pathlib.PosixPath): path to the directory where the file
-                be stored
-        """
-        region_object = self.regions[region_name]
-        with open(
-            directory / f"{region_object.region_name}.pkl",
-            "wb",
-            encoding="utf-8",
-        ) as outfile:
-            pickle.dump(region_object, outfile)
-
-    def region_to_json(self, region_name: str, directory: pathlib.PosixPath):
-        """Write the region object to a JSON file.
-
-        Args:
-            region_name (str): name of the Region object in the regions
-                dictionary
-            directory (pathlib.PosixPath): path to the directory where the file
-                be stored
-        """
-        region_object = self.regions[region_name]
-        with open(
-            directory / f"{region_object.region_name}.json",
-            "w+",
-            encoding="utf-8",
-        ) as outfile:
-            json.dump(region_object, outfile)
 
     @staticmethod
     def to_dataframe(
@@ -237,7 +205,7 @@ class Sheet:
             Exception: The schema doesn't validate agains the preset
             json schema
         """
-        assert config
+        assert type(config) == dict
         # TODO: implement me
         # TODO: should throw an error if format not accurate
         # Don't do anything if it's accurate
@@ -290,7 +258,9 @@ class Region:
             end_range (str): Cell name to end at (eg. H5)
             data (pd.DataFrame): Data in the region
         """
-        self.region_name = f"{parent_sheet_name}_{region_name}"
+        self.region_name = region_name
+        self.parent_sheet_name = parent_sheet_name
+        self.full_name = f"{parent_sheet_name}_{region_name}"
         self.start_range = start_range
         self.end_range = end_range
         self.data = data
@@ -300,3 +270,38 @@ class Region:
         print(f"start range: {self.start_range}")
         print(f"end range: {self.end_range}")
         print(self.data.to_markdown())
+
+    def region_to_pickle(self, directory: pathlib.PosixPath):
+        """Write the region object to a Pickle file.
+
+        Args:
+            directory (pathlib.PosixPath): path to the directory where the file
+                be stored
+        """
+        with open(
+            pathlib.Path(".") / directory / f"{self.full_name}.pkl", "wb"
+        ) as outfile:
+            pickle.dump(self, outfile)
+
+    def region_to_json(self, directory: pathlib.PosixPath):
+        """Write the region object to a JSON file.
+
+        Args:
+            directory (pathlib.PosixPath): path to the directory where the file
+                be stored
+        """
+        self_data = {
+            "region_name": self.region_name,
+            "parent_name": self.parent_sheet_name,
+            "full_name": self.full_name,
+            "start_range": self.start_range,
+            "end_range": self.end_range,
+            # TODO: determine the based format to store the data
+            "data": self.data.to_dict("index"),
+        }
+        with open(
+            pathlib.Path(".") / directory / f"{self.full_name}.json",
+            "w+",
+            encoding="utf-8",
+        ) as outfile:
+            json.dump(self_data, outfile, indent=4)
