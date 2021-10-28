@@ -8,7 +8,7 @@ authors = ["Noor Buchi <buchin@allegheny.edu>"]
 converter = "converter.main:cli"
 
 [tool.poetry.dependencies]
-python = "^3.9.1"
+python = "^3.9.6"
 typer = {extras = ["all"], version = "^0.3.2"}
 rich = "^10.9.0"
 google-api-python-client = "^2.21.0"
