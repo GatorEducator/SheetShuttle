@@ -1,0 +1,40 @@
+{
+    "sample_config": {
+        "source_id": "1EwSGkK3seRzHh8XGKlaRrpRdDuOrNCeAele5q_YIN4Y",
+        "sheets": [{
+            "name": "sheet1",
+            "regions": [{
+                    "name": "lab_grades",
+                    "start": "B2",
+                    "end": "G6",
+                    "contains_headers": true
+                },
+                {
+                    "name": "roster",
+                    "start": "I9",
+                    "end": "K11",
+                    "contains_headers": true
+                },
+                {
+                    "name": "overall_grades",
+                    "start": "C13",
+                    "end": "E16",
+                    "contains_headers": false,
+                    "headers": [
+                        "First Name",
+                        "Last Name",
+                        "Grade"
+                    ]
+                }
+            ]
+        }, {
+            "name": "sheet2",
+            "regions": [{
+                "name": "lab_grades",
+                "start": "G8",
+                "end": "H12",
+                "contains_headers": true
+            }]
+        }]
+    }
+}

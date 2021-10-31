@@ -2,6 +2,7 @@
 # FIXME: ensure typechecking in the module
 
 import json
+import os
 import pathlib
 import pickle
 from typing import List, Dict
@@ -9,7 +10,7 @@ import yaml
 
 import pandas as pd  # type: ignore[import]
 
-
+from dotenv import load_dotenv
 from googleapiclient.discovery import build  # type: ignore[import]
 
 from google.oauth2 import service_account  # type: ignore[import]
@@ -51,9 +52,7 @@ CONFIG_SCHEMA = {
 class SheetCollector:
     """Authenticate Sheets api and store retrieved data."""
 
-    def __init__(
-        self, key_file="private/keys.json", sources_dir="config/sheet_sources"
-    ) -> None:
+    def __init__(self, key_file=".env", sources_dir="config/sheet_sources") -> None:
         """
         Create a SheetCollector object that stores a dictionary of sheets.
 
@@ -61,7 +60,7 @@ class SheetCollector:
 
         Args:
             key_file (str, optional): path to Google Sheets API user keys and
-            tokens. Defaults to "private/keys.json".
+            tokens. Defaults to ".env".
         """
         self.key_file: str = key_file
         (
@@ -89,7 +88,7 @@ class SheetCollector:
         if not self.sheets:
             raise Exception("ERROR: Collector was not authenticated")
         # get a list of all yaml path objects in the config_dir
-        config_files = SheetCollector.get_yaml_files(self.config_dir)
+        config_files = self.config_dir.glob("*.yaml")
         for yaml_file in config_files:
             # Open yaml file as read
             with open(yaml_file, "r", encoding="utf-8") as config_file:
@@ -104,30 +103,46 @@ class SheetCollector:
                 self.sheets_data[yaml_file.stem] = sheet_obj
 
     @staticmethod
-    def get_yaml_files(directory: pathlib.Path):
-        """
-        Find all yaml files recursively in directory.
-
-        Args:
-            directory (pathlib.Path): directory to search in
-
-        Returns:
-            list of path objects: paths to all found yaml files
-        """
-        return directory.glob("*.yaml")
-
-    @staticmethod
     def authenticate_api(key_file):
-        """Use credentials from key_file to authenticate access to a service account.
+        """Use credentials from key_file our environment authenticate access to a service account.
 
         Args:
             key_file (str, optional): Path to file containing API tokens.
-                Defaults to "private/keys.json".
+                Can be either JSON or .env file
         """
         # TODO: add try statement for possible API errors
-        credentials = service_account.Credentials.from_service_account_file(
-            key_file, scopes=SCOPES
-        )
+        if key_file.endswith(".json"):
+            credentials = service_account.Credentials.from_service_account_file(
+                key_file, scopes=SCOPES
+            )
+        elif key_file.endswith(".env"):
+            creds_dict = {}
+            load_dotenv()
+            vars_list = [
+                "TYPE",
+                "PROJECT_ID",
+                "PRIVATE_KEY_ID",
+                "PRIVATE_KEY",
+                "CLIENT_EMAIL",
+                "CLIENT_ID",
+                "AUTH_URI",
+                "TOKEN_URI",
+                "AUTH_PROVIDER_X509_CERT_URL",
+                "CLIENT_X509_CERT_URL",
+            ]
+            for env_var in vars_list:
+                var_value = os.getenv(env_var)
+                if not var_value:
+                    raise Exception(f"Variable {env_var} could not be found")
+                creds_dict[env_var.lower()] = var_value
+            credentials = service_account.Credentials.from_service_account_info(
+                creds_dict, scopes=SCOPES
+            )
+        else:
+            raise Exception(
+                f"Unclear source of Sheets authentication keys {key_file}. Must be a .env or .json file"
+            )
+
         service = build("sheets", "v4", credentials=credentials)
         # pylint: disable=E1101
         sheets = service.spreadsheets()
@@ -177,8 +192,7 @@ class Sheet:
                     region["end"],
                     data,
                 )
-                # FIXME: region naming discrepency
-                self.regions[region["name"]] = region_object
+                self.regions[region_object.full_name] = region_object
 
     def get_region(self, region_name: str):
         """Return a region object from the regions dictionary.
@@ -215,12 +229,21 @@ class Sheet:
         Raises:
             Exception: thrown when headers is empty and headers_in_data
             is False
+            Exception: thrown when data is empty
+            Exception: thrown when less than two rows of data exists and
+                headers_in_data is True
 
         Returns:
             pd.DataFrame: The pandas dataframe after resulting from the data
         """
+        if not data:
+            raise Exception("ERROR: empty data cannot be converted to dataframe")
         if headers_in_data:
-            # FIXME: possible indexing error here
+            # if data contains headers, there must be at least 2 rows
+            if len(data) < 2:
+                raise Exception(
+                    "ERROR: data must contain at least two rows if headers are in data."
+                )
             return pd.DataFrame(data[1:], columns=data[0])
         if not headers:
             raise Exception("No passed table headers")
