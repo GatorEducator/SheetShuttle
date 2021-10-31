@@ -1,5 +1,4 @@
 """Set up object oriented structure for Google Sheet data retrieval."""
-# FIXME: ensure typechecking in the module
 
 import json
 import os
@@ -47,6 +46,23 @@ CONFIG_SCHEMA = {
         },
     },
 }
+
+ENV_VAR_LIST = [
+    "TYPE",
+    "PROJECT_ID",
+    "PRIVATE_KEY_ID",
+    "PRIVATE_KEY",
+    "CLIENT_EMAIL",
+    "CLIENT_ID",
+    "AUTH_URI",
+    "TOKEN_URI",
+    "AUTH_PROVIDER_X509_CERT_URL",
+    "CLIENT_X509_CERT_URL",
+]
+
+
+class MissingAuthenticationVariable(Exception):
+    """Raised when a Sheets authentication variable is missing."""
 
 
 class SheetCollector:
@@ -110,7 +126,6 @@ class SheetCollector:
             key_file (str, optional): Path to file containing API tokens.
                 Can be either JSON or .env file
         """
-        # TODO: add try statement for possible API errors
         if key_file.endswith(".json"):
             credentials = service_account.Credentials.from_service_account_file(
                 key_file, scopes=SCOPES
@@ -118,29 +133,20 @@ class SheetCollector:
         elif key_file.endswith(".env"):
             creds_dict = {}
             load_dotenv()
-            vars_list = [
-                "TYPE",
-                "PROJECT_ID",
-                "PRIVATE_KEY_ID",
-                "PRIVATE_KEY",
-                "CLIENT_EMAIL",
-                "CLIENT_ID",
-                "AUTH_URI",
-                "TOKEN_URI",
-                "AUTH_PROVIDER_X509_CERT_URL",
-                "CLIENT_X509_CERT_URL",
-            ]
-            for env_var in vars_list:
+            for env_var in ENV_VAR_LIST:
                 var_value = os.getenv(env_var)
                 if not var_value:
-                    raise Exception(f"Variable {env_var} could not be found")
+                    raise MissingAuthenticationVariable(
+                        f"Variable {env_var} could not be found"
+                    )
                 creds_dict[env_var.lower()] = var_value
             credentials = service_account.Credentials.from_service_account_info(
                 creds_dict, scopes=SCOPES
             )
         else:
             raise Exception(
-                f"Unclear source of Sheets authentication keys {key_file}. Must be a .env or .json file"
+                f"Unclear source of Sheets authentication keys {key_file}."
+                + "Must be a .env or .json file"
             )
 
         service = build("sheets", "v4", credentials=credentials)
@@ -176,7 +182,6 @@ class Sheet:
                     region["start"],
                     region["end"],
                 )
-                # TODO: might need fixed
                 if region["contains_headers"]:
                     data = Sheet.to_dataframe(region_data)
                 else:
@@ -277,7 +282,6 @@ class Sheet:
         Returns:
             list[list]: the data in the specified range.
         """
-        # TODO: add try statement for API errors
         return (
             api.values()
             .get(

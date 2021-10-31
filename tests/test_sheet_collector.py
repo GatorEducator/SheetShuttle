@@ -212,8 +212,7 @@ def test_sheet_execute_sheet_call_no_error():
     # initialize with environment variables authentication
     try:
         my_sheet_collector = sheet_collector.SheetCollector()
-    # TODO: possibly need to handle a specific exception
-    except Exception:
+    except sheet_collector.MissingAuthenticationVariable:
         pytest.skip("Sheets authentication environment variables not found")
     expected_data = [
         ["Name", "Class", "Lab1", "Lab2", "Lab3", "Average"],
@@ -241,8 +240,7 @@ def test_sheet_execute_sheet_call_empty_return():
     # initialize with environment variables authentication
     try:
         my_sheet_collector = sheet_collector.SheetCollector()
-    # TODO: possibly need to handle a specific exception
-    except Exception:
+    except sheet_collector.MissingAuthenticationVariable:
         pytest.skip("Sheets authentication environment variables not found")
     api = my_sheet_collector.sheets
     data_from_call = sheet_collector.Sheet.execute_sheets_call(
@@ -260,12 +258,11 @@ def test_sheet_execute_sheet_call_throws_error():
     # initialize with environment variables authentication
     try:
         my_sheet_collector = sheet_collector.SheetCollector()
-    # TODO: possibly need to handle a specific exception
-    except Exception:
+    except sheet_collector.MissingAuthenticationVariable:
         pytest.skip("Sheets authentication environment variables not found")
     api = my_sheet_collector.sheets
     with pytest.raises(Exception):
-        data_from_call = sheet_collector.Sheet.execute_sheets_call(
+        sheet_collector.Sheet.execute_sheets_call(
             api,
             "1EwSGkK3seRzHh8XGKlaRrpRdDuOrNCeAele5q_YIN4Y",
             "nonexistentSheet",
@@ -281,8 +278,7 @@ def test_sheet_collect_regions(test_data):
     Can be skipped if authentication variables aren't available"""
     try:
         my_sheet_collector = sheet_collector.SheetCollector()
-    # TODO: possibly need to handle a specific exception
-    except Exception:
+    except sheet_collector.MissingAuthenticationVariable:
         pytest.skip("Sheets authentication environment variables not found")
     api = my_sheet_collector.sheets
     sample_config = test_data["collect_regions_test"]["sample_config"]
@@ -295,7 +291,7 @@ def test_sheet_collect_regions(test_data):
         "sheet2_lab_grades",
     ]
     for region_key in regions_keys:
-        assert region_key in my_sheet.regions.keys()
+        assert region_key in my_sheet.regions
     # TODO: can possibly check more things?
 
 
@@ -307,19 +303,7 @@ def test_sheet_collector_authenticate_api_json(tmp_path):
     """
     # get environment variables as a dictionary
     creds_dict = {}
-    vars_list = [
-        "TYPE",
-        "PROJECT_ID",
-        "PRIVATE_KEY_ID",
-        "PRIVATE_KEY",
-        "CLIENT_EMAIL",
-        "CLIENT_ID",
-        "AUTH_URI",
-        "TOKEN_URI",
-        "AUTH_PROVIDER_X509_CERT_URL",
-        "CLIENT_X509_CERT_URL",
-    ]
-    for env_var in vars_list:
+    for env_var in sheet_collector.ENV_VAR_LIST:
         var_value = os.getenv(env_var)
         if not var_value:
             pytest.skip(
@@ -347,19 +331,7 @@ def test_sheet_collector_authenticate_api_env():
 
         Can be skipped if needed environment variables are not set.
     """
-    vars_list = [
-        "TYPE",
-        "PROJECT_ID",
-        "PRIVATE_KEY_ID",
-        "PRIVATE_KEY",
-        "CLIENT_EMAIL",
-        "CLIENT_ID",
-        "AUTH_URI",
-        "TOKEN_URI",
-        "AUTH_PROVIDER_X509_CERT_URL",
-        "CLIENT_X509_CERT_URL",
-    ]
-    for env_var in vars_list:
+    for env_var in sheet_collector.ENV_VAR_LIST:
         var_value = os.getenv(env_var)
         if not var_value:
             pytest.skip(
@@ -379,19 +351,7 @@ def test_sheet_collector_authenticate_api_throws_error():
     used to authenticate the Sheets api.
     """
     with pytest.raises(Exception):
-        credentials, service, sheets = sheet_collector.SheetCollector.authenticate_api(
-            ".yaml"
-        )
-
-
-def test_sheet_collector_authenticate_api_throws_error():
-    """Check that an error is thrown when a file other than .env and .json is
-    used to authenticate the Sheets api.
-    """
-    with pytest.raises(Exception):
-        credentials, service, sheets = sheet_collector.SheetCollector.authenticate_api(
-            ".yaml"
-        )
+        sheet_collector.SheetCollector.authenticate_api(".yaml")
 
 
 def test_sheet_collector_collect_files_throws_error():
@@ -401,8 +361,7 @@ def test_sheet_collector_collect_files_throws_error():
     Can be skipped if environment variables isn't set."""
     try:
         my_collector = sheet_collector.SheetCollector()
-    # TODO: possibly need to handle a specific exception
-    except Exception:
+    except sheet_collector.MissingAuthenticationVariable:
         pytest.skip("Sheets authentication environment variables not found")
     my_collector.sheets = None
     with pytest.raises(Exception):
@@ -413,8 +372,7 @@ def test_sheet_collector_collect_files_prints_output(tmpdir, test_data, capfd):
     """Check that a dictionary of Sheet objects is created correctly in collect_files()"""
     try:
         my_collector = sheet_collector.SheetCollector()
-    # TODO: possibly need to handle a specific exception
-    except Exception:
+    except sheet_collector.MissingAuthenticationVariable:
         pytest.skip("Sheets authentication environment variables not found")
 
     # setting up temporary config files using test_data
@@ -429,7 +387,7 @@ def test_sheet_collector_collect_files_prints_output(tmpdir, test_data, capfd):
     my_collector = sheet_collector.SheetCollector(sources_dir=temp_path)
     my_collector.collect_files()
     for sheet_key in test_data["collect_files_test"]["expected_keys"]:
-        assert sheet_key in my_collector.sheets_data.keys()
+        assert sheet_key in my_collector.sheets_data
     my_collector.print_contents()
     captured = capfd.readouterr()
     assert captured.out == test_data["collect_files_test"]["expected_print"]
