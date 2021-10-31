@@ -66,7 +66,7 @@ jobs:
         - name: Install dependencies
           run: poetry install
         - name: Execute tests
-          run: poetry run task test
+          run: poetry run task coverage
         # - name: Upload coverage
         #   uses: codecov/codecov-action@v1
         #   with:
