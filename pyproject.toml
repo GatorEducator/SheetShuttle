@@ -5,7 +5,7 @@ description = ""
 authors = ["Noor Buchi <buchin@allegheny.edu>"]
 
 [tool.poetry.scripts]
-converter = "converter.main:cli"
+gridgopher = "gridgopher.main:app"
 
 [tool.poetry.dependencies]
 python = "^3.9.6"
@@ -22,6 +22,7 @@ pytest-cov = "^3.0.0"
 jsonschema = "^4.1.2"
 pytest-sugar = "^0.9.4"
 python-dotenv = "^0.19.1"
+pluginbase = "^1.0.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
