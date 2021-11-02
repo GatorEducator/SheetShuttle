@@ -1,6 +1,3 @@
-# Added manually to prevent commiting API Keys
-private/
-
 # Vs code debugging config
 .vscode/*
 
@@ -111,6 +108,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
+keys.json
 .env
 .venv
 env/
