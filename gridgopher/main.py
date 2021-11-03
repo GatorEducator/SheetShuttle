@@ -2,7 +2,7 @@
 
 import typer
 
-from pluginbase import PluginBase
+from pluginbase import PluginBase  # type: ignore[import]
 
 
 app = typer.Typer()

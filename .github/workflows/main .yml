@@ -29,9 +29,6 @@ jobs:
       - name: Run flake8
         if: always()
         run: poetry run task flake8
-      - name: Run mypy
-        if: always()
-        run: poetry run task mypy
       - name: Run pydocstyle
         if: always()
         run: poetry run task pydocstyle

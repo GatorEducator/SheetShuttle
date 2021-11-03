@@ -89,7 +89,7 @@ class SheetCollector:
 
     def print_contents(self) -> None:
         """Print all Sheet objects in self.sheets_data."""
-        for _, sheet in self.sheets_data.items():
+        for sheet in self.sheets_data.values():
             sheet.print_sheet()
 
     def collect_files(self) -> None:
