@@ -9,7 +9,6 @@ import yaml
 
 import pandas as pd  # type: ignore[import]
 
-from dotenv import load_dotenv
 from googleapiclient.discovery import build  # type: ignore[import]
 
 from google.oauth2 import service_account  # type: ignore[import]
@@ -132,7 +131,6 @@ class SheetCollector:
             )
         elif key_file.endswith(".env"):
             creds_dict = {}
-            load_dotenv()
             for env_var in ENV_VAR_LIST:
                 var_value = os.getenv(env_var)
                 if not var_value:

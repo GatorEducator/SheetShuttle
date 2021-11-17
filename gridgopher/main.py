@@ -3,8 +3,9 @@
 import typer
 
 from pluginbase import PluginBase  # type: ignore[import]
+from dotenv import load_dotenv
 
-
+load_dotenv()
 app = typer.Typer()
 
 
