@@ -24,6 +24,8 @@ Write some stuff
 
 Write some stuff
 
+A placeholder repository for Allegheny College automated grade transfer tool
+
 ## Important Notes
 
 - Values in the `.env` file must be surrounded by double quotation marks `"`

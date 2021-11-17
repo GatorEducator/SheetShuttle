@@ -1,0 +1,48 @@
+{
+    "temp_files": {
+        "temp1.yaml": {
+            "source_id": "1EwSGkK3seRzHh8XGKlaRrpRdDuOrNCeAele5q_YIN4Y",
+            "sheets": [{
+                "name": "sheet1",
+                "regions": [{
+                        "name": "lab_grades",
+                        "start": "B2",
+                        "end": "G6",
+                        "contains_headers": true
+                    },
+                    {
+                        "name": "roster",
+                        "start": "I9",
+                        "end": "K11",
+                        "contains_headers": true
+                    },
+                    {
+                        "name": "overall_grades",
+                        "start": "C13",
+                        "end": "E16",
+                        "contains_headers": false,
+                        "headers": [
+                            "First Name",
+                            "Last Name",
+                            "Grade"
+                        ]
+                    }
+                ]
+            }]
+        },
+        "temp2.yaml": {
+            "source_id": "1EwSGkK3seRzHh8XGKlaRrpRdDuOrNCeAele5q_YIN4Y",
+            "sheets": [{
+                "name": "sheet2",
+                "regions": [{
+                    "name": "lab_grades",
+                    "start": "G8",
+                    "end": "H12",
+                    "contains_headers": true
+                }]
+            }]
+        }
+    },
+    "expected_keys": ["temp1", "temp2"],
+    "expected_print": "******\t sheet1_lab_grades \t ******\nstart range: B2\nend range: G6\n|    | Name    |   Class |   Lab1 |   Lab2 |   Lab3 |   Average |\n|---:|:--------|--------:|-------:|-------:|-------:|----------:|\n|  0 | Noor    |    2022 |     94 |     54 | 34.65  |   60.8833 |\n|  1 | Tommy   |    2023 |     96 |     79 | 64.99  |   79.9967 |\n|  2 | Yanqiao |    2024 |     99 |     68 | 23.64  |   63.5467 |\n|  3 | Tugi    |    2024 |    100 |     97 | 56.001 |   84.3337 |\n*********************************\n******\t sheet1_roster \t ******\nstart range: I9\nend range: K11\n|    | Name   | Major            | Minor                   |\n|---:|:-------|:-----------------|:------------------------|\n|  0 | Noor   | Computer Science | Math, Political Science |\n|  1 | Tommy  | Computer Science | Spanish                 |\n*********************************\n******\t sheet1_overall_grades \t ******\nstart range: C13\nend range: E16\n|    | First Name     | Last Name   |   Grade |\n|---:|:---------------|:------------|--------:|\n|  0 | Noor           | Buchi       |     100 |\n|  1 | Tommy          | Antle       |      99 |\n|  2 | Yanqiao        | Chen        |      98 |\n|  3 | Tuguldurnemekh | Gantulga    |      97 |\n*********************************\n******\t sheet2_lab_grades \t ******\nstart range: G8\nend range: H12\n|    | Name     |   Grade |\n|---:|:---------|--------:|\n|  0 | Buchi    |     100 |\n|  1 | Antle    |      99 |\n|  2 | Chen     |      98 |\n|  3 | Gantulga |      97 |\n*********************************\n"
+}
