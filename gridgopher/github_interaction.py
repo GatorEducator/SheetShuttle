@@ -74,6 +74,18 @@ class GithubManager:
         return Github(token)
 
 
+class Entry:
+    """Contain the information of a github post in the form of pull request,
+    issue tracker, or file"""
+
+    def __init__(self, config: Dict) -> None:
+        """Initialize an Entry object using a configuration argument.add()
+
+        Args:
+            config (Dict): a dictionary with needed keys that follows the Entry schema.
+        """
+
+
 # repo = g.get_repo("AC-GopherBot/test-1")
 # markdown_sample = """|    |   assignment1 |   assignment2 |   assignment3 |
 # |---:|--------------:|--------------:|--------------:|
