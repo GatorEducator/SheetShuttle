@@ -86,6 +86,30 @@ CLIENT_X509_CERT_URL="value"
 
 #### Github Access Token
 
+If you intend to use GridGopher's GitHub interactions features, it's required to
+create a GitHub access token and place it correctly in the project repository.
+To create a token, please use the official guide found
+[here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).
+Created tokens should be granted `repo` access.
+
+Once a token has been created, there are two ways to allow GridGopher
+to use it:
+
+1. Create a json file in the repository root with the following format (note
+   that the `gh_access_token` key is required):
+
+   ```json
+   {
+     "gh_access_token": "paste your token here"
+   }
+   ```
+
+2. OR add a variable to the `.env` file in the following format
+
+  ```.env
+  GH_ACCESS_TOKEN="paste your token here"
+  ```
+
 ### Writing Config
 
 ### Using Command Line Interface
