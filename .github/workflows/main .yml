@@ -3,7 +3,7 @@
 # and writing for defects, using poetry and its installed packages as well as mdl
 #
 # -- Second, Test using pytest
-name: Lint and Test
+name: lint-and-test
 
 on: [push, pull_request]
 

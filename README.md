@@ -1,12 +1,46 @@
 # GridGopher
 
-Badges here
+![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)
+![BuiltWith](https://img.shields.io/badge/Built%20With-Python-blue?style=flat-square&logo=python&logoColor=yellow)
+![Build](https://github.com/noorbuchi/GridGopher/actions/workflows/lint-and-test/badge.svg?branch=main)
+[![codecov](https://codecov.io/gh/noorbuchi/GridGopher/branch/main/graph/badge.svg?token=02353FAN4W)](https://codecov.io/gh/noorbuchi/GridGopher)
 
-A placeholder repository for Allegheny College automated grade transfer tool
 
-## Installation
+GridGopher is a plugin friendly tool that allows users to connect collected data
+from Google Sheets and GitHub issue trackers and pull requests. The tool
+provides the basic API and encourages users to utilize it in their applications.
 
-Write some stuff
+## Set Up
+
+GridGopher uses Poetry to create a Python virtual environment and manage
+dependencies. For more information about Poetry, check out [the
+documentation](https://python-poetry.org/). To set up the tool for use, please
+follow the steps outlined below:
+
+**1- Install Poetry:**
+
+Install poetry using the steps outlined
+[here](https://python-poetry.org/docs/#installation). To verify that poetry was
+installed successfully run the following:
+
+```
+poetry -V
+```
+
+The expected output is the version of Poetry installed.
+
+**2- Install Python Dependencies:**
+
+Once poetry has been installed successfully, clone or download the repository
+and navigate to the root of the repository. Use the following command to install
+all the dependencies used by GridGopher:
+
+```
+poetry install
+```
+
+This command might take some time to finish running. Once it's completed,
+GridGopher is ready for use!
 
 ## Running the Tool
 
