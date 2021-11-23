@@ -6,12 +6,14 @@
 [![codecov](https://codecov.io/gh/noorbuchi/GridGopher/branch/main/graph/badge.svg?token=02353FAN4W)](https://codecov.io/gh/noorbuchi/GridGopher)
 ![stars](https://img.shields.io/github/stars/noorbuchi/GridGopher.svg)
 
-
 GridGopher is a plugin friendly tool that allows users to connect collected data
 from Google Sheets and GitHub issue trackers and pull requests. The tool
 provides the basic API and encourages users to utilize it in their applications.
 
-## Set Up
+## Set Up and Installation
+
+**Installation using `pip` is currently not supported. However, it's planned for
+future releases**
 
 GridGopher uses Poetry to create a Python virtual environment and manage
 dependencies. For more information about Poetry, check out [the
@@ -43,30 +45,33 @@ poetry install
 This command might take some time to finish running. Once it's completed,
 GridGopher is ready for use!
 
-## Running the Tool
+## Running GridGopher
 
-Write some stuff
+### API Setup
 
-## Plugin System
+GridGopher requires authentication tokens for a Google Sheets API service
+accounts. GitHub access token are also needed if some features are used. To set
+up a service account and get the tokens, please follow the steps below:
 
-Write some stuff
+#### Google Sheets Service Account
 
-## API
+[This tutorial](https://youtu.be/4ssigWmExak?t=215) from `3:35` until `8:20` gives clear and
+detailed steps on how to create a service account and create an authentication
+key. However, it includes extra steps that not everyone will need to follow. You
+can follow the video if preferred or the [Sheets API
+Guide](docs/Google_API_Setup.md)
 
-Write some stuff
+Once API credentials have been downloaded, there are 2 ways to allow GridGopher
+to use them.
 
-## Other
+1. Place the downloaded JSON file in the root of the project repository
+2. OR create a new `.env` file and transfer the information from the `.json`
+   file to the environment file in the following format.
 
-Write some stuff
-
-A placeholder repository for Allegheny College automated grade transfer tool
-
-## Important Notes
-
-- Values in the `.env` file must be surrounded by double quotation marks `"`
+**Important Note:** Values in the `.env` file must be surrounded by double quotation marks `"`
   otherwise, newline character `\n` will cause issues.
 
-Expected Format:
+Note that variable names must be in upper case.
 
 ```.evn
 TYPE="service_account"
@@ -78,3 +83,17 @@ TOKEN_URI="value"
 AUTH_PROVIDER_X509_CERT_URL="value"
 CLIENT_X509_CERT_URL="value"
 ```
+
+#### Github Access Token
+
+### Writing Config
+
+### Using Command Line Interface
+
+### Plugin System
+
+## Other
+
+Write some stuff
+
+A placeholder repository for Allegheny College automated grade transfer tool
