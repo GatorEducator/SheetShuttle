@@ -102,8 +102,11 @@ class SheetCollector:
         """
         if not self.sheets:
             raise Exception("ERROR: Collector was not authenticated")
-        # get a list of all yaml path objects in the config_dir
-        config_files = self.config_dir.glob("*.yaml")
+        # get a list of all yaml and yml path objects in the config_dir
+        config_files = []
+        extensions = ["*.yaml", "*.yml"]
+        for ext in extensions:
+            config_files.extend(self.config_dir.glob(ext))
         for yaml_file in config_files:
             # Open yaml file as read
             with open(yaml_file, "r", encoding="utf-8") as config_file:
