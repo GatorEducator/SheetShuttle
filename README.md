@@ -2,7 +2,7 @@
 
 ![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)
 ![BuiltWith](https://img.shields.io/badge/Built%20With-Python-blue?style=flat-square&logo=python&logoColor=yellow)
-![Build](https://github.com/noorbuchi/GridGopher/actions/workflows/lint-and-test/badge.svg?branch=main)
+![Actions Status](https://github.com/noorbuchi/GridGopher/workflows/Lint%20and%20Test/badge.svg)
 [![codecov](https://codecov.io/gh/noorbuchi/GridGopher/branch/main/graph/badge.svg?token=02353FAN4W)](https://codecov.io/gh/noorbuchi/GridGopher)
 
 
