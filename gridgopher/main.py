@@ -5,8 +5,13 @@ import typer
 from pluginbase import PluginBase  # type: ignore[import]
 from dotenv import load_dotenv
 
+PLUGIN_BASE = PluginBase("gridgopher.plugins")
+
 load_dotenv()
 app = typer.Typer()
+
+plugin_source = PLUGIN_BASE.make_plugin_source(searchpath=["plugins/"])
+my_plugin = None
 
 
 @app.command()
@@ -44,16 +49,22 @@ def gatorgopher(
     print(f"plugins_directory: {plugins_directory}")
     print(f"plugin_name: {plugin_name}")
 
-    print(f"Loading {plugin_name} from {plugins_directory}...")
+    load_plugin(plugins_directory, plugin_name)
+    # TODO: figure out how to pass the rest of the arguments
+    my_plugin.run()
+
+
+def load_plugin(directory: str, name: str):
+    """Return a pluginbase object using a plugin name and a directory."""
     # TODO: add try statement for failed plugin loading and validating that a
     # run function exists in it.
 
     # TODO: not sure if "plugins" should be used here
-    plugin_base = PluginBase("plugins")
-    plugin_source = plugin_base.make_plugin_source(searchpath=[plugins_directory])
-    my_plugin = plugin_source.load_plugin(plugin_name)
-    # TODO: figure out how to pass the rest of the arguments
-    my_plugin.run()
+    print(f"Loading {name} from {directory}...")
+    global plugin_source
+    plugin_source = PLUGIN_BASE.make_plugin_source(searchpath=[directory])
+    global my_plugin
+    my_plugin = plugin_source.load_plugin(name)
 
 
 if __name__ == "__main__":
