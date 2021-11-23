@@ -140,17 +140,15 @@ def test_print_sheet_with_data(capfd, test_data):
     assert my_sheet.get_region("overall") == first_region
     my_sheet.print_sheet()
     captured = capfd.readouterr()
-    assert (
-        captured.out
-        == """******	 overall 	 ******
+    first_item = """******	 overall 	 ******
 start range: A1
 end range: Z20
 |    | 0    | 1     | 2     |
 |---:|:-----|:------|:------|
 |  0 | name | class | grade |
 |  1 | Noor | 2022  | 94    |
-*********************************
-******	 labs 	 ******
+*********************************"""
+    second_item = """******	 labs 	 ******
 start range: A2
 end range: H20
 |    | 0    | 1    | 2    |
@@ -159,7 +157,8 @@ end range: H20
 |  1 | Noor | 100  | 94   |
 *********************************
 """
-    )
+    assert first_item in captured.out
+    assert second_item in captured.out
 
 
 def test_sheet_to_dataframe_no_error_with_headers():
@@ -390,4 +389,5 @@ def test_sheet_collector_collect_files_prints_output(tmpdir, test_data, capfd):
         assert sheet_key in my_collector.sheets_data
     my_collector.print_contents()
     captured = capfd.readouterr()
-    assert captured.out == test_data["collect_files_test"]["expected_print"]
+    for print_item in test_data["collect_files_test"]["expected_print"]:
+        assert print_item in captured.out
