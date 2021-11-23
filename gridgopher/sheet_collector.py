@@ -76,6 +76,9 @@ class SheetCollector:
         Args:
             key_file (str, optional): path to Google Sheets API user keys and
             tokens. Defaults to ".env".
+
+            sources_dir (str, optional): path to where the configuration
+            is stored. Defaults to "config/sheet_sources"
         """
         self.key_file: str = key_file
         (
