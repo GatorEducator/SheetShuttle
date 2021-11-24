@@ -6,6 +6,8 @@
 [![codecov](https://codecov.io/gh/noorbuchi/GridGopher/branch/main/graph/badge.svg?token=02353FAN4W)](https://codecov.io/gh/noorbuchi/GridGopher)
 ![stars](https://img.shields.io/github/stars/noorbuchi/GridGopher.svg)
 
+![GridGopherLogo](images/GopherLogo.png)
+
 GridGopher is a plugin friendly tool that allows users to connect collected data
 from Google Sheets and GitHub issue trackers and pull requests. The tool
 provides the basic API and encourages users to utilize it in their applications.
@@ -106,11 +108,21 @@ to use it:
 
 2. OR add a variable to the `.env` file in the following format
 
-  ```.env
-  GH_ACCESS_TOKEN="paste your token here"
-  ```
+     ```.env
+     GH_ACCESS_TOKEN="paste your token here"
+     ```
 
 ### Writing Config
+
+GridGopher relies on user written YAML configuration to collect data from Google
+Sheets and organize it in regions. GitHub interactions are also managed by
+YAML configuration.
+
+#### Sheets Collector Config
+
+#### Github Interactions Config
+
+TO BE COMPLETED ONCE IMPLEMENTED
 
 ### Using Command Line Interface
 
