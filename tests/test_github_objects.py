@@ -1,6 +1,9 @@
+"""Test functionalities in the github_objects module."""
 import pytest
-from gridgopher import github_objects
+
 from jsonschema.exceptions import ValidationError
+
+from gridgopher import github_objects
 
 
 def test_issues_schema_no_error(test_data):

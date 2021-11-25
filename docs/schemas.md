@@ -22,7 +22,8 @@ has the following structure:
 name: <string, required> name of the region to create
 start: <string, required> cell to start from (eg. A1)
 end: <string, required> cell to end at (eg. H12)
-contains_headers: <boolean, required> if selected range contains headers in the first row
+contains_headers: <boolean, required> if selected range contains
+                  headers in the first row
 ```
 
 If `contains_headers` was set to `false`, another key must be provided. The new
@@ -32,8 +33,10 @@ key is called `headers` and the structure would look as follows:
 name: <string, required> name of the region to create
 start: <string, required> cell to start from (eg. A1)
 end: <string, required> cell to end at (eg. H12)
-contains_headers: <boolean, required> if selected range contains headers in the first row
-headers: <list of strings, conditional> headers to be used, only required if contains_headers is false
+contains_headers: <boolean, required> if selected range contains
+                  headers in the first row
+headers: <list of strings, conditional> headers to be used, only
+         required if contains_headers is false
 ```
 
 With the possible structures in mind, here are a couple of examples of how a
@@ -134,7 +137,7 @@ sheets:
         contains_headers: true
 ```
 
-### JSON Schema Structure
+**JSON Schema Structure:**
 
 This is the structure used to validate the configuration using `jsonschema`:
 
@@ -199,13 +202,15 @@ general structure is as follows:
 
 ```yml
 type: <str, required> type of Entry, must equal "issue" (case sensitive)
-action: <str, required> action to be made, ("new" -> create a new issue, OR "update" -> add a comment to existing issue)
+action: <str, required> action to be made
+        ("new" -> create a new issue, OR "update" -> add a comment to existing issue)
 repo: <str, required> name of repo to create the issue in. Formatted as <org>/<repo_name>
 body: <str, required> body of the issue tracker or comment
 labels: <List[str], optional> list of labels to add to the issue tracker
 # Conditional properties
 title: <str, conditional> title of the new issue tracker, required if action is "new"
-number: <int, conditional> number of the existing issue tracker, required if action is "update"
+number: <int, conditional> number of the existing issue tracker,
+        required if action is "update"
 ```
 
 Here are some examples of configuration to create and update issues on GitHub:
@@ -236,7 +241,7 @@ labels:
   - Automated
 ```
 
-#### JSON Schema Structure
+**JSON Schema Structure:**
 
 ```json
 {

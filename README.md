@@ -57,7 +57,8 @@ up a service account and get the tokens, please follow the steps below:
 
 #### Google Sheets Service Account
 
-[This tutorial](https://youtu.be/4ssigWmExak?t=215) from `3:35` until `8:20` gives clear and
+[This tutorial](https://youtu.be/4ssigWmExak?t=215)
+from `3:35` until `8:20` gives clear and
 detailed steps on how to create a service account and create an authentication
 key. However, it includes extra steps that not everyone will need to follow. You
 can follow the video if preferred or the [Sheets API
@@ -67,11 +68,12 @@ Once API credentials have been downloaded, there are 2 ways to allow GridGopher
 to use them.
 
 1. Place the downloaded JSON file in the root of the project repository
-2. OR create a new `.env` file and transfer the information from the `.json`
+1. OR create a new `.env` file and transfer the information from the `.json`
    file to the environment file in the following format.
 
-**Important Note:** Values in the `.env` file must be surrounded by double quotation marks `"`
-  otherwise, newline character `\n` will cause issues.
+**Important Note:** Values in the `.env` file must be surrounded by
+double quotation marks `"` otherwise, newline character
+`\n` will cause issues.
 
 Note that variable names must be in upper case.
 
@@ -107,7 +109,7 @@ to use it:
    }
    ```
 
-2. OR add a variable to the `.env` file in the following format
+1. OR add a variable to the `.env` file in the following format
 
      ```.env
      GH_ACCESS_TOKEN="paste your token here"

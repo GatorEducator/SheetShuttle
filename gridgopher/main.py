@@ -1,5 +1,8 @@
 """Entry point for the GridGopher tool. Implements CLI and plugin system."""
 
+# pylint: disable=C0103
+# pylint: disable=W0603
+
 import typer
 
 from pluginbase import PluginBase  # type: ignore[import]

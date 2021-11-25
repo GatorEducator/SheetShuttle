@@ -1,3 +1,4 @@
+"""Test functionalities in the github_interaction module."""
 import json
 import os
 
@@ -9,7 +10,7 @@ def test_github_manager_init():
     """Check that a github manager object is initialized correctly."""
     my_manager = github_interaction.GithubManager()
     assert my_manager.key_file == ".env"
-    assert not my_manager.api == None
+    assert my_manager.api
     assert not my_manager.config_data
 
 

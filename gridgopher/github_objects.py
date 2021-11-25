@@ -11,7 +11,7 @@ class Entry:
     SCHEMA = None
 
     def __init__(self, config: Dict) -> None:
-        """Initialize an Entry object using a configuration argument.add()
+        """Initialize an Entry object using a configuration argument.
 
         Args:
             config (Dict): a dictionary with needed keys that follows the Entry schema.
@@ -25,21 +25,28 @@ class Entry:
         """Iterate through configuration and create appropriate variables.
 
         This method is not implemented, it sets an interface for inheriting
-        classes."""
-        pass
+        classes.
+        """
 
-    def post(self):
+    def post(self, api_object):
         """Excecute the API request to post the item to GitHub.
 
         This method is not implemented, it sets an interface for inheriting
-        classes."""
-        pass
+        classes.
+        """
 
     @staticmethod
     def validate_schema(config, schema):
+        """Check that the configuration follows the schema using jsonschema library.
+
+        Args:
+            config (Dict): Configuration to validate
+            schema (Dict): Schema used for validation
+        """
         validate(instance=config, schema=schema)
 
 
+# pylint: disable=R0902
 class IssueEntry(Entry):
     """
     Implements handling GitHub issue tracker creation and other functions.
@@ -84,6 +91,7 @@ class IssueEntry(Entry):
     }
 
     def parse_config(self):
+        """Iterate through the entry configuration and assign instance variables."""
         self.type = "issue"
         self.action = self.config["action"]
         self.repo = self.config["repo"]
@@ -101,7 +109,7 @@ class IssueEntry(Entry):
             self.title = None
 
     def post(self, api_object):
-        """Post the entry to GitHub
+        """Post the entry to GitHub.
 
         Args:
             api_object (Github): An authenticated Github object
@@ -133,7 +141,8 @@ class IssueEntry(Entry):
             repo_name (str): name of the repo to post the issue to, structured as 'org/repo_name'
             title (str): title of the issue tracker
             body (str): body contents of the issue tracker
-            labels (List[str], optional): List of labels to add to the issue tracker. Defaults to None.
+            labels (List[str], optional): List of labels to add to the issue tracker.
+            Defaults to None.
         """
         repo = api_object.get_repo(repo_name)
         if labels:
@@ -158,7 +167,8 @@ class IssueEntry(Entry):
             repo_name (str): name of the repo to post the issue to, structured as 'org/repo_name'
             number (int): number of the issue to comment on
             body (str): body contents of the comment
-            labels (List[str], optional): List of labels to add to the issue tracker. Defaults to None.
+            labels (List[str], optional): List of labels to add to the issue tracker.
+            Defaults to None.
         """
         repo = api_object.get_repo(repo_name)
         issue = repo.get_issue(number=number)

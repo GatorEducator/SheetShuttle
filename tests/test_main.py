@@ -1,3 +1,4 @@
+"""Test the main module of GridGopher"""
 import pytest
 
 from gridgopher import main
@@ -13,6 +14,10 @@ from gridgopher import main
     ],
 )
 def test_load_plugin(directory, name, errors):
+    """Check that existing plugins can be loaded successfully.
+
+    And incorrect plugins throw errors.
+    """
     if errors:
         with pytest.raises(Exception):
             main.load_plugin(directory, name)

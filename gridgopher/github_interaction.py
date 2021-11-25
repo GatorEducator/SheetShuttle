@@ -1,12 +1,11 @@
 """Read and process GitHub configs in the github_interactions directory."""
-from github import Github
-
-import pathlib
-from typing import List, Dict
 import json
-
 import os
+import pathlib
+from typing import Dict
+
 import yaml
+from github import Github
 
 
 class GithubManager:
@@ -16,8 +15,7 @@ class GithubManager:
         self, key_file=".env", sources_dir="config/github_interactions"
     ) -> None:
         """
-        Create a GithubManager object that stores the configuration and
-        authenticate api.
+        Create a GithubManager object that stores the configuration and authenticate api.
 
         Args:
             key_file (str, optional): path to Google Sheets API user keys and
@@ -32,11 +30,8 @@ class GithubManager:
         self.config_data: Dict[str, Dict] = {}
 
     def collect_config(self):
-        """
-        Update config_data with the contents of file in the config directory.
-        """
+        """Update config_data with the contents of file in the config directory."""
         # get a list of all yaml and yml path objects in the config_dir
-        full_data = {}
         config_files = []
         extensions = ["*.yaml", "*.yml"]
         for ext in extensions:
@@ -58,7 +53,7 @@ class GithubManager:
         token = ""
         var_name = "GH_ACCESS_TOKEN"
         if key_file.endswith(".json"):
-            with open(key_file, "r") as input_file:
+            with open(key_file, "r", encoding="utf-8") as input_file:
                 # FIXME: add try for key error
                 token = json.load(input_file)["gh_access_token"]
         elif key_file.endswith(".env"):
