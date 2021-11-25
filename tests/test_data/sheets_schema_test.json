@@ -1,54 +1,135 @@
 {
     "passing": [{
-        "source_id": "someSourceID",
+        "source_id": "some source",
         "sheets": [{
-                "name": "sheet1",
+            "name": "sheet1",
+            "regions": [{
+                    "name": "names",
+                    "start": "A1",
+                    "end": "B2",
+                    "contains_headers": true
+                },
+                {
+                    "name": "random",
+                    "start": "D11",
+                    "end": "F13",
+                    "contains_headers": false,
+                    "headers": [
+                        "assignment1",
+                        "assignment2",
+                        "assignment3"
+                    ]
+                }
+            ]
+        }, {
+            "name": "sheet2",
+            "regions": [{
+                "name": "sheet2stuff",
                 "start": "A1",
-                "end": "Z10",
+                "end": "B2",
                 "contains_headers": true
-            },
-            {
-                "name": "sheet2",
-                "start": "A1",
-                "end": "Z10",
-                "contains_headers": true
-            }
-        ]
+            }]
+        }]
     }],
     "failing": [{
-            "source_id": 234,
+            "source_id": "some source",
+            "sheets": []
+        }, {
+            "source_id": "some source",
             "sheets": [{
-                    "name": "sheet1",
+                "name": "sheet1",
+                "regions": []
+            }, {
+                "name": "sheet2",
+                "regions": [{
+                    "name": "sheet2stuff",
                     "start": "A1",
-                    "end": "Z10",
+                    "end": "B2",
                     "contains_headers": true
-                },
-                {
-                    "name": "sheet2",
-                    "start": "A1",
-                    "end": "Z10",
-                    "contains_headers": true
-                }
-            ]
+                }]
+            }]
+        }, {
+            "source_id": "some source",
+            "sheets": [{
+                "name": "sheet1",
+                "regions": [{
+                        "name": "names",
+                        "start": "A1",
+                        "end": "B2",
+                        "contains_headers": true
+                    },
+                    {
+                        "name": "random",
+                        "start": "D11",
+                        "end": "F13",
+                        "contains_headers": false,
+                        "headers": [
+                            "assignment1",
+                            "assignment2",
+                            "assignment3"
+                        ]
+                    }
+                ]
+            }, {
+                "name": "sheet2"
+            }]
         },
         {
-            "source_id": "someSourceID",
-            "sheet": [{
-                    "name": "sheet1",
+            "source_id": "some source",
+            "sheets": [{
+                "name": "sheet1",
+                "regions": [{
+                        "name": "names",
+                        "start": "A1",
+                        "end": "B2",
+                        "contains_headers": true
+                    },
+                    {
+                        "name": "random",
+                        "start": "D11",
+                        "end": "F13",
+                        "contains_headers": false
+                    }
+                ]
+            }, {
+                "name": "sheet2",
+                "regions": [{
+                    "name": "sheet2stuff",
                     "start": "A1",
-                    "end": "Z10",
+                    "end": "B2",
                     "contains_headers": true
-                },
-                {
-                    "name": "sheet2",
+                }]
+            }]
+        }, {
+            "source_id": "some source",
+            "sheets": [{
+                "name": "sheet1",
+                "regions": [{
+                        "name": "names",
+                        "start": "A1",
+                        "end": "B2",
+                        "contains_headers": true
+                    },
+                    {
+                        "name": "random",
+                        "start": "D11",
+                        "end": "F13",
+                        "contains_headers": false,
+                        "headers": [
+                            "assignment1",
+                            "assignment2",
+                            "assignment3"
+                        ]
+                    }
+                ]
+            }, {
+                "name": "sheet2",
+                "regions": [{
+                    "name": "sheet2stuff",
                     "start": "A1",
-                    "end": "Z10",
-                    "contains_headers": true
-                }
-            ]
-        },
-        {
-            "source_id": "someSourceID"
+                    "end": "B2"
+                }]
+            }]
         }
     ]
 }

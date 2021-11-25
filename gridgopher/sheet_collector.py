@@ -19,7 +19,11 @@ CONFIG_SCHEMA = {
     "type": "object",
     "properties": {
         "source_id": {"type": "string"},
-        "sheets": {"type": "array", "items": {"$ref": "#/$defs/sheet"}},
+        "sheets": {
+            "type": "array",
+            "items": {"$ref": "#/$defs/sheet"},
+            "minItems": 1,
+        },
     },
     "required": ["source_id", "sheets"],
     "$defs": {
@@ -30,18 +34,29 @@ CONFIG_SCHEMA = {
                 "start": {"type": "string"},
                 "end": {"type": "string"},
                 "contains_headers": {"type": "boolean"},
-                "headers": {"type": "array", "items": {"type": "string"}},
-                # TODO: will possibly need conditional logic for headers key
+                "headers": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "minItems": 1,
+                },
             },
             "required": ["name", "start", "end", "contains_headers"],
-            "additionalProperties": False,
+            "if": {"properties": {"contains_headers": {"const": False}}},
+            "then": {
+                "required": ["headers"],
+            },
         },
         "sheet": {
             "type": "object",
             "properties": {
                 "name": {"type": "string"},
-                "sheets": {"type": "array", "items": {"$ref": "#/$defs/region"}},
+                "regions": {
+                    "type": "array",
+                    "items": {"$ref": "#/$defs/region"},
+                    "minItems": 1,
+                },
             },
+            "required": ["name", "regions"],
         },
     },
 }
