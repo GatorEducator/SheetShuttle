@@ -1,6 +1,7 @@
 """Create the object oriented structure for issue trackers, pull requests, and files."""
 from typing import Dict, List
 
+from github import Github
 from jsonschema import validate  # type: ignore[import]
 
 
@@ -17,6 +18,7 @@ class Entry:
         """
         self.validate_schema(config, type(self).SCHEMA)
         self.config = config
+        self.posted = False
         self.parse_config()
 
     def parse_config(self):
@@ -82,5 +84,86 @@ class IssueEntry(Entry):
     }
 
     def parse_config(self):
-        self.type = "issue_tracker"
-        # self.type = self.config["type"]
+        self.type = "issue"
+        self.action = self.config["action"]
+        self.repo = self.config["repo"]
+        self.body = self.config["body"]
+        if "labels" in self.config:
+            self.labels = self.config["labels"]
+        else:
+            self.labels = None
+
+        if self.action == "new":
+            self.title = self.config["title"]
+            self.number = None
+        else:
+            self.number = self.config["number"]
+            self.title = None
+
+    def post(self, api_object):
+        """Post the entry to GitHub
+
+        Args:
+            api_object (Github): An authenticated Github object
+        """
+        if self.action == "new":
+            IssueEntry.create_new_issue(
+                api_object, self.repo, self.title, self.body, self.labels
+            )
+        elif self.action == "update":
+            IssueEntry.add_issue_comment(
+                api_object, self.repo, self.number, self.body, self.labels
+            )
+        else:
+            raise Exception(f"Unknown action {self.action} in {self}")
+        self.posted = True
+
+    @staticmethod
+    def create_new_issue(
+        api_object: Github,
+        repo_name: str,
+        title: str,
+        body: str,
+        labels: List[str] = None,
+    ):
+        """Post a new issue on GitHub.
+
+        Args:
+            api_object (Github): an authenticated GitHub object
+            repo_name (str): name of the repo to post the issue to, structured as 'org/repo_name'
+            title (str): title of the issue tracker
+            body (str): body contents of the issue tracker
+            labels (List[str], optional): List of labels to add to the issue tracker. Defaults to None.
+        """
+        repo = api_object.get_repo(repo_name)
+        if labels:
+            repo.create_issue(title=title, body=body, labels=labels)
+        else:
+            repo.create_issue(title=title, body=body)
+
+        # TODO: is it useful to return the issue object?
+
+    @staticmethod
+    def add_issue_comment(
+        api_object: Github,
+        repo_name: str,
+        number: int,
+        body: str,
+        labels: List[str] = None,
+    ):
+        """Add a comment to an issue on GitHub.
+
+        Args:
+            api_object (Github): an authenticated GitHub object
+            repo_name (str): name of the repo to post the issue to, structured as 'org/repo_name'
+            number (int): number of the issue to comment on
+            body (str): body contents of the comment
+            labels (List[str], optional): List of labels to add to the issue tracker. Defaults to None.
+        """
+        repo = api_object.get_repo(repo_name)
+        issue = repo.get_issue(number=number)
+        issue.create_comment(body)
+        if labels:
+            for label in labels:
+                issue.add_to_labels(label)
+        # TODO: is it useful to return the issue or comment object?
