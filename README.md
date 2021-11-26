@@ -116,20 +116,27 @@ to use it:
 
 GridGopher relies on user written YAML configuration to collect data from Google
 Sheets and organize it in regions. GitHub interactions are also managed by
-YAML configuration.
+YAML configuration. To read more about the structure of GridGopher
+configuration, please refer to our [schema documentation](docs/schemas.md).
 
-#### Sheets Collector Config
+#### Sheets Collector
 
-#### Github Interactions Config
+Sheets Collector the component of GridGopher responsible for making Google
+Sheets API calls and retreiving data from user specified files and sheets.
+Additionally, it creates an object oriented structure for regions and sheets
+of data. In order to use this component, configuration YAML files are needed
+in the `config/sheet_sources` directory. Multiple files can be used if multiple
+sheets are being read at the same time.
 
-TO BE COMPLETED ONCE IMPLEMENTED
+#### Github Interactions
+
+Another component of GridGopher is the GitHub Interaction interface. It's
+responsible for making API requests to GitHub and posting user specified
+information to GitHub in the form of Issue Trackers, Pull Requests, and files.
+The user has complete control of this component's behavior through YAML
+configurations files found in `config/github_interactions` directory. Multliple
+files can be used if preferred.
 
 ### Using Command Line Interface
 
 ### Plugin System
-
-## Other
-
-Write some stuff
-
-A placeholder repository for Allegheny College automated grade transfer tool
