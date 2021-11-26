@@ -47,7 +47,8 @@ def gatorgopher(
     # TODO: remove this unnecessary print
 
     # NOTE: load_dotenv() has some problems when the .env file doesn't exist
-    load_dotenv()
+    if sheets_keys_file.endswith(".env"):
+        load_dotenv(dotenv_path=sheets_keys_file)
     print("Received arguments:")
     print(f"sheets_keys_file: {sheets_keys_file}")
     print(f"sheets_config_directory: {sheets_config_directory}")

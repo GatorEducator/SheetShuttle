@@ -16,7 +16,7 @@ def pytest_sessionstart():
 
     Set environment variables if they exist in a .env file
     """
-    load_dotenv()
+    load_dotenv(dotenv_path=".env")
     test_data_files = pathlib.Path("./tests/test_data").glob("*.json")
     for json_data_file in test_data_files:
         with open(json_data_file, "r", encoding="utf-8") as data_file:
