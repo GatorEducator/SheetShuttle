@@ -10,7 +10,7 @@
         {
             "type": "issue",
             "action": "new",
-            "repo": "test_org/test_user",
+            "repo": "test org/test_user",
             "title": "some new issue",
             "body": "test body"
         },
@@ -66,6 +66,48 @@
             "type": "issue",
             "action": "new",
             "repo": "test_org/test_user"
+        },
+        {
+            "type": "issue",
+            "action": "update",
+            "repo": "test_orgtest_user",
+            "number": 12,
+            "body": "test body"
+        },
+        {
+            "type": "issue",
+            "action": "update",
+            "repo": "/test_user",
+            "number": 12,
+            "body": "test body"
+        },
+        {
+            "type": "issue",
+            "action": "update",
+            "repo": " /test_user",
+            "number": 12,
+            "body": "test body"
+        },
+        {
+            "type": "issue",
+            "action": "update",
+            "repo": "sdsdf/ ",
+            "number": 12,
+            "body": "test body"
+        },
+        {
+            "type": "issue",
+            "action": "update",
+            "repo": "asdf /test_user",
+            "number": 12,
+            "body": "test body"
+        },
+        {
+            "type": "issue",
+            "action": "update",
+            "repo": "sdfas/ test_user",
+            "number": 12,
+            "body": "test body"
         }
     ]
 }

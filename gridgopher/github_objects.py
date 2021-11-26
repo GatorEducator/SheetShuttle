@@ -59,8 +59,7 @@ class IssueEntry(Entry):
         "properties": {
             "type": {"type": "string", "const": "issue"},
             "action": {"type": "string", "enum": ["new", "update"]},
-            # TODO: might need a regex for repo name format "org/repo"
-            "repo": {"type": "string"},
+            "repo": {"type": "string", "pattern": r"^.+[^\s]\/[^\s].+$"},
         },
         "required": ["type", "action", "repo"],
         "if": {"properties": {"action": {"const": "new"}}},

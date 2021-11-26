@@ -368,7 +368,6 @@ class Region:
             "full_name": self.full_name,
             "start_range": self.start_range,
             "end_range": self.end_range,
-            # TODO: determine the based format to store the data
             "data": self.data.to_dict("index"),
         }
         with open(

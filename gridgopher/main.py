@@ -44,29 +44,19 @@ def gatorgopher(
     ),
 ):
     """Create the CLI and runs the chosen plugin."""
-    # TODO: remove this unnecessary print
-
-    # NOTE: load_dotenv() has some problems when the .env file doesn't exist
     if sheets_keys_file.endswith(".env"):
         load_dotenv(dotenv_path=sheets_keys_file)
-    print("Received arguments:")
-    print(f"sheets_keys_file: {sheets_keys_file}")
-    print(f"sheets_config_directory: {sheets_config_directory}")
-    print(f"plugins_directory: {plugins_directory}")
-    print(f"plugin_name: {plugin_name}")
-
     load_plugin(plugins_directory, plugin_name)
     # TODO: figure out how to pass the rest of the arguments
-    my_plugin.run()
+    my_plugin.run(sheets_keys_file, sheets_config_directory)
 
 
 def load_plugin(directory: str, name: str):
     """Return a pluginbase object using a plugin name and a directory."""
-    # TODO: add try statement for failed plugin loading and validating that a
-    # run function exists in it.
+    # TODO: add try statement validating that a
+    # run function exists in the plugin.
 
-    # TODO: not sure if "plugins" should be used here
-    print(f"Loading {name} from {directory}...")
+    # print(f"Loading {name} from {directory}...")
     global plugin_source
     plugin_source = PLUGIN_BASE.make_plugin_source(searchpath=[directory])
     global my_plugin

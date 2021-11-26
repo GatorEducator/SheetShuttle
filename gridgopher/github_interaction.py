@@ -57,8 +57,11 @@ class GithubManager:
         var_name = "GH_ACCESS_TOKEN"
         if key_file.endswith(".json"):
             with open(key_file, "r", encoding="utf-8") as input_file:
-                # FIXME: add try for key error
-                token = json.load(input_file)["gh_access_token"]
+                try:
+                    token = json.load(input_file)["gh_access_token"]
+                except KeyError as exce:
+                    print(f"Error: 'gh_access_token' key was not found in {key_file}")
+                    raise exce
         elif key_file.endswith(".env"):
             token = os.getenv(var_name)
             if not token:

@@ -78,13 +78,11 @@ def test_region_to_pickle(tmpdir):
     assert out_data.full_name == my_region.full_name
     assert out_data.start_range == my_region.start_range
     assert out_data.end_range == my_region.end_range
-    # TODO: should probably check values in out_data
     assert isinstance(out_data.data, pd.DataFrame)
 
 
 def test_sheet_check_config_schema_no_error(test_data):
     """Use the test_data fixture to check json schema validation."""
-    # TODO: add more data to this test case
     passing_data = test_data["sheets_schema_test"]["passing"]
     for config in passing_data:
         sheet_collector.Sheet.check_config_schema(config)
@@ -93,7 +91,6 @@ def test_sheet_check_config_schema_no_error(test_data):
 
 def test_sheet_check_config_schema_throws_error(test_data):
     """Use the test_data fixture to check json schema validation."""
-    # TODO: add more data to this test case
     failing_data = test_data["sheets_schema_test"]["failing"]
     for config in failing_data:
         with pytest.raises(Exception):
@@ -291,7 +288,6 @@ def test_sheet_collect_regions(test_data):
     ]
     for region_key in regions_keys:
         assert region_key in my_sheet.regions
-    # TODO: can possibly check more things?
 
 
 def test_sheet_collector_authenticate_api_json(tmp_path):
