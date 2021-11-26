@@ -8,6 +8,10 @@ import yaml
 from github import Github
 
 
+class MissingAuthenticationVariable(Exception):
+    """Raised when a GitHub authentication variable is missing."""
+
+
 class GithubManager:
     """Manage github authentication and posting functionalities."""
 
@@ -59,7 +63,9 @@ class GithubManager:
         elif key_file.endswith(".env"):
             token = os.getenv(var_name)
             if not token:
-                raise Exception(f"Variable {var_name} could not be found")
+                raise MissingAuthenticationVariable(
+                    f"Variable {var_name} could not be found"
+                )
         else:
             raise Exception(
                 f"Unclear source of Sheets authentication keys {key_file}."

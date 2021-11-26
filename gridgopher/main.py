@@ -10,7 +10,6 @@ from dotenv import load_dotenv
 
 PLUGIN_BASE = PluginBase("gridgopher.plugins")
 
-load_dotenv()
 app = typer.Typer()
 
 plugin_source = PLUGIN_BASE.make_plugin_source(searchpath=["plugins/"])
@@ -46,6 +45,9 @@ def gatorgopher(
 ):
     """Create the CLI and runs the chosen plugin."""
     # TODO: remove this unnecessary print
+
+    # NOTE: load_dotenv() has some problems when the .env file doesn't exist
+    load_dotenv()
     print("Received arguments:")
     print(f"sheets_keys_file: {sheets_keys_file}")
     print(f"sheets_config_directory: {sheets_config_directory}")
