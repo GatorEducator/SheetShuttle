@@ -2,10 +2,12 @@
 import json
 import os
 import pathlib
-from typing import Dict
+from typing import Dict, List
 
 import yaml
 from github import Github
+
+from gridgopher import util
 
 
 class MissingAuthenticationVariable(Exception):
@@ -36,10 +38,7 @@ class GithubManager:
     def collect_config(self):
         """Update config_data with the contents of file in the config directory."""
         # get a list of all yaml and yml path objects in the config_dir
-        config_files = []
-        extensions = ["*.yaml", "*.yml"]
-        for ext in extensions:
-            config_files.extend(pathlib.Path(self.config_dir).glob(ext))
+        config_files: List[pathlib.Path] = util.get_yaml_files(self.config_dir)
         for yaml_file in config_files:
             # Open yaml file as read
             with open(yaml_file, "r", encoding="utf-8") as config_file:

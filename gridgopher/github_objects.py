@@ -1,5 +1,5 @@
 """Create the object oriented structure for issue trackers, pull requests, and files."""
-from typing import Dict, List
+from typing import Dict, List, Collection
 
 from github import Github
 from jsonschema import validate  # type: ignore[import]
@@ -8,7 +8,7 @@ from jsonschema import validate  # type: ignore[import]
 class Entry:
     """Contain the interface and basic functions for a GitHub entry."""
 
-    SCHEMA = None
+    SCHEMA: Dict[str, Collection[str]] = {}
 
     def __init__(self, config: Dict) -> None:
         """Initialize an Entry object using a configuration argument.

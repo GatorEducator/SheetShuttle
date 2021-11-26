@@ -13,7 +13,7 @@ PLUGIN_BASE = PluginBase("gridgopher.plugins")
 app = typer.Typer()
 
 plugin_source = PLUGIN_BASE.make_plugin_source(searchpath=["plugins/"])
-my_plugin = None
+my_plugin = plugin_source.load_plugin("default")
 
 
 @app.command()

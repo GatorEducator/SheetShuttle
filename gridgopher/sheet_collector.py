@@ -4,15 +4,15 @@ import json
 import os
 import pathlib
 import pickle
-from typing import List, Dict
-import yaml
+from typing import Dict, List
 
 import pandas as pd  # type: ignore[import]
-
-from googleapiclient.discovery import build  # type: ignore[import]
-
+import yaml
 from google.oauth2 import service_account  # type: ignore[import]
+from googleapiclient.discovery import build  # type: ignore[import]
 from jsonschema import validate  # type: ignore[import]
+
+from gridgopher import util
 
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 CONFIG_SCHEMA = {
@@ -121,10 +121,7 @@ class SheetCollector:
         if not self.sheets:
             raise Exception("ERROR: Collector was not authenticated")
         # get a list of all yaml and yml path objects in the config_dir
-        config_files = []
-        extensions = ["*.yaml", "*.yml"]
-        for ext in extensions:
-            config_files.extend(self.config_dir.glob(ext))
+        config_files: List[pathlib.Path] = util.get_yaml_files(self.config_dir)
         for yaml_file in config_files:
             # Open yaml file as read
             with open(yaml_file, "r", encoding="utf-8") as config_file:
