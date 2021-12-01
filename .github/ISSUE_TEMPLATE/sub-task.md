@@ -1,6 +1,6 @@
 ---
 name: Sub-Task
-about: 'Used to split bigger tasks to smaller ones'
+about: Used to split bigger tasks to smaller ones
 title: "[SUB-TASK]"
 labels: sub-task
 assignees: ''
