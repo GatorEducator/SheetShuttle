@@ -11,7 +11,20 @@
 GridGopher is a plugin friendly tool that connects Google Sheets
 and GitHub by allowing the user to post collected data to issue trackers, pull
 requests, and files. The tool
-provides and object oriented API and encourages users to utilize it in their applications.
+provides and object oriented API and encourages users to utilize it in their
+applications.
+
+- [GridGopher](#gridgopher)
+  - [Set Up and Installation](#set-up-and-installation)
+  - [Running GridGopher](#running-gridgopher)
+    - [API Setup](#api-setup)
+      - [Google Sheets Service Account](#google-sheets-service-account)
+      - [Github Access Token](#github-access-token)
+    - [Writing Config](#writing-config)
+      - [Sheets Collector](#sheets-collector)
+      - [Github Interactions](#github-interactions)
+    - [Using Command Line Interface](#using-command-line-interface)
+    - [Plugin System](#plugin-system)
 
 ## Set Up and Installation
 

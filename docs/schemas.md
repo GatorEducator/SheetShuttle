@@ -4,6 +4,18 @@ The examples shown here demonstrate the schemas for configuration read by
 GridGopher. In order for the tool to function with no errors, user written
 configuration must follow the specified format.
 
+- [Config Schemas](#config-schemas)
+  - [Sheets Schema](#sheets-schema)
+    - [Defining Objects](#defining-objects)
+      - [Region Object](#region-object)
+      - [Sheet Object](#sheet-object)
+    - [Overall Structure](#overall-structure)
+    - [JSON Schema Structure](#json-schema-structure)
+  - [GitHub Interactions Schema](#github-interactions-schema)
+    - [Issue Schema](#issue-schema)
+    - [Pull Request Schema](#pull-request-schema)
+    - [File Schema](#file-schema)
+
 ## Sheets Schema
 
 Sheets schema describe the format for configuration found in the
