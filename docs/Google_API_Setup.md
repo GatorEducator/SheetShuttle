@@ -7,7 +7,7 @@
 ![new_project2](../images/new_project2.png)
 ![new_project3](../images/new_project3.png)
 
-- Enable Google sheets API from the [API Menu](https://console.cloud.google.com/apis/dashboard)
+- Enable Google Sheets API from the [API Menu](https://console.cloud.google.com/apis/dashboard)
 
 ![sheets_api1](../images/sheets_api1.png)
 ![sheets_api2](../images/sheets_api2.png)
@@ -39,7 +39,7 @@
 
 ![credentials7](../images/credentials7.png)
 
-- click on `Add Key` and select `Create new key`
+- Click on `Add Key` and select `Create new key`
 
 ![credentials8](../images/credentials8.png)
 

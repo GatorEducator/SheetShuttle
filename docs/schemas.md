@@ -1,7 +1,7 @@
 # Config Schemas
 
 The examples shown here demonstrate the schemas for configuration read by
-GridGopher. In order to for the tool to function with no errors, user written
+GridGopher. In order for the tool to function with no errors, user written
 configuration must follow the specified format.
 
 ## Sheets Schema
@@ -15,7 +15,7 @@ There are two main nested object structures used in the Sheets schema.
 
 #### Region Object
 
-This is the simples object that does not contain complex nested object in it. It
+This is the simplest object that does not contain complex nested objects in it. It
 has the following structure:
 
 ```yml

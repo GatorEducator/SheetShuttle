@@ -8,13 +8,14 @@
 
 ![GridGopherLogo](images/GopherLogo.png)
 
-GridGopher is a plugin friendly tool that allows users to connect collected data
-from Google Sheets and GitHub issue trackers and pull requests. The tool
-provides the basic API and encourages users to utilize it in their applications.
+GridGopher is a plugin friendly tool that connects Google Sheets
+and GitHub by allowing the user to post collected data to issue trackers, pull
+requests, and files. The tool
+provides and object oriented API and encourages users to utilize it in their applications.
 
 ## Set Up and Installation
 
-**Installation using `pip` is currently not supported. However, it's planned for
+**Installation using `pip` is currently not supported. However, it is planned for
 future releases**
 
 GridGopher uses Poetry to create a Python virtual environment and manage
@@ -24,8 +25,8 @@ follow the steps outlined below:
 
 **1- Install Poetry:**
 
-Install poetry using the steps outlined
-[here](https://python-poetry.org/docs/#installation). To verify that poetry was
+Install Poetry using the steps outlined
+[here](https://python-poetry.org/docs/#installation). To verify that Poetry was
 installed successfully run the following:
 
 ```
@@ -36,7 +37,7 @@ The expected output is the version of Poetry installed.
 
 **2- Install Python Dependencies:**
 
-Once poetry has been installed successfully, clone or download the repository
+Once Poetry has been installed successfully, clone or download the repository
 and navigate to the root of the repository. Use the following command to install
 all the dependencies used by GridGopher:
 
@@ -44,7 +45,7 @@ all the dependencies used by GridGopher:
 poetry install
 ```
 
-This command might take some time to finish running. Once it's completed,
+This command might take some time to finish running. Once it is completed,
 GridGopher is ready for use!
 
 ## Running GridGopher
@@ -52,7 +53,7 @@ GridGopher is ready for use!
 ### API Setup
 
 GridGopher requires authentication tokens for a Google Sheets API service
-accounts. GitHub access token are also needed if some features are used. To set
+account. GitHub access token are also needed if some features are used. To set
 up a service account and get the tokens, please follow the steps below:
 
 #### Google Sheets Service Account
@@ -62,7 +63,7 @@ from `3:35` until `8:20` gives clear and
 detailed steps on how to create a service account and create an authentication
 key. However, it includes extra steps that not everyone will need to follow. You
 can follow the video if preferred or the [Sheets API
-Guide](docs/Google_API_Setup.md)
+Guide](docs/Google_API_Setup.md).
 
 Once API credentials have been downloaded, there are 2 ways to allow GridGopher
 to use them.
@@ -90,7 +91,7 @@ CLIENT_X509_CERT_URL="value"
 
 #### Github Access Token
 
-If you intend to use GridGopher's GitHub interactions features, it's required to
+If you intend to use GridGopher's GitHub interactions features, it is required to
 create a GitHub access token and place it correctly in the project repository.
 To create a token, please use the official guide found
 [here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).
@@ -123,7 +124,7 @@ configuration, please refer to our [schema documentation](docs/schemas.md).
 
 #### Sheets Collector
 
-Sheets Collector the component of GridGopher responsible for making Google
+Sheets Collector is the component of GridGopher that is responsible for making Google
 Sheets API calls and retreiving data from user specified files and sheets.
 Additionally, it creates an object oriented structure for regions and sheets
 of data. In order to use this component, configuration YAML files are needed
@@ -132,11 +133,11 @@ sheets are being read at the same time.
 
 #### Github Interactions
 
-Another component of GridGopher is the GitHub Interaction interface. It's
+Another component of GridGopher is the GitHub Interaction interface. It is
 responsible for making API requests to GitHub and posting user specified
-information to GitHub in the form of Issue Trackers, Pull Requests, and files.
+information to GitHub in the form of issue trackers, ull requests, and files.
 The user has complete control of this component's behavior through YAML
-configurations files found in `config/github_interactions` directory. Multliple
+configuration files found in `config/github_interactions` directory. Multliple
 files can be used if preferred.
 
 ### Using Command Line Interface
