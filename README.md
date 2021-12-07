@@ -66,7 +66,7 @@ GridGopher is ready for use!
 ### API Setup
 
 GridGopher requires authentication tokens for a Google Sheets API service
-account. GitHub access token are also needed if some features are used. To set
+account. A GitHub access token is also needed if some features are used. To set
 up a service account and get the tokens, please follow the steps below:
 
 #### Google Sheets Service Account
@@ -109,7 +109,7 @@ If you intend to use GridGopher's GitHub interactions features, it is required t
 create a GitHub access token and place it correctly in the project repository.
 To create a token, please use the official guide found
 [here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).
-Created tokens should be granted `repo` access.
+The created token should be granted `repo` access.
 
 Once a token has been created, there are two ways to allow GridGopher
 to use it:
