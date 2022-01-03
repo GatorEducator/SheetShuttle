@@ -4,6 +4,8 @@ from typing import Dict, List, Collection
 from github import Github
 from jsonschema import validate  # type: ignore[import]
 
+# TODO: update schema docs
+
 
 class Entry:
     """Contain the interface and basic functions for a GitHub entry."""
@@ -58,11 +60,11 @@ class IssueEntry(Entry):
         "type": "object",
         "properties": {
             "type": {"type": "string", "const": "issue"},
-            "action": {"type": "string", "enum": ["new", "update"]},
+            "action": {"type": "string", "enum": ["create", "update"]},
             "repo": {"type": "string", "pattern": r"^.+[^\s]\/[^\s].+$"},
         },
         "required": ["type", "action", "repo"],
-        "if": {"properties": {"action": {"const": "new"}}},
+        "if": {"properties": {"action": {"const": "create"}}},
         "then": {
             "properties": {
                 "title": {"type": "string", "minLength": 1},
@@ -113,7 +115,7 @@ class IssueEntry(Entry):
         Args:
             api_object (Github): An authenticated Github object
         """
-        if self.action == "new":
+        if self.action == "create":
             IssueEntry.create_new_issue(
                 api_object, self.repo, self.title, self.body, self.labels
             )
@@ -176,3 +178,165 @@ class IssueEntry(Entry):
             for label in labels:
                 issue.add_to_labels(label)
         # TODO: is it useful to return the issue or comment object?
+
+
+# pylint: disable=R0913
+class FileEntry(Entry):
+    """
+    Implements file creation and push on GitHub.
+
+    Inherits from Entry
+    """
+
+    # TODO: add support for file deletion if needed
+    SCHEMA = {
+        "type": "object",
+        "properties": {
+            "type": {"type": "string", "const": "file"},
+            "action": {"type": "string", "enum": ["create", "update", "replace"]},
+            "repo": {"type": "string", "pattern": r"^.+[^\s]\/[^\s].+$"},
+            "path": {"type": "string"},
+            "content": {"type": "string"},
+            "branch": {"type": "string"},
+            "commit_message": {"type": "string"},
+        },
+        "required": ["type", "action", "repo", "path", "content", "branch"],
+    }
+
+    def parse_config(self):
+        """Iterate through the entry configuration and assign instance variables."""
+        self.type = "file"
+        self.action = self.config["action"]
+        self.repo = self.config["repo"]
+        self.path = self.config["path"]
+        self.content = self.config["content"]
+        self.branch = self.config["branch"]
+        if "commit_message" in self.config:
+            self.commit_message = self.config["commit_message"]
+        else:
+            self.commit_message = f"{self.action} file: {self.path}"
+
+    def post(self, api_object):
+        """Post the entry to GitHub.
+
+        Args:
+            api_object (Github): An authenticated Github object
+        """
+        function_to_call = getattr(FileEntry, f"{self.action}_file")
+        function_to_call(
+            api_object,
+            self.repo,
+            self.path,
+            self.content,
+            self.branch,
+            self.commit_message,
+        )
+        self.posted = True
+
+    @staticmethod
+    def create_file(
+        api_object: Github,
+        repo_name: str,
+        path: str,
+        content: str,
+        branch: str,
+        commit_message="Add new file",
+    ):
+        """Create a new file in a GitHub repository.
+
+        Args:
+            api_object (Github): an authenticated GitHub object
+            repo_name (str): name of the repo to post the issue to, structured as 'org/repo_name'
+            path (str): path to the file from the root of the repository
+            contents (str): contents of the new file
+            branch (str): name of the branch to create the file in
+            commit_message (str, optional): Defaults to "Add new file"
+        """
+        if FileEntry.exists(api_object, repo_name, path, branch):
+            print("Warning: file already exists, creation skipped")
+            print(f"\t{path} was NOT created in {repo_name}:{branch}.")
+            return
+        repo = api_object.get_repo(repo_name)
+        repo.create_file(path, commit_message, content, branch)
+
+    @staticmethod
+    def update_file(
+        api_object: Github,
+        repo_name: str,
+        path: str,
+        added_content: str,
+        branch: str,
+        commit_message="Update file",
+    ):
+        """Update an existing file in a GitHub repository.
+
+        Args:
+            api_object (Github): an authenticated GitHub object
+            repo_name (str): name of the repo to post the issue to, structured as 'org/repo_name'
+            path (str): path to the file from the root of the repository
+            added_content (str): content to append to the file
+            branch (str): name of the branch to create the file in
+            commit_message (str, optional): Defaults to "Add new file"
+        """
+        if not FileEntry.exists(api_object, repo_name, path, branch):
+            print("Warning: file does not exist, update skipped")
+            print(f"\t{path} was NOT updated in {repo_name}:{branch}.")
+            return
+        repo = api_object.get_repo(repo_name)
+        contents = repo.get_contents(path)
+        new_content = contents.decoded_content.decode("utf-8") + added_content
+        repo.update_file(
+            contents.path, commit_message, new_content, contents.sha, branch
+        )
+
+    @staticmethod
+    def replace_file(
+        api_object: Github,
+        repo_name: str,
+        path: str,
+        new_content: str,
+        branch: str,
+        commit_message="Replace file",
+    ):
+        """Replace the contents of a file in a GitHub repository.
+
+        Args:
+            api_object (Github): an authenticated GitHub object
+            repo_name (str): name of the repo to post the issue to, structured as 'org/repo_name'
+            path (str): path to the file from the root of the repository
+            new_content (str): new contents of the file
+            branch (str): name of the branch to create the file in
+            commit_message (str, optional): Defaults to "Add new file"
+        """
+        if not FileEntry.exists(api_object, repo_name, path, branch):
+            print("Warning: file does not exist, replace skipped")
+            print(f"\t{path} was NOT replaced in {repo_name}:{branch}.")
+            return
+        repo = api_object.get_repo(repo_name)
+        contents = repo.get_contents(path)
+        repo.update_file(
+            contents.path, commit_message, new_content, contents.sha, branch
+        )
+
+    @staticmethod
+    def exists(api_object: Github, repo_name: str, path: str, branch: str) -> bool:
+        """Check if a file or directory exists in the repository.
+
+        Args:
+            api_object (Github): an authenticated GitHub object
+            repo_name (str): name of the repo to post the issue to, structured as 'org/repo_name'
+            path (str): path to the file or directory from the root of the repository
+            branch (str): branch to search in
+
+        Returns:
+            bool
+        """
+        repo = api_object.get_repo(repo_name)
+        contents = repo.get_contents("", branch)
+        while contents:
+            file_content = contents.pop(0)
+            if file_content.path == path:
+                return True
+            if file_content.type == "dir":
+                contents.extend(repo.get_contents(file_content.path, branch))
+        return False
