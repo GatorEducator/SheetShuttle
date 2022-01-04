@@ -152,7 +152,11 @@ class IssueEntry(Entry):
 
         # TODO: is it useful to return the issue object?
 
-    # TODO: handle if issue doesn't exist
+    # TODO: what is the best way handle if issue doesn't exist?
+    # Call the API and catch an exception if an error is found then tell the
+    # user
+    # OR get a list of all open and closed issues and check if the searched
+    # number is highest than the current highest?
     @staticmethod
     def update_issue(
         api_object: Github,
@@ -172,6 +176,10 @@ class IssueEntry(Entry):
             Defaults to None.
         """
         repo = api_object.get_repo(repo_name)
+        latest_issue_number = repo.get_issues(state="all")[0].number
+        if number > latest_issue_number:
+            print(f"Warning: issue #{number} does not exist, update skipped")
+            return
         issue = repo.get_issue(number=number)
         issue.create_comment(body)
         if labels:
@@ -428,7 +436,11 @@ class PullRequestEntry(Entry):
         repo = api_object.get_repo(repo_name)
         repo.create_pull(title=title, body=body, base=base, head=head)
 
-    # TODO: handle if PR doesnt exist
+    # TODO: what is the best way handle if PR doesn't exist?
+    # Call the API and catch an exception if an error is found then tell the
+    # user
+    # OR get a list of all open and closed PRs and check if the searched
+    # number is highest than the current highest?
     @staticmethod
     def update_pull_request(
         api_object: Github,
@@ -447,5 +459,9 @@ class PullRequestEntry(Entry):
             Defaults to None.
         """
         repo = api_object.get_repo(repo_name)
+        latest_issue_number = repo.get_issues(state="all")[0].number
+        if number > latest_issue_number:
+            print(f"Warning: PR #{number} does not exist, update skipped")
+            return
         issue = repo.get_issue(number=number)
         issue.create_comment(body)
