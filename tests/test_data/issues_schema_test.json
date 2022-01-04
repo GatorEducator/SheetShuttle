@@ -1,7 +1,7 @@
 {
     "passing": [{
             "type": "issue",
-            "action": "new",
+            "action": "create",
             "repo": "test_org/test_user",
             "title": "some new issue",
             "body": "test body",
@@ -9,7 +9,7 @@
         },
         {
             "type": "issue",
-            "action": "new",
+            "action": "create",
             "repo": "test org/test_user",
             "title": "some new issue",
             "body": "test body"
@@ -32,7 +32,7 @@
     ],
     "failing": [{
             "type": "issues",
-            "action": "new",
+            "action": "create",
             "repo": "test_org/test_user",
             "title": "some new issue",
             "body": "test body"
@@ -45,7 +45,7 @@
         },
         {
             "type": "issue",
-            "action": "new",
+            "action": "create",
             "repo": "test_org/test_user",
             "number": 23,
             "body": "test body"
@@ -64,7 +64,7 @@
         },
         {
             "type": "issue",
-            "action": "new",
+            "action": "create",
             "repo": "test_org/test_user"
         },
         {

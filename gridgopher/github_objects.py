@@ -102,7 +102,7 @@ class IssueEntry(Entry):
         else:
             self.labels = None
 
-        if self.action == "new":
+        if self.action == "create":
             self.title = self.config["title"]
             self.number = None
         else:
