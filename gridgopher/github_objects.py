@@ -62,32 +62,31 @@ class IssueEntry(Entry):
             "type": {"type": "string", "const": "issue"},
             "action": {"type": "string", "enum": ["create", "update"]},
             "repo": {"type": "string", "pattern": r"^.+[^\s]\/[^\s].+$"},
+            "body": {"type": "string", "minLength": 1},
         },
-        "required": ["type", "action", "repo"],
+        "required": ["type", "action", "repo", "body"],
         "if": {"properties": {"action": {"const": "create"}}},
         "then": {
             "properties": {
                 "title": {"type": "string", "minLength": 1},
-                "body": {"type": "string", "minLength": 1},
                 "labels": {
                     "type": "array",
                     "items": {"type": "string", "minLength": 1},
                     "minItems": 1,
                 },
             },
-            "required": ["title", "body"],
+            "required": ["title"],
         },
         "else": {
             "properties": {
-                "number": {"type": "number"},
-                "body": {"type": "string", "minLength": 1},
+                "number": {"type": "integer"},
                 "labels": {
                     "type": "array",
                     "items": {"type": "string", "minLength": 1},
                     "minItems": 1,
                 },
             },
-            "required": ["number", "body"],
+            "required": ["number"],
         },
     }
 
@@ -116,11 +115,11 @@ class IssueEntry(Entry):
             api_object (Github): An authenticated Github object
         """
         if self.action == "create":
-            IssueEntry.create_new_issue(
+            IssueEntry.create_issue(
                 api_object, self.repo, self.title, self.body, self.labels
             )
         elif self.action == "update":
-            IssueEntry.add_issue_comment(
+            IssueEntry.update_issue(
                 api_object, self.repo, self.number, self.body, self.labels
             )
         else:
@@ -128,7 +127,7 @@ class IssueEntry(Entry):
         self.posted = True
 
     @staticmethod
-    def create_new_issue(
+    def create_issue(
         api_object: Github,
         repo_name: str,
         title: str,
@@ -153,8 +152,9 @@ class IssueEntry(Entry):
 
         # TODO: is it useful to return the issue object?
 
+    # TODO: handle if issue doesn't exist
     @staticmethod
-    def add_issue_comment(
+    def update_issue(
         api_object: Github,
         repo_name: str,
         number: int,
@@ -340,3 +340,112 @@ class FileEntry(Entry):
             if file_content.type == "dir":
                 contents.extend(repo.get_contents(file_content.path, branch))
         return False
+
+
+class PullRequestEntry(Entry):
+    """
+    Implements pull request creation on GitHub.
+
+    Inherits from Entry
+    """
+
+    SCHEMA = {
+        "type": "object",
+        "properties": {
+            "type": {"type": "string", "const": "pull request"},
+            "action": {"type": "string", "enum": ["create", "update"]},
+            "repo": {"type": "string", "pattern": r"^.+[^\s]\/[^\s].+$"},
+            "body": {"type": "string", "minLength": 1},
+        },
+        "required": ["type", "action", "repo", "body"],
+        "if": {"properties": {"action": {"const": "create"}}},
+        "then": {
+            "properties": {
+                "title": {"type": "string", "minLength": 1},
+                "base": {"type": "string", "minLength": 1},
+                "head": {"type": "string", "minLength": 1},
+            },
+            "required": ["title", "base", "head"],
+        },
+        "else": {
+            "properties": {
+                "number": {"type": "integer"},
+            },
+            "required": ["number"],
+        },
+    }
+
+    def parse_config(self):
+        """Iterate through the entry configuration and assign instance variables."""
+        self.type = "pull request"
+        self.action = self.config["action"]
+        self.repo = self.config["repo"]
+        self.body = self.config["body"]
+        if self.action == "create":
+            self.title = self.config["title"]
+            self.base = self.config["base"]
+            self.head = self.config["head"]
+            self.number = None
+        else:
+            self.number = self.config["number"]
+            self.title = None
+            self.base = None
+            self.head = None
+
+    def post(self, api_object):
+        """Post the entry to GitHub.
+
+        Args:
+            api_object (Github): An authenticated Github object
+        """
+        if self.action == "create":
+            PullRequestEntry.create_pull_request(
+                api_object, self.repo, self.title, self.body, self.base, self.head
+            )
+        elif self.action == "update":
+            PullRequestEntry.update_pull_request(
+                api_object, self.repo, self.number, self.body
+            )
+        else:
+            raise Exception(f"Unknown action {self.action} in {self}")
+        self.posted = True
+
+    # TODO: handle if PR already exists
+    @staticmethod
+    def create_pull_request(
+        api_object: Github, repo_name: str, title: str, body: str, base: str, head: str
+    ):
+        """Create a new pull request on GitHub.
+
+        Args:
+            api_object (Github): an authenticated GitHub object
+            repo_name (str): name of the repo to post the issue to, structured as 'org/repo_name'
+            title (str): title of the pull request
+            body (str): description of the pull request
+            base (str): the name of the branch to merge into
+            head (str): the name of the branch to merge from
+        """
+        repo = api_object.get_repo(repo_name)
+        repo.create_pull(title=title, body=body, base=base, head=head)
+
+    # TODO: handle if PR doesnt exist
+    @staticmethod
+    def update_pull_request(
+        api_object: Github,
+        repo_name: str,
+        number: int,
+        body: str,
+    ):
+        """Add a comment to a pull request on GitHub.
+
+        Args:
+            api_object (Github): an authenticated GitHub object
+            repo_name (str): name of the repo to post the issue to, structured as 'org/repo_name'
+            number (int): number of the pull request to comment on
+            body (str): body contents of the comment
+            labels (List[str], optional): List of labels to add to the issue tracker.
+            Defaults to None.
+        """
+        repo = api_object.get_repo(repo_name)
+        issue = repo.get_issue(number=number)
+        issue.create_comment(body)
