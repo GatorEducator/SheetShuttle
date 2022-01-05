@@ -12,7 +12,7 @@ def test_github_manager_init():
         my_manager = github_interaction.GithubManager()
     except github_interaction.MissingAuthenticationVariable:
         pytest.skip(
-            "Sheets authentication environment variable GH_ACCESS_TOKEN not found. Skipping test"
+            "Authentication environment variable GH_ACCESS_TOKEN not found. Skipping test"
         )
     assert my_manager.key_file == ".env"
     assert my_manager.api
@@ -26,7 +26,7 @@ def test_authenticate_api_no_error(tmp_path):
         assert github_interaction.GithubManager.authenticate_api(".env")
     except github_interaction.MissingAuthenticationVariable:
         pytest.skip(
-            "Sheets authentication environment variable GH_ACCESS_TOKEN not found. Skipping test"
+            "Authentication environment variable GH_ACCESS_TOKEN not found. Skipping test"
         )
     # Check with temporary .json file
     temporary_directory = tmp_path / "keys_folder"
@@ -35,7 +35,7 @@ def test_authenticate_api_no_error(tmp_path):
     gh_access_token = os.getenv("GH_ACCESS_TOKEN")
     if not gh_access_token:
         pytest.skip(
-            "Sheets authentication environment variable GH_ACCESS_TOKEN not found. Skipping test"
+            "Authentication environment variable GH_ACCESS_TOKEN not found. Skipping test"
         )
     creds_dict = {"gh_access_token": gh_access_token}
     with open(temporary_json, "w+", encoding="utf-8") as writefile:

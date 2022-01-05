@@ -5,6 +5,8 @@ from github import Github
 from jsonschema import validate  # type: ignore[import]
 
 # TODO: update schema docs
+# TODO: update post functions to handle None return form create/update
+# TODO: make sure that gh_object is consistent everywhere
 
 
 class Entry:
@@ -21,6 +23,7 @@ class Entry:
         self.validate_schema(config, type(self).SCHEMA)
         self.config = config
         self.posted = False
+        self.gh_object = None
         self.parse_config()
 
     def parse_config(self):
@@ -115,16 +118,18 @@ class IssueEntry(Entry):
             api_object (Github): An authenticated Github object
         """
         if self.action == "create":
-            IssueEntry.create_issue(
+            issue = IssueEntry.create_issue(
                 api_object, self.repo, self.title, self.body, self.labels
             )
         elif self.action == "update":
-            IssueEntry.update_issue(
+            issue = IssueEntry.update_issue(
                 api_object, self.repo, self.number, self.body, self.labels
             )
         else:
             raise Exception(f"Unknown action {self.action} in {self}")
         self.posted = True
+        # Store the issue github object as instance variable
+        self.gh_object = issue
 
     @staticmethod
     def create_issue(
@@ -134,7 +139,7 @@ class IssueEntry(Entry):
         body: str,
         labels: List[str] = None,
     ):
-        """Post a new issue on GitHub.
+        """Post a new issue on GitHub and returns the created issue.
 
         Args:
             api_object (Github): an authenticated GitHub object
@@ -146,11 +151,11 @@ class IssueEntry(Entry):
         """
         repo = api_object.get_repo(repo_name)
         if labels:
-            repo.create_issue(title=title, body=body, labels=labels)
+            new_issue = repo.create_issue(title=title, body=body, labels=labels)
         else:
-            repo.create_issue(title=title, body=body)
+            new_issue = repo.create_issue(title=title, body=body)
 
-        # TODO: is it useful to return the issue object?
+        return new_issue
 
     # TODO: what is the best way handle if issue doesn't exist?
     # Call the API and catch an exception if an error is found then tell the
@@ -165,7 +170,7 @@ class IssueEntry(Entry):
         body: str,
         labels: List[str] = None,
     ):
-        """Add a comment to an issue on GitHub.
+        """Add a comment to an issue on GitHub and returns the issue.
 
         Args:
             api_object (Github): an authenticated GitHub object
@@ -179,13 +184,13 @@ class IssueEntry(Entry):
         latest_issue_number = repo.get_issues(state="all")[0].number
         if number > latest_issue_number:
             print(f"Warning: issue #{number} does not exist, update skipped")
-            return
+            return None
         issue = repo.get_issue(number=number)
         issue.create_comment(body)
         if labels:
             for label in labels:
                 issue.add_to_labels(label)
-        # TODO: is it useful to return the issue or comment object?
+        return issue
 
 
 # pylint: disable=R0913
