@@ -412,16 +412,17 @@ class PullRequestEntry(Entry):
             api_object (Github): An authenticated Github object
         """
         if self.action == "create":
-            PullRequestEntry.create_pull_request(
+            pull_request = PullRequestEntry.create_pull_request(
                 api_object, self.repo, self.title, self.body, self.base, self.head
             )
         elif self.action == "update":
-            PullRequestEntry.update_pull_request(
+            pull_request = PullRequestEntry.update_pull_request(
                 api_object, self.repo, self.number, self.body
             )
         else:
             raise Exception(f"Unknown action {self.action} in {self}")
         self.posted = True
+        self.gh_object = pull_request
 
     # TODO: handle if PR already exists
     @staticmethod
@@ -439,7 +440,8 @@ class PullRequestEntry(Entry):
             head (str): the name of the branch to merge from
         """
         repo = api_object.get_repo(repo_name)
-        repo.create_pull(title=title, body=body, base=base, head=head)
+        pull_request = repo.create_pull(title=title, body=body, base=base, head=head)
+        return pull_request
 
     # TODO: what is the best way handle if PR doesn't exist?
     # Call the API and catch an exception if an error is found then tell the
@@ -464,9 +466,10 @@ class PullRequestEntry(Entry):
             Defaults to None.
         """
         repo = api_object.get_repo(repo_name)
-        latest_issue_number = repo.get_issues(state="all")[0].number
-        if number > latest_issue_number:
+        latest_pr_number = repo.get_pulls(state="all")[0].number
+        if number > latest_pr_number:
             print(f"Warning: PR #{number} does not exist, update skipped")
-            return
-        issue = repo.get_issue(number=number)
-        issue.create_comment(body)
+            return None
+        pull_request = repo.get_pull(number=number)
+        pull_request.create_issue_comment(body)
+        return pull_request
