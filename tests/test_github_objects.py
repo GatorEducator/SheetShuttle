@@ -273,3 +273,234 @@ def test_update_nonexistent_pull_request(capfd):
         out
         == f'Warning: PR #{update_config["number"]} does not exist, update skipped\n'
     )
+
+
+####################################
+# ##### FileEntry tests ############
+####################################
+
+
+def test_file_schema_no_error(test_data):
+    """Check that file Entries are initialized correctly and schemas are validated."""
+    data = test_data["file_schema_test"]["passing"]
+    for test_item in data:
+        try:
+            current_file = github_objects.FileEntry(test_item)
+        except ValidationError as val_error:
+            # Catch the error and fail the test
+            assert False, f"Validating {test_item} caused an error. \n {val_error}"
+        assert current_file.config == test_item
+
+
+def test_file_schema_throws_error(test_data):
+    """Check that file Entries are initialized correctly and schemas are validated."""
+    data = test_data["file_schema_test"]["failing"]
+    for test_item in data:
+        with pytest.raises(ValidationError):
+            github_objects.FileEntry(test_item)
+
+
+def test_file_create_update():
+    """Check that a file can be created and updated on a sample GitHub Repo"""
+    # Check environment variable and skip if needed
+    token = os.getenv(ENV_VAR_NAME)
+    util.gh_check_skip(token)
+    # Initialize the API object and needed constants
+    api = Github(token)
+    create_file_path = "test_folder/test_file.md"
+    # Make sure that the file doesn't already exist
+    assert not github_objects.FileEntry.exists(
+        api, TEST_REPO_NAME, create_file_path, BASE_BRANCH
+    )
+    # Create the file entry config and object
+    create_time = str(datetime.now())
+    create_config = {
+        "type": "file",
+        "action": "create",
+        "repo": TEST_REPO_NAME,
+        "path": create_file_path,
+        "content": f"# hello world! \n**file created: {create_time}**",
+        "branch": BASE_BRANCH,
+        "commit_message": "test create file",
+    }
+    create_file_entry = github_objects.FileEntry(create_config)
+    # Commit the file
+    create_file_entry.post(api)
+    # Check that it exists
+    assert github_objects.FileEntry.exists(
+        api, TEST_REPO_NAME, create_file_path, BASE_BRANCH
+    )
+    # Update the file
+    update_time = str(datetime.now())
+    update_config = {
+        "type": "file",
+        "action": "update",
+        "repo": TEST_REPO_NAME,
+        "path": create_file_path,
+        "content": f"\n**file updated: {update_time}**",
+        "branch": BASE_BRANCH,
+        "commit_message": "test update file",
+    }
+    update_file_entry = github_objects.FileEntry(update_config)
+    update_file_entry.post(api)
+    # Check the latest contents of the file
+    assert (
+        update_file_entry.gh_object.decoded_content.decode("utf-8")
+        == f"# hello world! \n**file created: {create_time}**\n**file updated: {update_time}**"
+    )
+    # Teardown and app deletion
+    repo = api.get_repo(TEST_REPO_NAME)
+    repo.delete_file(
+        create_file_path,
+        f"teardown test file {datetime.now()}",
+        update_file_entry.gh_object.sha,
+        BASE_BRANCH,
+    )
+
+
+def test_file_create_replace():
+    """Check that a file can be created and replaced on a sample GitHub Repo"""
+    # Check environment variable and skip if needed
+    token = os.getenv(ENV_VAR_NAME)
+    util.gh_check_skip(token)
+    # Initialize the API object and needed constants
+    api = Github(token)
+    create_file_path = "test_folder/test_file.md"
+    # Make sure that the file doesn't already exist
+    assert not github_objects.FileEntry.exists(
+        api, TEST_REPO_NAME, create_file_path, BASE_BRANCH
+    )
+    # Create the file entry config and object
+    create_time = str(datetime.now())
+    create_config = {
+        "type": "file",
+        "action": "create",
+        "repo": TEST_REPO_NAME,
+        "path": create_file_path,
+        "content": f"# hello world! \n**file created: {create_time}**",
+        "branch": BASE_BRANCH,
+        "commit_message": "test create file",
+    }
+    create_file_entry = github_objects.FileEntry(create_config)
+    # Commit the file
+    create_file_entry.post(api)
+    # Check that it exists
+    assert github_objects.FileEntry.exists(
+        api, TEST_REPO_NAME, create_file_path, BASE_BRANCH
+    )
+    # Update the file
+    update_time = str(datetime.now())
+    update_config = {
+        "type": "file",
+        "action": "replace",
+        "repo": TEST_REPO_NAME,
+        "path": create_file_path,
+        "content": f"# hello world! \n**file replaced: {update_time}**",
+        "branch": BASE_BRANCH,
+        "commit_message": "test replace file",
+    }
+    update_file_entry = github_objects.FileEntry(update_config)
+    update_file_entry.post(api)
+    # Check the latest contents of the file
+    assert (
+        update_file_entry.gh_object.decoded_content.decode("utf-8")
+        == f"# hello world! \n**file replaced: {update_time}**"
+    )
+    # Teardown and app deletion
+    repo = api.get_repo(TEST_REPO_NAME)
+    repo.delete_file(
+        create_file_path,
+        f"teardown test file {datetime.now()}",
+        update_file_entry.gh_object.sha,
+        BASE_BRANCH,
+    )
+
+
+def test_file_create_already_exists(capfd):
+    """Assert warning is thrown when trying to create a file that already exists."""
+    # Check environment variable and skip if needed
+    token = os.getenv(ENV_VAR_NAME)
+    util.gh_check_skip(token)
+    # Initialize the API object and needed constants
+    api = Github(token)
+    existing_file_path = "folder/file.txt"
+    assert github_objects.FileEntry.exists(
+        api, TEST_REPO_NAME, existing_file_path, BASE_BRANCH
+    )
+    create_config = {
+        "type": "file",
+        "action": "create",
+        "repo": TEST_REPO_NAME,
+        "path": existing_file_path,
+        "content": "**Something**",
+        "branch": BASE_BRANCH,
+        "commit_message": "test create existing file",
+    }
+    create_file_entry = github_objects.FileEntry(create_config)
+    # Commit the file
+    create_file_entry.post(api)
+    out, _ = capfd.readouterr()
+    assert (
+        out == f"Warning: file already exists, {existing_file_path} was"
+        f" NOT created in {TEST_REPO_NAME}:{BASE_BRANCH}.\n"
+    )
+
+
+def test_file_update_nonexistent(capfd):
+    """Assert warning is thrown when trying to update a nonexistent file."""
+    # Check environment variable and skip if needed
+    token = os.getenv(ENV_VAR_NAME)
+    util.gh_check_skip(token)
+    # Initialize the API object and needed constants
+    api = Github(token)
+    nonexisting_file_path = "random_folder/file.txt"
+    assert not github_objects.FileEntry.exists(
+        api, TEST_REPO_NAME, nonexisting_file_path, BASE_BRANCH
+    )
+    update_config = {
+        "type": "file",
+        "action": "update",
+        "repo": TEST_REPO_NAME,
+        "path": nonexisting_file_path,
+        "content": "**Something**",
+        "branch": BASE_BRANCH,
+        "commit_message": "test update existing file",
+    }
+    update_file_entry = github_objects.FileEntry(update_config)
+    # Commit the file
+    update_file_entry.post(api)
+    out, _ = capfd.readouterr()
+    assert (
+        out == f"Warning: file does not exist, {nonexisting_file_path} was"
+        f" NOT updated in {TEST_REPO_NAME}:{BASE_BRANCH}.\n"
+    )
+
+
+def test_file_replace_nonexistent(capfd):
+    """Assert warning is thrown when trying to replace a nonexistent file."""
+    # Check environment variable and skip if needed
+    token = os.getenv(ENV_VAR_NAME)
+    util.gh_check_skip(token)
+    # Initialize the API object and needed constants
+    api = Github(token)
+    nonexisting_file_path = "random_folder/file.txt"
+    assert not github_objects.FileEntry.exists(
+        api, TEST_REPO_NAME, nonexisting_file_path, BASE_BRANCH
+    )
+    replace_config = {
+        "type": "file",
+        "action": "replace",
+        "repo": TEST_REPO_NAME,
+        "path": nonexisting_file_path,
+        "content": "**Something**",
+        "branch": BASE_BRANCH,
+        "commit_message": "test replace existing file",
+    }
+    replace_file_entry = github_objects.FileEntry(replace_config)
+    # Commit the file
+    replace_file_entry.post(api)
+    out, _ = capfd.readouterr()
+    assert (
+        out == f"Warning: file does not exist, {nonexisting_file_path} was"
+        f" NOT replaced in {TEST_REPO_NAME}:{BASE_BRANCH}.\n"
+    )

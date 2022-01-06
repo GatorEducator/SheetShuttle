@@ -2,6 +2,9 @@
 from typing import Dict, List, Collection
 
 from github import Github
+from github.ContentFile import ContentFile
+from github.Issue import Issue
+from github.PullRequest import PullRequest
 from jsonschema import validate  # type: ignore[import]
 
 # TODO: update schema docs
@@ -138,7 +141,7 @@ class IssueEntry(Entry):
         title: str,
         body: str,
         labels: List[str] = None,
-    ):
+    ) -> Issue:
         """Post a new issue on GitHub and returns the created issue.
 
         Args:
@@ -169,7 +172,7 @@ class IssueEntry(Entry):
         number: int,
         body: str,
         labels: List[str] = None,
-    ):
+    ) -> Issue:
         """Add a comment to an issue on GitHub and returns the issue.
 
         Args:
@@ -208,10 +211,10 @@ class FileEntry(Entry):
             "type": {"type": "string", "const": "file"},
             "action": {"type": "string", "enum": ["create", "update", "replace"]},
             "repo": {"type": "string", "pattern": r"^.+[^\s]\/[^\s].+$"},
-            "path": {"type": "string"},
-            "content": {"type": "string"},
-            "branch": {"type": "string"},
-            "commit_message": {"type": "string"},
+            "path": {"type": "string", "minLength": 1},
+            "content": {"type": "string", "minLength": 1},
+            "branch": {"type": "string", "minLength": 1},
+            "commit_message": {"type": "string", "minLength": 1},
         },
         "required": ["type", "action", "repo", "path", "content", "branch"],
     }
@@ -236,7 +239,7 @@ class FileEntry(Entry):
             api_object (Github): An authenticated Github object
         """
         function_to_call = getattr(FileEntry, f"{self.action}_file")
-        function_to_call(
+        self.gh_object = function_to_call(
             api_object,
             self.repo,
             self.path,
@@ -254,7 +257,7 @@ class FileEntry(Entry):
         content: str,
         branch: str,
         commit_message="Add new file",
-    ):
+    ) -> ContentFile:
         """Create a new file in a GitHub repository.
 
         Args:
@@ -266,11 +269,13 @@ class FileEntry(Entry):
             commit_message (str, optional): Defaults to "Add new file"
         """
         if FileEntry.exists(api_object, repo_name, path, branch):
-            print("Warning: file already exists, creation skipped")
-            print(f"\t{path} was NOT created in {repo_name}:{branch}.")
-            return
+            print(
+                f"Warning: file already exists, {path} was NOT created in {repo_name}:{branch}."
+            )
+            return None
         repo = api_object.get_repo(repo_name)
-        repo.create_file(path, commit_message, content, branch)
+        response = repo.create_file(path, commit_message, content, branch)
+        return response["content"]
 
     @staticmethod
     def update_file(
@@ -280,7 +285,7 @@ class FileEntry(Entry):
         added_content: str,
         branch: str,
         commit_message="Update file",
-    ):
+    ) -> ContentFile:
         """Update an existing file in a GitHub repository.
 
         Args:
@@ -292,15 +297,17 @@ class FileEntry(Entry):
             commit_message (str, optional): Defaults to "Add new file"
         """
         if not FileEntry.exists(api_object, repo_name, path, branch):
-            print("Warning: file does not exist, update skipped")
-            print(f"\t{path} was NOT updated in {repo_name}:{branch}.")
-            return
+            print(
+                f"Warning: file does not exist, {path} was NOT updated in {repo_name}:{branch}."
+            )
+            return None
         repo = api_object.get_repo(repo_name)
         contents = repo.get_contents(path)
         new_content = contents.decoded_content.decode("utf-8") + added_content
-        repo.update_file(
+        response = repo.update_file(
             contents.path, commit_message, new_content, contents.sha, branch
         )
+        return response["content"]
 
     @staticmethod
     def replace_file(
@@ -310,7 +317,7 @@ class FileEntry(Entry):
         new_content: str,
         branch: str,
         commit_message="Replace file",
-    ):
+    ) -> ContentFile:
         """Replace the contents of a file in a GitHub repository.
 
         Args:
@@ -322,14 +329,16 @@ class FileEntry(Entry):
             commit_message (str, optional): Defaults to "Add new file"
         """
         if not FileEntry.exists(api_object, repo_name, path, branch):
-            print("Warning: file does not exist, replace skipped")
-            print(f"\t{path} was NOT replaced in {repo_name}:{branch}.")
-            return
+            print(
+                f"Warning: file does not exist, {path} was NOT replaced in {repo_name}:{branch}."
+            )
+            return None
         repo = api_object.get_repo(repo_name)
         contents = repo.get_contents(path)
-        repo.update_file(
+        response = repo.update_file(
             contents.path, commit_message, new_content, contents.sha, branch
         )
+        return response["content"]
 
     @staticmethod
     def exists(api_object: Github, repo_name: str, path: str, branch: str) -> bool:
@@ -428,7 +437,7 @@ class PullRequestEntry(Entry):
     @staticmethod
     def create_pull_request(
         api_object: Github, repo_name: str, title: str, body: str, base: str, head: str
-    ):
+    ) -> PullRequest:
         """Create a new pull request on GitHub.
 
         Args:
@@ -454,7 +463,7 @@ class PullRequestEntry(Entry):
         repo_name: str,
         number: int,
         body: str,
-    ):
+    ) -> PullRequest:
         """Add a comment to a pull request on GitHub.
 
         Args:

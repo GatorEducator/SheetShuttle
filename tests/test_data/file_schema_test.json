@@ -1,0 +1,102 @@
+{
+    "passing": [{
+        "type": "file",
+        "action": "create",
+        "repo": "test_org/test_user",
+        "path": "folder1/file2.txt",
+        "content": "hello world!",
+        "branch": "main",
+        "commit_message": "test commit message"
+    }, {
+        "type": "file",
+        "action": "update",
+        "repo": "test_org/test_user",
+        "path": "folder1/file2.txt",
+        "content": "hello world!",
+        "branch": "main",
+        "commit_message": "test commit message"
+    }, {
+        "type": "file",
+        "action": "replace",
+        "repo": "test_org/test_user",
+        "path": "folder1/file2.txt",
+        "content": "hello world!",
+        "branch": "main",
+        "commit_message": "test commit message"
+    }, {
+        "type": "file",
+        "action": "create",
+        "repo": "test_org/test_user",
+        "path": "folder1/file2.txt",
+        "content": "hello world!",
+        "branch": "main"
+    }, {
+        "type": "file",
+        "action": "update",
+        "repo": "test_org/test_user",
+        "path": "folder1/file2.txt",
+        "content": "hello world!",
+        "branch": "main"
+    }, {
+        "type": "file",
+        "action": "replace",
+        "repo": "test_org/test_user",
+        "path": "folder1/file2.txt",
+        "content": "hello world!",
+        "branch": "main"
+    }],
+    "failing": [{
+            "type": "something",
+            "action": "create",
+            "repo": "test_org/test_user",
+            "path": "folder1/file2.txt",
+            "content": "hello world!",
+            "branch": "main",
+            "commit_message": "test commit message"
+        },
+        {
+            "type": "file",
+            "action": "append",
+            "repo": "test_org/test_user",
+            "path": "folder1/file2.txt",
+            "content": "hello world!",
+            "branch": "main",
+            "commit_message": "test commit message"
+        },
+        {
+            "type": "file",
+            "action": "create",
+            "repo": "test_org-test_user",
+            "path": "folder1/file2.txt",
+            "content": "hello world!",
+            "branch": "main",
+            "commit_message": "test commit message"
+        }, {
+            "type": "file",
+            "action": "create",
+            "repo": "test_org/test_user",
+            "path": "",
+            "content": "hello world!",
+            "branch": "main",
+            "commit_message": "test commit message"
+        },
+        {
+            "type": "file",
+            "action": "create",
+            "repo": "test_org/test_user",
+            "path": "folder1/file2.txt",
+            "content": "",
+            "branch": "main",
+            "commit_message": "test commit message"
+        },
+        {
+            "type": "file",
+            "action": "create",
+            "repo": "test_org/test_user",
+            "path": "folder1/file2.txt",
+            "content": "hello world!",
+            "branch": "",
+            "commit_message": "test commit message"
+        }
+    ]
+}
