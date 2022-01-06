@@ -7,8 +7,8 @@ from typing import Dict, List
 import yaml
 from github import Github
 
-from gridgopher import github_objects, util
 from jsonschema import validate  # type: ignore[import]
+from gridgopher import github_objects, util
 
 
 CONFIG_LIST_SCHEMA = {
@@ -67,7 +67,7 @@ class GithubManager:
                 self.config_data[yaml_file.stem] = loaded_list
 
     def parse_config_list(self, config_list: list):
-        """Creates and append github object entries to respective instance variables.
+        """Create and append github object entries to respective instance variables.
 
         Args:
             config_list (list): list of dictionaries for every github entry
@@ -94,8 +94,8 @@ class GithubManager:
 
     def post_pull_requests(self):
         """Iterate and post all pull requests in the pull requests entries list."""
-        for pr in self.pull_request_entries:
-            pr.post(self.api)
+        for pull_request in self.pull_request_entries:
+            pull_request.post(self.api)
 
     def post_files(self):
         """Iterate and post all files in the pull files entries list."""
