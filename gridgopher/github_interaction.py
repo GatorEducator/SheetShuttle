@@ -7,7 +7,24 @@ from typing import Dict, List
 import yaml
 from github import Github
 
-from gridgopher import util
+from gridgopher import github_objects, util
+from jsonschema import validate  # type: ignore[import]
+
+
+CONFIG_LIST_SCHEMA = {
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "type": {
+                "type": "string",
+                "enum": ["issue", "pull request", "file"],
+            }
+        },
+        "required": ["type"],
+    },
+    "minItems": 1,
+}
 
 
 class MissingAuthenticationVariable(Exception):
@@ -34,6 +51,9 @@ class GithubManager:
         self.api = GithubManager.authenticate_api(self.key_file)
         self.config_dir = pathlib.Path(sources_dir)
         self.config_data: Dict[str, Dict] = {}
+        self.issue_entries = []
+        self.pull_request_entries = []
+        self.file_entries = []
 
     def collect_config(self):
         """Update config_data with the contents of file in the config directory."""
@@ -42,8 +62,51 @@ class GithubManager:
         for yaml_file in config_files:
             # Open yaml file as read
             with open(yaml_file, "r", encoding="utf-8") as config_file:
-                config_data = yaml.safe_load(config_file)
-                self.config_data[yaml_file.stem] = config_data
+                loaded_list = yaml.safe_load(config_file)
+                self.parse_config_list(loaded_list)
+                self.config_data[yaml_file.stem] = loaded_list
+
+    def parse_config_list(self, config_list: list):
+        """Creates and append github object entries to respective instance variables.
+
+        Args:
+            config_list (list): list of dictionaries for every github entry
+        """
+        # validate the config list against the json schema
+        validate(instance=config_list, schema=CONFIG_LIST_SCHEMA)
+        for config in config_list:
+            # Initialize the correct github object for each config and add it to
+            # its list
+            if config["type"] == "issue":
+                gh_entry = github_objects.IssueEntry(config)
+                self.issue_entries.append(gh_entry)
+            elif config["type"] == "pull request":
+                gh_entry = github_objects.PullRequestEntry(config)
+                self.pull_request_entries.append(gh_entry)
+            elif config["type"] == "file":
+                gh_entry = github_objects.FileEntry(config)
+                self.file_entries.append(gh_entry)
+
+    def post_issues(self):
+        """Iterate and post all issues in the issue entries list."""
+        for issue in self.issue_entries:
+            issue.post(self.api)
+
+    def post_pull_requests(self):
+        """Iterate and post all pull requests in the pull requests entries list."""
+        for pr in self.pull_request_entries:
+            pr.post(self.api)
+
+    def post_files(self):
+        """Iterate and post all files in the pull files entries list."""
+        for file in self.file_entries:
+            file.post(self.api)
+
+    def post_all(self):
+        """Post all entries in issues, pull requests, and files."""
+        self.post_issues()
+        self.post_pull_requests()
+        self.post_files()
 
     @staticmethod
     def authenticate_api(key_file):
