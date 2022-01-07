@@ -38,7 +38,7 @@ mypy = "^0.910"
 black = { cmd = "black gridgopher tests --check", help = "Run the black checks for source code format" }
 coverage = {cmd = "pytest -s -vv --cov-report term-missing --cov=gridgopher --cov-report xml --cov-branch"}
 flake8 = { cmd = "flake8 gridgopher tests", help = "Run the flake8 checks for source code documentation" }
-mypy = { cmd = "poetry run mypy gridgopher", help = "Run the mypy type checker for potential type errors" }
+mypy = { cmd = "poetry run mypy gridgopher --show-error-codes", help = "Run the mypy type checker for potential type errors" }
 pydocstyle = { cmd = "pydocstyle gridgopher tests", help = "Run the pydocstyle checks for source code documentation" }
 pylint = { cmd = "pylint gridgopher tests", help = "Run the pylint checks for source code documentation" }
 test = { cmd = "pytest -x -s", help = "Run the pytest test suite" }

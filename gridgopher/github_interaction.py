@@ -51,9 +51,9 @@ class GithubManager:
         self.api = GithubManager.authenticate_api(self.key_file)
         self.config_dir = pathlib.Path(sources_dir)
         self.config_data: Dict[str, Dict] = {}
-        self.issue_entries = []
-        self.pull_request_entries = []
-        self.file_entries = []
+        self.issue_entries: List[github_objects.IssueEntry] = []
+        self.pull_request_entries: List[github_objects.PullRequestEntry] = []
+        self.file_entries: List[github_objects.FileEntry] = []
 
     def collect_config(self):
         """Update config_data with the contents of file in the config directory."""
@@ -78,14 +78,14 @@ class GithubManager:
             # Initialize the correct github object for each config and add it to
             # its list
             if config["type"] == "issue":
-                gh_entry = github_objects.IssueEntry(config)
-                self.issue_entries.append(gh_entry)
+                issue_entry = github_objects.IssueEntry(config)
+                self.issue_entries.append(issue_entry)
             elif config["type"] == "pull request":
-                gh_entry = github_objects.PullRequestEntry(config)
-                self.pull_request_entries.append(gh_entry)
+                pr_entry = github_objects.PullRequestEntry(config)
+                self.pull_request_entries.append(pr_entry)
             elif config["type"] == "file":
-                gh_entry = github_objects.FileEntry(config)
-                self.file_entries.append(gh_entry)
+                file_entry = github_objects.FileEntry(config)
+                self.file_entries.append(file_entry)
 
     def post_issues(self):
         """Iterate and post all issues in the issue entries list."""

@@ -2,7 +2,6 @@
 from typing import Dict, List, Collection
 
 from github import Github
-from github.ContentFile import ContentFile
 from github.Issue import Issue
 from github.PullRequest import PullRequest
 from jsonschema import validate  # type: ignore[import]
@@ -171,7 +170,7 @@ class IssueEntry(Entry):
         number: int,
         body: str,
         labels: List[str] = None,
-    ) -> Issue:
+    ):
         """Add a comment to an issue on GitHub and returns the issue.
 
         Args:
@@ -256,7 +255,7 @@ class FileEntry(Entry):
         content: str,
         branch: str,
         commit_message="Add new file",
-    ) -> ContentFile:
+    ):
         """Create a new file in a GitHub repository.
 
         Args:
@@ -284,7 +283,7 @@ class FileEntry(Entry):
         added_content: str,
         branch: str,
         commit_message="Update file",
-    ) -> ContentFile:
+    ):
         """Update an existing file in a GitHub repository.
 
         Args:
@@ -302,9 +301,14 @@ class FileEntry(Entry):
             return None
         repo = api_object.get_repo(repo_name)
         contents = repo.get_contents(path)
-        new_content = contents.decoded_content.decode("utf-8") + added_content
+        old_content = contents.decoded_content.decode("utf-8")  # type: ignore[union-attr]
+        new_content = old_content + added_content
         response = repo.update_file(
-            contents.path, commit_message, new_content, contents.sha, branch
+            contents.path,  # type: ignore[union-attr]
+            commit_message,
+            new_content,
+            contents.sha,  # type: ignore[union-attr]
+            branch,
         )
         return response["content"]
 
@@ -316,7 +320,7 @@ class FileEntry(Entry):
         new_content: str,
         branch: str,
         commit_message="Replace file",
-    ) -> ContentFile:
+    ):
         """Replace the contents of a file in a GitHub repository.
 
         Args:
@@ -335,7 +339,11 @@ class FileEntry(Entry):
         repo = api_object.get_repo(repo_name)
         contents = repo.get_contents(path)
         response = repo.update_file(
-            contents.path, commit_message, new_content, contents.sha, branch
+            contents.path,  # type: ignore[union-attr]
+            commit_message,
+            new_content,
+            contents.sha,  # type: ignore[union-attr]
+            branch,
         )
         return response["content"]
 
@@ -355,11 +363,15 @@ class FileEntry(Entry):
         repo = api_object.get_repo(repo_name)
         contents = repo.get_contents("", branch)
         while contents:
-            file_content = contents.pop(0)
+            file_content = contents.pop(0)  # type: ignore[union-attr]
             if file_content.path == path:
                 return True
             if file_content.type == "dir":
-                contents.extend(repo.get_contents(file_content.path, branch))
+                contents.extend(  # type: ignore[union-attr]
+                    repo.get_contents(
+                        file_content.path, branch  # type: ignore[arg-type]
+                    )
+                )
         return False
 
 
@@ -462,7 +474,7 @@ class PullRequestEntry(Entry):
         repo_name: str,
         number: int,
         body: str,
-    ) -> PullRequest:
+    ):
         """Add a comment to a pull request on GitHub.
 
         Args:
