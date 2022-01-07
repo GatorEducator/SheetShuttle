@@ -5,23 +5,16 @@ from datetime import datetime
 import pytest
 from github import Github
 from jsonschema.exceptions import ValidationError
-from gridgopher import github_objects
+from gridgopher import github_objects, util
 
 ENV_VAR_NAME = "GH_ACCESS_TOKEN"
 TEST_REPO_NAME = "AC-GopherBot/test-1"
 HEAD_BRANCH = "test_branch"
 BASE_BRANCH = "main"
 
-
-def gh_skip() -> bool:
-    """Check if a github token doesn't exist in the environment."""
-    token = os.getenv(ENV_VAR_NAME)
-    if not token:
-        return True
-    return False
-
-
-gh_skipable = pytest.mark.skipif(gh_skip(), reason="Github token not found")
+gh_skipable = pytest.mark.skipif(
+    util.gh_token_exists(), reason="Github token not found"
+)
 
 
 ####################################

@@ -123,7 +123,6 @@ class GithubManager:
                 try:
                     token = json.load(input_file)["gh_access_token"]
                 except KeyError as exce:
-                    print(f"Error: 'gh_access_token' key was not found in {key_file}")
                     raise exce
         elif key_file.endswith(".env"):
             token = os.getenv(var_name)
