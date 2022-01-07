@@ -9,7 +9,6 @@ from jsonschema import validate  # type: ignore[import]
 
 # TODO: update schema docs
 # TODO: update post functions to handle None return form create/update
-# TODO: make sure that gh_object is consistent everywhere
 
 
 class Entry:

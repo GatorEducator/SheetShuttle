@@ -5,12 +5,24 @@ from datetime import datetime
 import pytest
 from github import Github
 from jsonschema.exceptions import ValidationError
-from gridgopher import github_objects, util
+from gridgopher import github_objects
 
 ENV_VAR_NAME = "GH_ACCESS_TOKEN"
 TEST_REPO_NAME = "AC-GopherBot/test-1"
 HEAD_BRANCH = "test_branch"
 BASE_BRANCH = "main"
+
+
+def gh_skip() -> bool:
+    """Check if a github token doesn't exist in the environment."""
+    token = os.getenv(ENV_VAR_NAME)
+    if not token:
+        return True
+    return False
+
+
+gh_skipable = pytest.mark.skipif(gh_skip(), reason="Github token not found")
+
 
 ####################################
 # ###### IssueEntry tests ##########
@@ -37,11 +49,11 @@ def test_issues_schema_throws_error(test_data):
             github_objects.IssueEntry(test_item)
 
 
+@gh_skipable
 def test_create_update_issue_with_lables():
     """Check that issues with labels can be created and updated on a sample repo."""
     # Check that GitHub token exists as environment variable
     token = os.getenv(ENV_VAR_NAME)
-    util.gh_check_skip(token)
     api = Github(token)
     # Setup issue creation
     create_config = {
@@ -78,11 +90,11 @@ def test_create_update_issue_with_lables():
     issue_entry.gh_object.edit(state="closed")
 
 
+@gh_skipable
 def test_create_update_issue_no_lables():
     """Check that issues with no labels can be created and updated on a sample repo."""
     # Check that GitHub token exists as environment variable
     token = os.getenv(ENV_VAR_NAME)
-    util.gh_check_skip(token)
     api = Github(token)
     # Setup issue creation
     create_config = {
@@ -118,10 +130,10 @@ def test_create_update_issue_no_lables():
     issue_entry.gh_object.edit(state="closed")
 
 
+@gh_skipable
 def test_issue_post_unknown_action():
     """Check that post throws error for unknown action."""
     token = os.getenv(ENV_VAR_NAME)
-    util.gh_check_skip(token)
     api = Github(token)
     # Setup issue creation
     create_config = {
@@ -139,10 +151,10 @@ def test_issue_post_unknown_action():
         issue_entry.post(api)
 
 
+@gh_skipable
 def test_update_nonexistent_issue(capfd):
     """Check that a warning is shown when trying to update a nonexistent issue."""
     token = os.getenv(ENV_VAR_NAME)
-    util.gh_check_skip(token)
     api = Github(token)
     repo = api.get_repo(TEST_REPO_NAME)
     latest_issue_number = repo.get_issues(state="all")[0].number
@@ -188,10 +200,10 @@ def test_pr_schema_throws_error(test_data):
             github_objects.PullRequestEntry(test_item)
 
 
+@gh_skipable
 def test_pr_post_unknown_action():
     """Check that post throws error for unknown action."""
     token = os.getenv(ENV_VAR_NAME)
-    util.gh_check_skip(token)
     api = Github(token)
     # Setup issue creation
     create_config = {
@@ -210,11 +222,11 @@ def test_pr_post_unknown_action():
         issue_entry.post(api)
 
 
+@gh_skipable
 def test_create_update_pull_request():
     """Check that a pull request can be created and updated on a sample repo."""
     # Check that GitHub token exists as environment variable
     token = os.getenv(ENV_VAR_NAME)
-    util.gh_check_skip(token)
     api = Github(token)
     # Setup issue creation
     create_config = {
@@ -251,10 +263,10 @@ def test_create_update_pull_request():
     pr_entry.gh_object.edit(state="closed")
 
 
+@gh_skipable
 def test_update_nonexistent_pull_request(capfd):
     """Check that a warning is shown when trying to update a nonexistent pull request."""
     token = os.getenv(ENV_VAR_NAME)
-    util.gh_check_skip(token)
     api = Github(token)
     repo = api.get_repo(TEST_REPO_NAME)
     latest_pr_number = repo.get_pulls(state="all")[0].number
@@ -300,11 +312,11 @@ def test_file_schema_throws_error(test_data):
             github_objects.FileEntry(test_item)
 
 
+@gh_skipable
 def test_file_create_update():
     """Check that a file can be created and updated on a sample GitHub Repo"""
     # Check environment variable and skip if needed
     token = os.getenv(ENV_VAR_NAME)
-    util.gh_check_skip(token)
     # Initialize the API object and needed constants
     api = Github(token)
     create_file_path = "test_folder/test_file.md"
@@ -358,11 +370,11 @@ def test_file_create_update():
     )
 
 
+@gh_skipable
 def test_file_create_replace():
     """Check that a file can be created and replaced on a sample GitHub Repo"""
     # Check environment variable and skip if needed
     token = os.getenv(ENV_VAR_NAME)
-    util.gh_check_skip(token)
     # Initialize the API object and needed constants
     api = Github(token)
     create_file_path = "test_folder/test_file.md"
@@ -416,11 +428,11 @@ def test_file_create_replace():
     )
 
 
+@gh_skipable
 def test_file_create_already_exists(capfd):
     """Assert warning is thrown when trying to create a file that already exists."""
     # Check environment variable and skip if needed
     token = os.getenv(ENV_VAR_NAME)
-    util.gh_check_skip(token)
     # Initialize the API object and needed constants
     api = Github(token)
     existing_file_path = "folder/file.txt"
@@ -446,11 +458,11 @@ def test_file_create_already_exists(capfd):
     )
 
 
+@gh_skipable
 def test_file_update_nonexistent(capfd):
     """Assert warning is thrown when trying to update a nonexistent file."""
     # Check environment variable and skip if needed
     token = os.getenv(ENV_VAR_NAME)
-    util.gh_check_skip(token)
     # Initialize the API object and needed constants
     api = Github(token)
     nonexisting_file_path = "random_folder/file.txt"
@@ -476,11 +488,11 @@ def test_file_update_nonexistent(capfd):
     )
 
 
+@gh_skipable
 def test_file_replace_nonexistent(capfd):
     """Assert warning is thrown when trying to replace a nonexistent file."""
     # Check environment variable and skip if needed
     token = os.getenv(ENV_VAR_NAME)
-    util.gh_check_skip(token)
     # Initialize the API object and needed constants
     api = Github(token)
     nonexisting_file_path = "random_folder/file.txt"
