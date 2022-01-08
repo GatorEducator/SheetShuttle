@@ -1,3 +1,4 @@
+<!-- TODO: add tutorial on how to share a sheet with the service account -->
 # Google API Setup
 
 - Create a Google API project from [cloud console](https://console.cloud.google.com/)

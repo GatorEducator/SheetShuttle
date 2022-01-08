@@ -164,7 +164,7 @@ def test_update_nonexistent_issue(capfd):
     out, _ = capfd.readouterr()
     assert (
         out
-        == f'Warning: issue #{update_config["number"]} does not exist, update skipped\n'
+        == f'Warning: issue #{update_config["number"]} in {TEST_REPO_NAME} does not exist, update skipped\n'
     )
 
 
@@ -276,7 +276,7 @@ def test_update_nonexistent_pull_request(capfd):
     out, _ = capfd.readouterr()
     assert (
         out
-        == f'Warning: PR #{update_config["number"]} does not exist, update skipped\n'
+        == f'Warning: PR #{update_config["number"]} in {TEST_REPO_NAME} does not exist, update skipped\n'
     )
 
 

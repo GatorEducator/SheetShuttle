@@ -44,7 +44,7 @@ pylint = { cmd = "pylint gridgopher tests", help = "Run the pylint checks for so
 test = { cmd = "pytest -x -s", help = "Run the pytest test suite" }
 test-verbose = { cmd = "pytest -x -s -vv", help = "Run the pytest test suite" }
 test-silent = { cmd = "pytest -x --show-capture=no", help = "Run the pytest test suite without showing output" }
-all = "task black && task flake8 && task pydocstyle && task pylint && task mypy && task test"
+all = "task black && task flake8 && task pydocstyle && task mypy && task pylint && task test"
 lint = "task black && task flake8 && task pydocstyle && task pylint"
 
 [build-system]

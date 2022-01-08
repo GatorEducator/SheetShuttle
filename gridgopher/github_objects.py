@@ -1,13 +1,14 @@
 """Create the object oriented structure for issue trackers, pull requests, and files."""
-from typing import Dict, List, Collection
+from typing import Dict, List, Collection, Union
 
 from github import Github
 from github.Issue import Issue
 from github.PullRequest import PullRequest
+from github.ContentFile import ContentFile
+from github.GithubException import GithubException
 from jsonschema import validate  # type: ignore[import]
 
 # TODO: update schema docs
-# TODO: update post functions to handle None return form create/update
 
 
 class Entry:
@@ -118,19 +119,25 @@ class IssueEntry(Entry):
         Args:
             api_object (Github): An authenticated Github object
         """
-        if self.action == "create":
-            issue = IssueEntry.create_issue(
-                api_object, self.repo, self.title, self.body, self.labels
+        try:
+            if self.action == "create":
+                issue = IssueEntry.create_issue(
+                    api_object, self.repo, self.title, self.body, self.labels
+                )
+            elif self.action == "update":
+                issue = IssueEntry.update_issue(
+                    api_object, self.repo, self.number, self.body, self.labels
+                )
+            else:
+                raise Exception(f"Unknown action {self.action} in {self}")
+            self.posted = True
+            # Store the issue github object as instance variable
+            self.gh_object = issue
+        except GithubException:
+            print(
+                "Warning: a GitHub error occurred while posting an IssueEntry."
+                f"Entry with the following configuration was NOT posted {self.config}."
             )
-        elif self.action == "update":
-            issue = IssueEntry.update_issue(
-                api_object, self.repo, self.number, self.body, self.labels
-            )
-        else:
-            raise Exception(f"Unknown action {self.action} in {self}")
-        self.posted = True
-        # Store the issue github object as instance variable
-        self.gh_object = issue
 
     @staticmethod
     def create_issue(
@@ -158,11 +165,6 @@ class IssueEntry(Entry):
 
         return new_issue
 
-    # TODO: what is the best way handle if issue doesn't exist?
-    # Call the API and catch an exception if an error is found then tell the
-    # user
-    # OR get a list of all open and closed issues and check if the searched
-    # number is highest than the current highest?
     @staticmethod
     def update_issue(
         api_object: Github,
@@ -170,7 +172,7 @@ class IssueEntry(Entry):
         number: int,
         body: str,
         labels: List[str] = None,
-    ):
+    ) -> Union[Issue, None]:
         """Add a comment to an issue on GitHub and returns the issue.
 
         Args:
@@ -184,7 +186,9 @@ class IssueEntry(Entry):
         repo = api_object.get_repo(repo_name)
         latest_issue_number = repo.get_issues(state="all")[0].number
         if number > latest_issue_number:
-            print(f"Warning: issue #{number} does not exist, update skipped")
+            print(
+                f"Warning: issue #{number} in {repo_name} does not exist, update skipped"
+            )
             return None
         issue = repo.get_issue(number=number)
         issue.create_comment(body)
@@ -202,7 +206,6 @@ class FileEntry(Entry):
     Inherits from Entry
     """
 
-    # TODO: add support for file deletion if needed
     SCHEMA = {
         "type": "object",
         "properties": {
@@ -236,16 +239,22 @@ class FileEntry(Entry):
         Args:
             api_object (Github): An authenticated Github object
         """
-        function_to_call = getattr(FileEntry, f"{self.action}_file")
-        self.gh_object = function_to_call(
-            api_object,
-            self.repo,
-            self.path,
-            self.content,
-            self.branch,
-            self.commit_message,
-        )
-        self.posted = True
+        try:
+            function_to_call = getattr(FileEntry, f"{self.action}_file")
+            self.gh_object = function_to_call(
+                api_object,
+                self.repo,
+                self.path,
+                self.content,
+                self.branch,
+                self.commit_message,
+            )
+            self.posted = True
+        except GithubException:
+            print(
+                "Warning: a GitHub error occurred while posting a FileEntry."
+                f"Entry with the following configuration was NOT posted {self.config}."
+            )
 
     @staticmethod
     def create_file(
@@ -255,7 +264,7 @@ class FileEntry(Entry):
         content: str,
         branch: str,
         commit_message="Add new file",
-    ):
+    ) -> Union[ContentFile, None]:
         """Create a new file in a GitHub repository.
 
         Args:
@@ -273,7 +282,7 @@ class FileEntry(Entry):
             return None
         repo = api_object.get_repo(repo_name)
         response = repo.create_file(path, commit_message, content, branch)
-        return response["content"]
+        return response["content"]  # type: ignore[return-value]
 
     @staticmethod
     def update_file(
@@ -283,7 +292,7 @@ class FileEntry(Entry):
         added_content: str,
         branch: str,
         commit_message="Update file",
-    ):
+    ) -> Union[ContentFile, None]:
         """Update an existing file in a GitHub repository.
 
         Args:
@@ -310,7 +319,7 @@ class FileEntry(Entry):
             contents.sha,  # type: ignore[union-attr]
             branch,
         )
-        return response["content"]
+        return response["content"]  # type: ignore[return-value]
 
     @staticmethod
     def replace_file(
@@ -320,7 +329,7 @@ class FileEntry(Entry):
         new_content: str,
         branch: str,
         commit_message="Replace file",
-    ):
+    ) -> Union[ContentFile, None]:
         """Replace the contents of a file in a GitHub repository.
 
         Args:
@@ -345,7 +354,7 @@ class FileEntry(Entry):
             contents.sha,  # type: ignore[union-attr]
             branch,
         )
-        return response["content"]
+        return response["content"]  # type: ignore[return-value]
 
     @staticmethod
     def exists(api_object: Github, repo_name: str, path: str, branch: str) -> bool:
@@ -431,24 +440,29 @@ class PullRequestEntry(Entry):
         Args:
             api_object (Github): An authenticated Github object
         """
-        if self.action == "create":
-            pull_request = PullRequestEntry.create_pull_request(
-                api_object, self.repo, self.title, self.body, self.base, self.head
+        try:
+            if self.action == "create":
+                pull_request = PullRequestEntry.create_pull_request(
+                    api_object, self.repo, self.title, self.body, self.base, self.head
+                )
+            elif self.action == "update":
+                pull_request = PullRequestEntry.update_pull_request(
+                    api_object, self.repo, self.number, self.body
+                )
+            else:
+                raise Exception(f"Unknown action {self.action} in {self}")
+            self.posted = True
+            self.gh_object = pull_request
+        except GithubException:
+            print(
+                "Warning: a GitHub error occurred while posting a PullRequestEntry."
+                f"Entry with the following configuration was NOT posted {self.config}."
             )
-        elif self.action == "update":
-            pull_request = PullRequestEntry.update_pull_request(
-                api_object, self.repo, self.number, self.body
-            )
-        else:
-            raise Exception(f"Unknown action {self.action} in {self}")
-        self.posted = True
-        self.gh_object = pull_request
 
-    # TODO: handle if PR already exists
     @staticmethod
     def create_pull_request(
         api_object: Github, repo_name: str, title: str, body: str, base: str, head: str
-    ) -> PullRequest:
+    ) -> Union[PullRequest, None]:
         """Create a new pull request on GitHub.
 
         Args:
@@ -459,22 +473,26 @@ class PullRequestEntry(Entry):
             base (str): the name of the branch to merge into
             head (str): the name of the branch to merge from
         """
-        repo = api_object.get_repo(repo_name)
-        pull_request = repo.create_pull(title=title, body=body, base=base, head=head)
+        try:
+            repo = api_object.get_repo(repo_name)
+            pull_request = repo.create_pull(
+                title=title, body=body, base=base, head=head
+            )
+        except GithubException:
+            print(
+                f"Warning: a GitHub error occurred while creating a pull request in {repo_name}."
+                f"{title} was not created"
+            )
+            return None
         return pull_request
 
-    # TODO: what is the best way handle if PR doesn't exist?
-    # Call the API and catch an exception if an error is found then tell the
-    # user
-    # OR get a list of all open and closed PRs and check if the searched
-    # number is highest than the current highest?
     @staticmethod
     def update_pull_request(
         api_object: Github,
         repo_name: str,
         number: int,
         body: str,
-    ):
+    ) -> Union[PullRequest, None]:
         """Add a comment to a pull request on GitHub.
 
         Args:
@@ -488,7 +506,9 @@ class PullRequestEntry(Entry):
         repo = api_object.get_repo(repo_name)
         latest_pr_number = repo.get_pulls(state="all")[0].number
         if number > latest_pr_number:
-            print(f"Warning: PR #{number} does not exist, update skipped")
+            print(
+                f"Warning: PR #{number} in {repo_name} does not exist, update skipped"
+            )
             return None
         pull_request = repo.get_pull(number=number)
         pull_request.create_issue_comment(body)
