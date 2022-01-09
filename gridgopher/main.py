@@ -47,16 +47,16 @@ def gatorgopher(
     if sheets_keys_file.endswith(".env"):
         load_dotenv(dotenv_path=sheets_keys_file)
     load_plugin(plugins_directory, plugin_name)
-    # TODO: figure out how to pass the rest of the arguments
+    methods_list = [
+        func for func in dir(my_plugin) if callable(getattr(my_plugin, func))
+    ]
+    if "run" not in methods_list:
+        raise Exception(f"ERROR: function run was not found in {plugin_name} plugin.")
     my_plugin.run(sheets_keys_file, sheets_config_directory)
 
 
 def load_plugin(directory: str, name: str):
     """Return a pluginbase object using a plugin name and a directory."""
-    # TODO: add try statement validating that a
-    # run function exists in the plugin.
-
-    # print(f"Loading {name} from {directory}...")
     global plugin_source
     plugin_source = PLUGIN_BASE.make_plugin_source(searchpath=[directory])
     global my_plugin

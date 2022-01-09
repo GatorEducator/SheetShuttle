@@ -8,8 +8,6 @@ from github.ContentFile import ContentFile
 from github.GithubException import GithubException
 from jsonschema import validate  # type: ignore[import]
 
-# TODO: update schema docs
-
 
 class Entry:
     """Contain the interface and basic functions for a GitHub entry."""

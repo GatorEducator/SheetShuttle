@@ -9,10 +9,6 @@ from dotenv import load_dotenv
 # pylint: disable=C0103,W0602
 full_test_data = {}
 
-# TODO: add guaranteed teardown for all issues/PRs/files, even if tests fail
-# TODO: add dynamic way to check whether tests should be skipped based on
-# environment variable
-
 
 @pytest.hookimpl()
 def pytest_sessionstart():
