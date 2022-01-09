@@ -162,10 +162,11 @@ def test_update_nonexistent_issue(capfd):
     issue_entry = github_objects.IssueEntry(update_config)
     issue_entry.post(api)
     out, _ = capfd.readouterr()
-    assert (
-        out
-        == f'Warning: issue #{update_config["number"]} in {TEST_REPO_NAME} does not exist, update skipped\n'
+    expected_out = (
+        f'Warning: issue #{update_config["number"]} in'
+        f" {TEST_REPO_NAME} does not exist, update skipped\n"
     )
+    assert out == expected_out
 
 
 ####################################
@@ -274,10 +275,11 @@ def test_update_nonexistent_pull_request(capfd):
     issue_entry = github_objects.PullRequestEntry(update_config)
     issue_entry.post(api)
     out, _ = capfd.readouterr()
-    assert (
-        out
-        == f'Warning: PR #{update_config["number"]} in {TEST_REPO_NAME} does not exist, update skipped\n'
+    expected_out = (
+        f'Warning: PR #{update_config["number"]} in'
+        f" {TEST_REPO_NAME} does not exist, update skipped\n"
     )
+    assert out == expected_out
 
 
 ####################################
