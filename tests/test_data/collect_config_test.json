@@ -1,0 +1,77 @@
+{
+    "sample1": [{
+            "type": "issue",
+            "action": "create",
+            "repo": "test org/test_user",
+            "title": "some new issue",
+            "body": "test body"
+        },
+        {
+            "type": "file",
+            "action": "update",
+            "repo": "test_org/test_user",
+            "path": "folder1/file2.txt",
+            "content": "hello world!",
+            "branch": "main",
+            "commit_message": "test commit message"
+        },
+        {
+            "type": "pull request",
+            "action": "update",
+            "repo": "test_org/test_user",
+            "body": "test body",
+            "number": 10
+        }
+    ],
+    "sample2": [{
+        "type": "issue",
+        "action": "update",
+        "repo": "test org/test_user",
+        "number": 5,
+        "body": "test body"
+    }, {
+        "type": "issue",
+        "action": "create",
+        "repo": "test org/test_user",
+        "title": "some issue",
+        "body": "test body"
+    }],
+    "error_sample": [{
+        "type": "something",
+        "action": "update",
+        "repo": "test org/test_user",
+        "number": 5,
+        "body": "test body"
+    }, {
+        "action": "create",
+        "repo": "test org/test_user",
+        "title": "some issue",
+        "body": "test body"
+    }],
+    "postable_sample": [{
+            "type": "issue",
+            "action": "create",
+            "repo": "AC-GopherBot/test-1",
+            "title": "some new issue",
+            "body": "test body"
+        },
+        {
+            "type": "file",
+            "action": "create",
+            "repo": "AC-GopherBot/test-1",
+            "path": "folder1/file2.txt",
+            "content": "hello world!",
+            "branch": "main",
+            "commit_message": "test commit message"
+        },
+        {
+            "type": "pull request",
+            "action": "create",
+            "repo": "AC-GopherBot/test-1",
+            "title": "test create pull request",
+            "body": "Test pull request create",
+            "base": "main",
+            "head": "test_branch"
+        }
+    ]
+}

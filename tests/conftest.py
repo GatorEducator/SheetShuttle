@@ -4,13 +4,19 @@ import json
 import pathlib
 import pytest
 
+from dotenv import load_dotenv
+
 # pylint: disable=C0103,W0602
 full_test_data = {}
 
 
 @pytest.hookimpl()
 def pytest_sessionstart():
-    """Read and collect test data as part of the global test data dictionary."""
+    """Read and collect test data as part of the global test data dictionary.
+
+    Set environment variables if they exist in a .env file
+    """
+    load_dotenv(dotenv_path=".env")
     test_data_files = pathlib.Path("./tests/test_data").glob("*.json")
     for json_data_file in test_data_files:
         with open(json_data_file, "r", encoding="utf-8") as data_file:

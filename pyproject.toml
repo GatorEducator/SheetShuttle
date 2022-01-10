@@ -23,6 +23,7 @@ jsonschema = "^4.1.2"
 pytest-sugar = "^0.9.4"
 python-dotenv = "^0.19.1"
 pluginbase = "^1.0.1"
+PyGithub = "^1.55"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
@@ -35,14 +36,15 @@ mypy = "^0.910"
 
 [tool.taskipy.tasks]
 black = { cmd = "black gridgopher tests --check", help = "Run the black checks for source code format" }
-coverage = {cmd = "pytest -x -s -vv --cov-report term-missing --cov=gridgopher --cov-report xml --cov-branch"}
+coverage = {cmd = "pytest -s -vv --cov-report term-missing --cov=gridgopher --cov-report xml --cov-branch"}
 flake8 = { cmd = "flake8 gridgopher tests", help = "Run the flake8 checks for source code documentation" }
-mypy = { cmd = "poetry run mypy gridgopher", help = "Run the mypy type checker for potential type errors" }
+mypy = { cmd = "poetry run mypy gridgopher --show-error-codes", help = "Run the mypy type checker for potential type errors" }
 pydocstyle = { cmd = "pydocstyle gridgopher tests", help = "Run the pydocstyle checks for source code documentation" }
 pylint = { cmd = "pylint gridgopher tests", help = "Run the pylint checks for source code documentation" }
-test = { cmd = "pytest -x -s -vv", help = "Run the pytest test suite" }
+test = { cmd = "pytest -x -s", help = "Run the pytest test suite" }
+test-verbose = { cmd = "pytest -x -s -vv", help = "Run the pytest test suite" }
 test-silent = { cmd = "pytest -x --show-capture=no", help = "Run the pytest test suite without showing output" }
-all = "task black && task flake8 && task pydocstyle && task pylint && task mypy && task test"
+all = "task black && task flake8 && task pydocstyle && task mypy && task pylint && task test"
 lint = "task black && task flake8 && task pydocstyle && task pylint"
 
 [build-system]

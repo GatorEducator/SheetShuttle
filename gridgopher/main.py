@@ -1,11 +1,19 @@
 """Entry point for the GridGopher tool. Implements CLI and plugin system."""
 
+# pylint: disable=C0103
+# pylint: disable=W0603
+
 import typer
 
 from pluginbase import PluginBase  # type: ignore[import]
+from dotenv import load_dotenv
 
+PLUGIN_BASE = PluginBase("gridgopher.plugins")
 
 app = typer.Typer()
+
+plugin_source = PLUGIN_BASE.make_plugin_source(searchpath=["plugins/"])
+my_plugin = plugin_source.load_plugin("default")
 
 
 @app.command()
@@ -36,23 +44,23 @@ def gatorgopher(
     ),
 ):
     """Create the CLI and runs the chosen plugin."""
-    # TODO: remove this unnecessary print
-    print("Received arguments:")
-    print(f"sheets_keys_file: {sheets_keys_file}")
-    print(f"sheets_config_directory: {sheets_config_directory}")
-    print(f"plugins_directory: {plugins_directory}")
-    print(f"plugin_name: {plugin_name}")
+    if sheets_keys_file.endswith(".env"):
+        load_dotenv(dotenv_path=sheets_keys_file)
+    load_plugin(plugins_directory, plugin_name)
+    methods_list = [
+        func for func in dir(my_plugin) if callable(getattr(my_plugin, func))
+    ]
+    if "run" not in methods_list:
+        raise Exception(f"ERROR: function run was not found in {plugin_name} plugin.")
+    my_plugin.run(sheets_keys_file, sheets_config_directory)
 
-    print(f"Loading {plugin_name} from {plugins_directory}...")
-    # TODO: add try statement for failed plugin loading and validating that a
-    # run function exists in it.
 
-    # TODO: not sure if "plugins" should be used here
-    plugin_base = PluginBase("plugins")
-    plugin_source = plugin_base.make_plugin_source(searchpath=[plugins_directory])
-    my_plugin = plugin_source.load_plugin(plugin_name)
-    # TODO: figure out how to pass the rest of the arguments
-    my_plugin.run()
+def load_plugin(directory: str, name: str):
+    """Return a pluginbase object using a plugin name and a directory."""
+    global plugin_source
+    plugin_source = PLUGIN_BASE.make_plugin_source(searchpath=[directory])
+    global my_plugin
+    my_plugin = plugin_source.load_plugin(name)
 
 
 if __name__ == "__main__":

@@ -4,23 +4,26 @@ import json
 import os
 import pathlib
 import pickle
-from typing import List, Dict
-import yaml
+from typing import Dict, List
 
 import pandas as pd  # type: ignore[import]
-
-from dotenv import load_dotenv
-from googleapiclient.discovery import build  # type: ignore[import]
-
+import yaml
 from google.oauth2 import service_account  # type: ignore[import]
+from googleapiclient.discovery import build  # type: ignore[import]
 from jsonschema import validate  # type: ignore[import]
+
+from gridgopher import util
 
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 CONFIG_SCHEMA = {
     "type": "object",
     "properties": {
         "source_id": {"type": "string"},
-        "sheets": {"type": "array", "items": {"$ref": "#/$defs/sheet"}},
+        "sheets": {
+            "type": "array",
+            "items": {"$ref": "#/$defs/sheet"},
+            "minItems": 1,
+        },
     },
     "required": ["source_id", "sheets"],
     "$defs": {
@@ -31,18 +34,29 @@ CONFIG_SCHEMA = {
                 "start": {"type": "string"},
                 "end": {"type": "string"},
                 "contains_headers": {"type": "boolean"},
-                "headers": {"type": "array", "items": {"type": "string"}},
-                # TODO: will possibly need conditional logic for headers key
+                "headers": {
+                    "type": "array",
+                    "items": {"type": "string"},
+                    "minItems": 1,
+                },
             },
             "required": ["name", "start", "end", "contains_headers"],
-            "additionalProperties": False,
+            "if": {"properties": {"contains_headers": {"const": False}}},
+            "then": {
+                "required": ["headers"],
+            },
         },
         "sheet": {
             "type": "object",
             "properties": {
                 "name": {"type": "string"},
-                "sheets": {"type": "array", "items": {"$ref": "#/$defs/region"}},
+                "regions": {
+                    "type": "array",
+                    "items": {"$ref": "#/$defs/region"},
+                    "minItems": 1,
+                },
             },
+            "required": ["name", "regions"],
         },
     },
 }
@@ -77,6 +91,9 @@ class SheetCollector:
         Args:
             key_file (str, optional): path to Google Sheets API user keys and
             tokens. Defaults to ".env".
+
+            sources_dir (str, optional): path to where the configuration
+            is stored. Defaults to "config/sheet_sources"
         """
         self.key_file: str = key_file
         (
@@ -103,8 +120,8 @@ class SheetCollector:
         """
         if not self.sheets:
             raise Exception("ERROR: Collector was not authenticated")
-        # get a list of all yaml path objects in the config_dir
-        config_files = self.config_dir.glob("*.yaml")
+        # get a list of all yaml and yml path objects in the config_dir
+        config_files: List[pathlib.Path] = util.get_yaml_files(self.config_dir)
         for yaml_file in config_files:
             # Open yaml file as read
             with open(yaml_file, "r", encoding="utf-8") as config_file:
@@ -132,7 +149,6 @@ class SheetCollector:
             )
         elif key_file.endswith(".env"):
             creds_dict = {}
-            load_dotenv()
             for env_var in ENV_VAR_LIST:
                 var_value = os.getenv(env_var)
                 if not var_value:
@@ -352,7 +368,6 @@ class Region:
             "full_name": self.full_name,
             "start_range": self.start_range,
             "end_range": self.end_range,
-            # TODO: determine the based format to store the data
             "data": self.data.to_dict("index"),
         }
         with open(

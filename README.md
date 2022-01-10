@@ -100,6 +100,7 @@ AUTH_URI="value"
 TOKEN_URI="value"
 AUTH_PROVIDER_X509_CERT_URL="value"
 CLIENT_X509_CERT_URL="value"
+GH_ACCESS_TOKEN="value"
 ```
 
 #### Github Access Token

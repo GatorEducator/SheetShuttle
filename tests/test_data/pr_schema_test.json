@@ -1,0 +1,72 @@
+{
+    "passing": [{
+        "type": "pull request",
+        "action": "create",
+        "repo": "test_org/test_user",
+        "title": "some new issue",
+        "body": "test body",
+        "base": "main",
+        "head": "my_branch"
+    }, {
+        "type": "pull request",
+        "action": "update",
+        "repo": "test_org/test_user",
+        "body": "test body",
+        "number": 10
+    }],
+    "failing": [{
+            "type": "pr",
+            "action": "create",
+            "repo": "test_org/test_user",
+            "title": "some new issue",
+            "body": "test body",
+            "base": "main",
+            "head": "my_branch"
+        }, {
+            "type": "pull request",
+            "action": "nonsense",
+            "repo": "test_org/test_user",
+            "title": "some new issue",
+            "body": "test body",
+            "base": "main",
+            "head": "my_branch"
+        }, {
+            "type": "pull request",
+            "action": "create",
+            "repo": "test_org-test_user",
+            "title": "some new issue",
+            "body": "test body",
+            "base": "main",
+            "head": "my_branch"
+        }, {
+            "type": "pull request",
+            "action": "create",
+            "repo": "test_org/test_user",
+            "title": "",
+            "body": "test body",
+            "base": "main",
+            "head": "my_branch"
+        }, {
+            "type": "pull request",
+            "action": "create",
+            "repo": "test_org/test_user",
+            "title": "some new issue",
+            "body": "",
+            "base": "main",
+            "head": "my_branch"
+        }, {
+            "type": "pull request",
+            "action": "update",
+            "repo": "test_org/test_user",
+            "body": "test body",
+            "number": "10"
+        },
+        {
+            "type": "pull request",
+            "action": "update",
+            "repo": "test_org/test_user",
+            "body": "test body",
+            "number": 3.6
+        }
+    ]
+}
