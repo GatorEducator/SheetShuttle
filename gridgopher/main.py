@@ -25,7 +25,7 @@ def gatorgopher(
         help="Path to the Sheets api keys, either .json or .env file",
     ),
     sheets_config_directory: str = typer.Option(
-        "config/sheet_sources",
+        "config/sheet_sources/",
         "--sheets_config_directory",
         "-cd",
         help="Directory to get the sheets configuration .yaml files from",
@@ -55,6 +55,7 @@ def gatorgopher(
     my_plugin.run(sheets_keys_file, sheets_config_directory)
 
 
+# TODO: fix this and stop using globals
 def load_plugin(directory: str, name: str):
     """Return a pluginbase object using a plugin name and a directory."""
     global plugin_source

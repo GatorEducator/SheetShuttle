@@ -10,7 +10,6 @@ configuration must follow the specified format.
       - [Region Object](#region-object)
       - [Sheet Object](#sheet-object)
     - [Overall Structure](#overall-structure)
-    - [JSON Schema Structure](#json-schema-structure)
   - [GitHub Interactions Schema](#github-interactions-schema)
     - [Issue Schema](#issue-schema)
     - [Pull Request Schema](#pull-request-schema)

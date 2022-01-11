@@ -92,7 +92,7 @@ will cause issues.
 Note that variable names must be in upper case.
 
 ```.evn
-TYPE="service_account"
+TYPE="value"
 PROJECT_ID="value"
 PRIVATE_KEY_ID="value"
 PRIVATE_KEY="Value"
@@ -100,7 +100,6 @@ AUTH_URI="value"
 TOKEN_URI="value"
 AUTH_PROVIDER_X509_CERT_URL="value"
 CLIENT_X509_CERT_URL="value"
-GH_ACCESS_TOKEN="value"
 ```
 
 #### Github Access Token
