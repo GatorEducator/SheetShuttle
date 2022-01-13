@@ -8,7 +8,7 @@ import yaml
 from github import Github
 
 from jsonschema import validate  # type: ignore[import]
-from gridgopher import github_objects, util
+from sheetshuttle import github_objects, util
 
 
 CONFIG_LIST_SCHEMA = {

@@ -1,4 +1,4 @@
-"""Entry point for the GridGopher tool. Implements CLI and plugin system."""
+"""Entry point for the SheetShuttle tool. Implements CLI and plugin system."""
 
 # pylint: disable=C0103
 # pylint: disable=W0603
@@ -8,7 +8,7 @@ import typer
 from pluginbase import PluginBase  # type: ignore[import]
 from dotenv import load_dotenv
 
-PLUGIN_BASE = PluginBase("gridgopher.plugins")
+PLUGIN_BASE = PluginBase("sheetshuttle.plugins")
 
 app = typer.Typer()
 
@@ -17,7 +17,7 @@ my_plugin = plugin_source.load_plugin("default")
 
 
 @app.command()
-def gatorgopher(
+def sheetshuttle(
     sheets_keys_file: str = typer.Option(
         ".env",
         "--sheets_keys_file",
