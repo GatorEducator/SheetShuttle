@@ -1,7 +1,7 @@
 # Config Schemas
 
 The examples shown here demonstrate the schemas for configuration read by
-GridGopher. In order for the tool to function with no errors, user written
+SheetShuttle. In order for the tool to function with no errors, user written
 configuration must follow the specified format.
 
 - [Config Schemas](#config-schemas)
@@ -234,7 +234,7 @@ repo: example_org/example_user
 title: some new issue
 body: example body
 labels:
-  - GridGopher
+  - SheetShuttle
   - Automated
 ```
 
@@ -247,7 +247,7 @@ repo: example_org/example_user
 number: 12
 body: example body
 labels:
-  - GridGopher
+  - SheetShuttle
   - Automated
 ```
 

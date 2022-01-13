@@ -1,10 +1,10 @@
-# Getting Started with GridGopher
+# Getting Started with SheetShuttle
 
-- [Getting Started with GridGopher](#getting-started-with-gridgopher)
+- [Getting Started with SheetShuttle](#getting-started-with-sheetshuttle)
   - [Setting Up and Running Your Plugin](#setting-up-and-running-your-plugin)
     - [Setup The Path and Plugin Name](#setup-the-path-and-plugin-name)
     - [Add a `run()` Function](#add-a-run-function)
-    - [Importing from GridGopher](#importing-from-gridgopher)
+    - [Importing from SheetShuttle](#importing-from-sheetshuttle)
   - [Using the Google Sheets API](#using-the-google-sheets-api)
     - [Ensure that All Authentication Variables are Available and Accessible](#ensure-that-all-authentication-variables-are-available-and-accessible)
     - [Share the Google Sheets file(s) with the created service account](#share-the-google-sheets-files-with-the-created-service-account)
@@ -15,23 +15,23 @@
     - [Write or Generate YAML Configuration](#write-or-generate-yaml-configuration)
     - [Call `GithubManager` from Your Plugin](#call-githubmanager-from-your-plugin)
 
-GridGopher provides a simple infrastructure to interact with Google Sheets API
+SheetShuttle provides a simple infrastructure to interact with Google Sheets API
 as well as GitHub API. It gives the user the ability to create custom plugins
 that integrate with the tool's workflow. This tutorial will provide some
-examples and code snippets to get started with GridGopher.
+examples and code snippets to get started with SheetShuttle.
 
 ## Setting Up and Running Your Plugin
 
 There are few requirements to be met before diving in developing your plugin,
-the following tasks are important to make sure the GridGopher can find and run
+the following tasks are important to make sure SheetShuttle can find and run
 your custom plugin:
 
 ### Setup The Path and Plugin Name
 
-By default, GridGopher searches the `plugins` directory for the `default`
+By default, SheetShuttle searches the `plugins` directory for the `default`
 plugin named `default.py`. If you wish to run your own plugin, you can
 create a Python file in any directory on your system. However, the directory
-and name of the this Python file must be passed into GridGopher's CLI in
+and name of the this Python file must be passed into SheetShuttle's CLI in
 order to be detected. For example, if the plugin `my_plugin.py` was created
 in `../projects/my_plugins/`, then the CLI argument for `plugin_name` would be
 `my_plugin` (**Note** that `.py` is omitted) and the value of
@@ -39,7 +39,7 @@ in `../projects/my_plugins/`, then the CLI argument for `plugin_name` would be
 
 ### Add a `run()` Function
 
-GridGopher assumes that a `run()` function exists in your plugin which gets
+SheetShuttle assumes that a `run()` function exists in your plugin which gets
 called in order to execute your custom code. To prevent errors while loading
 and running the plugin, this function signature is required for every
 plugin.
@@ -52,19 +52,19 @@ def run(sheets_keys_file, sheets_config_directory, **kwargs):
 
 `TODO: More information is needed here after full support is added`
 
-### Importing from GridGopher
+### Importing from SheetShuttle
 
-In order to use the functionalities in GridGopher's infrastructure, your
+In order to use the functionalities in SheetShuttle's infrastructure, your
 plugin should import the needed modules.
 
 ```python
    # If collecting data from Google Sheets, sheet_collector should be imported
-   from gridgopher import sheet_collector
+   from sheetshuttle import sheet_collector
    # To manipulate collected data, pandas should also be imported
    import pandas as pd
 
     # If Working with GitHub, the following modules should also be imported
-   from gridgopher import github_interaction
+   from sheetshuttle import github_interaction
    from github import Github
 ```
 
@@ -81,12 +81,12 @@ the `sheets_collector` module.
 ### Ensure that All Authentication Variables are Available and Accessible
 
 There are two main ways to provide Google Sheets authentication tokens to
-GridGopher. The tokens are obtained after setting up a service account.
+SheetShuttle. The tokens are obtained after setting up a service account.
 Authentication information can be stored in a `.json` file or as part of a
 `.env` file. This process is discussed in [Google Sheets Service Account
 section](../README.md#google-sheets-service-account) of the README file.
 Regardless of which approach is used, the name of the file should be
-passed as a CLI argument to GridGopher
+passed as a CLI argument to SheetShuttle
 
 ### Share the Google Sheets file(s) with the created service account
 
@@ -162,13 +162,13 @@ With that in mind, the above configuration does the following:
 ### Call `sheet_collector` from the plugin
 
 Once all previous setup steps are completed, you can begin writing your
-plugin and utilizing the infrastructure of GridGopher. A quick way to get
+plugin and utilizing the infrastructure of SheetShuttle. A quick way to get
 started is the simple code snippet below which initializes a `SheetCollector`
 object and executes the configuration to retrieve and store data from Google
 Sheets.
 
 ```python
-from gridgopher import sheet_collector
+from sheetshuttle import sheet_collector
 
 my_collector = sheet_collector.SheetCollector()
 my_collector.collect_files()
@@ -198,8 +198,8 @@ the GitHub API.
 ### Add GitHub Access Token
 
 The [GitHub Access Token section](../README.md#github-access-token) in README
-discusses how to generate a GitHub token and make it accessible to GridGopher.
-Without the token, GridGopher will not be able to authenticate with the API and
+discusses how to generate a GitHub token and make it accessible to SheetShuttle.
+Without the token, SheetShuttle will not be able to authenticate with the API and
 post entries such as issues, pull requests, or files.
 
 ### Write or Generate YAML Configuration
@@ -300,7 +300,7 @@ the configuration. The object also supports the ability to post the entries. The
 code snippet below shows an example of how it can be used.
 
 ```python
-from gridgopher import github_interaction
+from sheetshuttle import github_interaction
 
 my_manager = github_interaction.GitHubManager()
 my_manager.collect_config()
