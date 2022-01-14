@@ -12,9 +12,6 @@ PLUGIN_BASE = PluginBase("sheetshuttle.plugins")
 
 app = typer.Typer()
 
-plugin_source = PLUGIN_BASE.make_plugin_source(searchpath=["plugins/"])
-my_plugin = plugin_source.load_plugin("default")
-
 
 @app.command()
 def sheetshuttle(
@@ -46,7 +43,7 @@ def sheetshuttle(
     """Create the CLI and runs the chosen plugin."""
     if sheets_keys_file.endswith(".env"):
         load_dotenv(dotenv_path=sheets_keys_file)
-    load_plugin(plugins_directory, plugin_name)
+    _, my_plugin = load_plugin(plugins_directory, plugin_name)
     methods_list = [
         func for func in dir(my_plugin) if callable(getattr(my_plugin, func))
     ]
@@ -55,13 +52,11 @@ def sheetshuttle(
     my_plugin.run(sheets_keys_file, sheets_config_directory)
 
 
-# TODO: fix this and stop using globals
 def load_plugin(directory: str, name: str):
     """Return a pluginbase object using a plugin name and a directory."""
-    global plugin_source
     plugin_source = PLUGIN_BASE.make_plugin_source(searchpath=[directory])
-    global my_plugin
     my_plugin = plugin_source.load_plugin(name)
+    return plugin_source, my_plugin
 
 
 if __name__ == "__main__":
