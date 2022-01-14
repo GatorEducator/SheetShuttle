@@ -139,10 +139,11 @@ configuration, please refer to our [schema documentation](docs/schemas.md).
 
 #### Sheets Collector
 
-Sheets Collector is the component of SheetShuttle that is responsible for making Google
-Sheets API calls and retreiving data from user specified files and sheets.
-Additionally, it creates an object oriented structure for regions and sheets
-of data. In order to use this component, configuration YAML files are needed
+Sheets Collector is the component of SheetShuttle that is responsible
+for making Google Sheets API calls and retrieving data from user
+specified files and sheets. Additionally, it creates an object
+oriented structure for regions and sheets of data.
+In order to use this component, configuration YAML files are needed
 in the `config/sheet_sources` directory. Multiple files can be used if multiple
 sheets are being read at the same time.
 
