@@ -104,9 +104,10 @@ CLIENT_X509_CERT_URL="value"
 
 #### Github Access Token
 
-If you intend to use SheetShuttle's GitHub interactions features, it is required to
-create a GitHub access token and place it correctly in the project repository.
-To create a token, please use the official guide found
+If you intend to use SheetShuttle's GitHub interactions features, it is
+required to create a GitHub access token and place it correctly in
+the project repository. To create a token, please use the official
+guide found
 [here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).
 The created token should be granted `repo` access.
 
@@ -130,8 +131,9 @@ to use it:
 
 ### Writing Config
 
-SheetShuttle relies on user written YAML configuration to collect data from Google
-Sheets and organize it in regions. GitHub interactions are also managed by
+SheetShuttle relies on user written YAML configuration to
+collect data from Google Sheets and organize it in regions.
+GitHub interactions are also managed by
 YAML configuration. To read more about the structure of SheetShuttle
 configuration, please refer to our [schema documentation](docs/schemas.md).
 
