@@ -1,6 +1,7 @@
 # Contributing Guidelines
 
-Thank you for taking the time to contribute to SheetShuttle! This guide will help you to effectively get started and contribute to the project.
+Thank you for taking the time to contribute to SheetShuttle! This guide will 
+help you to effectively get started and contribute to the project.
 
 ## Table of Contents
 
