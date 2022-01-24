@@ -8,10 +8,10 @@ help you to effectively get started and contribute to the project.
 * [Raising an Issue](#raising-an-issue)
 * [Making a Pull Request](#making-a-pull-request)
 * [Project Standards](#project-standards)
-    * [Development Environment](#development-environment)
+  * [Development Environment](#development-environment)
    [Automated Testing](#automated-testing)
-    * [Test Coverage](#test-coverage)
-    * [Code Linting](#code-linting)
+  * [Test Coverage](#test-coverage)
+  * [Code Linting](#code-linting)
 * [Outreach](#outreach)
 
 ## Raising an Issue
