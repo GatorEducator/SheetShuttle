@@ -16,7 +16,8 @@ help you to effectively get started and contribute to the project.
 
 ## Raising an Issue
 
-Xx
+If you have a new issue to raise, first check the [Issue
+Tracker](https://github.com/GatorEducator/SheetShuttle/issues) to ensure someone has not already raised it. Select whether your issue is a bug report or a feature request. Please follow the provided template and use as much detail as possible when describing your issue.
 
 ## Making a Pull Request
 
