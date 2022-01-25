@@ -40,7 +40,12 @@ def sheetshuttle(
         "-pn",
         help="Name of plugin to use for processing",
     ),
-
+    json_args = typer.Option(
+        None,
+        "--json_args",
+        "-ja",
+        help="Path to the JSON file with additional arguments.",
+    ),
 ):
     """Create the CLI and runs the chosen plugin."""
     if sheets_keys_file.endswith(".env"):
@@ -51,7 +56,8 @@ def sheetshuttle(
     ]
     if "run" not in methods_list:
         raise Exception(f"ERROR: function run was not found in {plugin_name} plugin.")
-    my_plugin.run(sheets_keys_file, sheets_config_directory)
+    # TODO: change the name of `args`?
+    my_plugin.run(sheets_keys_file, sheets_config_directory, args=load_json_file(json_args))
 
 
 def load_plugin(directory: str, name: str):
@@ -60,11 +66,12 @@ def load_plugin(directory: str, name: str):
     my_plugin = plugin_source.load_plugin(name)
     return plugin_source, my_plugin
 
-def json_file(file_name, file_path):
-    f = open("file_name")
-    data = json.loads(f)
-    for values in data:
-        print(my_plugin.run(values,data[values]))
+def load_json_file(file_path):
+    if not file_path:
+        return {}
+    with open(file_path) as read_file:
+        data = json.load(read_file)
+        return data
 
 if __name__ == "__main__":
     app()
