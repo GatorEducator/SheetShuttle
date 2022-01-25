@@ -4,6 +4,7 @@
 # pylint: disable=W0603
 
 import typer
+import json
 
 from pluginbase import PluginBase  # type: ignore[import]
 from dotenv import load_dotenv
@@ -39,6 +40,7 @@ def sheetshuttle(
         "-pn",
         help="Name of plugin to use for processing",
     ),
+
 ):
     """Create the CLI and runs the chosen plugin."""
     if sheets_keys_file.endswith(".env"):
@@ -58,6 +60,11 @@ def load_plugin(directory: str, name: str):
     my_plugin = plugin_source.load_plugin(name)
     return plugin_source, my_plugin
 
+def json_file(file_name, file_path):
+    f = open("file_name")
+    data = json.loads(f)
+    for values in data:
+        print(my_plugin.run(values,data[values]))
 
 if __name__ == "__main__":
     app()
