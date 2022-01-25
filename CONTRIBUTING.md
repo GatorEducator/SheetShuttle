@@ -5,19 +5,24 @@ help you to effectively get started and contribute to the project.
 
 ## Table of Contents
 
-* [Raising an Issue](#raising-an-issue)
-* [Making a Pull Request](#making-a-pull-request)
-* [Project Standards](#project-standards)
-  * [Development Environment](#development-environment)
-   [Automated Testing](#automated-testing)
-  * [Test Coverage](#test-coverage)
-  * [Code Linting](#code-linting)
-* [Outreach](#outreach)
+- [Contributing Guidelines](#contributing-guidelines)
+  - [Table of Contents](#table-of-contents)
+  - [Raising an Issue](#raising-an-issue)
+  - [Making a Pull Request](#making-a-pull-request)
+  - [Project Standards](#project-standards)
+    - [Development Environment](#development-environment)
+    - [Automated Testing](#automated-testing)
+    - [Test Coverage](#test-coverage)
+    - [Code Linting](#code-linting)
+    - [Outreach](#outreach)
 
 ## Raising an Issue
 
 If you have a new issue to raise, first check the [Issue
-Tracker](https://github.com/GatorEducator/SheetShuttle/issues) to ensure someone has not already raised it. Select whether your issue is a bug report or a feature request. Please follow the provided template and use as much detail as possible when describing your issue.
+Tracker](https://github.com/GatorEducator/SheetShuttle/issues)
+to ensure someone has not already raised it. Select whether your
+issue is a bug report or a feature request. Please follow the provided
+template and use as much detail as possible when describing your issue.
 
 ## Making a Pull Request
 
