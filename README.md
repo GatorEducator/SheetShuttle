@@ -63,6 +63,8 @@ SheetShuttle is ready for use!
 
 ## Running SheetShuttle
 
+For a thorough steps refer to this [tutorial](docs/tutorial.md)
+
 ### API Setup
 
 SheetShuttle requires authentication tokens for a Google Sheets API service
