@@ -1,4 +1,4 @@
-"""Entry point for the GridGopher tool. Implements CLI and plugin system."""
+"""Entry point for the SheetShuttle tool. Implements CLI and plugin system."""
 
 # pylint: disable=C0103
 # pylint: disable=W0603
@@ -8,16 +8,13 @@ import typer
 from pluginbase import PluginBase  # type: ignore[import]
 from dotenv import load_dotenv
 
-PLUGIN_BASE = PluginBase("gridgopher.plugins")
+PLUGIN_BASE = PluginBase("sheetshuttle.plugins")
 
 app = typer.Typer()
 
-plugin_source = PLUGIN_BASE.make_plugin_source(searchpath=["plugins/"])
-my_plugin = plugin_source.load_plugin("default")
-
 
 @app.command()
-def gatorgopher(
+def sheetshuttle(
     sheets_keys_file: str = typer.Option(
         ".env",
         "--sheets_keys_file",
@@ -25,7 +22,7 @@ def gatorgopher(
         help="Path to the Sheets api keys, either .json or .env file",
     ),
     sheets_config_directory: str = typer.Option(
-        "config/sheet_sources",
+        "config/sheet_sources/",
         "--sheets_config_directory",
         "-cd",
         help="Directory to get the sheets configuration .yaml files from",
@@ -46,7 +43,7 @@ def gatorgopher(
     """Create the CLI and runs the chosen plugin."""
     if sheets_keys_file.endswith(".env"):
         load_dotenv(dotenv_path=sheets_keys_file)
-    load_plugin(plugins_directory, plugin_name)
+    _, my_plugin = load_plugin(plugins_directory, plugin_name)
     methods_list = [
         func for func in dir(my_plugin) if callable(getattr(my_plugin, func))
     ]
@@ -57,10 +54,9 @@ def gatorgopher(
 
 def load_plugin(directory: str, name: str):
     """Return a pluginbase object using a plugin name and a directory."""
-    global plugin_source
     plugin_source = PLUGIN_BASE.make_plugin_source(searchpath=[directory])
-    global my_plugin
     my_plugin = plugin_source.load_plugin(name)
+    return plugin_source, my_plugin
 
 
 if __name__ == "__main__":

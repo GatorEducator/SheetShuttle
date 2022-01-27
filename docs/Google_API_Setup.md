@@ -1,5 +1,6 @@
-<!-- TODO: add tutorial on how to share a sheet with the service account -->
 # Google API Setup
+
+## Creating a Service Account
 
 - Create a Google API project from [cloud console](https://console.cloud.google.com/)
   - Click on select project, or create new project
@@ -48,3 +49,15 @@
     `downloads` folder
 
 ![credentials9](../images/credentials9.png)
+
+## Sharing a File with the Service Account
+
+Once a service account has been created, individual Google Sheet files should be
+shared with the account in order to retrieve data from the sheets. To do that,
+the `share` functionality of Google Sheets can be used where the service account
+email address should be given **edit** access to the file.
+
+![credentials9](../images/sheet_sharing.png)
+
+**Please note that you
+should use the service account email setup when creating the service account**

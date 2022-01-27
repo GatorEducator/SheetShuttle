@@ -5,7 +5,7 @@
             "repo": "test_org/test_user",
             "title": "some new issue",
             "body": "test body",
-            "labels": ["GridGopher", "Automated"]
+            "labels": ["SheetShuttle", "Automated"]
         },
         {
             "type": "issue",
@@ -20,7 +20,7 @@
             "repo": "test_org/test_user",
             "number": 12,
             "body": "test body",
-            "labels": ["GridGopher", "Automated"]
+            "labels": ["SheetShuttle", "Automated"]
         },
         {
             "type": "issue",

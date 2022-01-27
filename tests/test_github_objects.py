@@ -5,7 +5,7 @@ from datetime import datetime
 import pytest
 from github import Github
 from jsonschema.exceptions import ValidationError
-from gridgopher import github_objects, util
+from sheetshuttle import github_objects, util
 
 ENV_VAR_NAME = "GH_ACCESS_TOKEN"
 TEST_REPO_NAME = "AC-GopherBot/test-1"

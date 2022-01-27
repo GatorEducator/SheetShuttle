@@ -1,7 +1,7 @@
 # Config Schemas
 
 The examples shown here demonstrate the schemas for configuration read by
-GridGopher. In order for the tool to function with no errors, user written
+SheetShuttle. In order for the tool to function with no errors, user written
 configuration must follow the specified format.
 
 - [Config Schemas](#config-schemas)
@@ -10,7 +10,6 @@ configuration must follow the specified format.
       - [Region Object](#region-object)
       - [Sheet Object](#sheet-object)
     - [Overall Structure](#overall-structure)
-    - [JSON Schema Structure](#json-schema-structure)
   - [GitHub Interactions Schema](#github-interactions-schema)
     - [Issue Schema](#issue-schema)
     - [Pull Request Schema](#pull-request-schema)
@@ -18,8 +17,8 @@ configuration must follow the specified format.
 
 ## Sheets Schema
 
-Sheets schema describe the format for configuration found in the
-`config/sheet_sources` directory, which are used to retrieve Google Sheet data.
+Sheets schema describe the format for configuration used to
+retrieve Google Sheet data.
 
 ### Defining Objects
 
@@ -203,25 +202,24 @@ This is the structure used to validate the configuration using `jsonschema`:
 
 ## GitHub Interactions Schema
 
-This type of schema describes the structure of configurations found in the
-`config/github_interactions` directory. This configuration is used to post
-entries to Github such as issue trackers, pull requests, and files.
+This type of schema describes the structure of configurations used to post
+entries to Github such as issues, pull requests, and files.
 
 ### Issue Schema
 
-Issue tracker schemas are simple one-level schemas with nested objects. There
-general structure is as follows:
+Issue schemas follow a simple one-level structure.
+The following example shows the structure:
 
 ```yml
 type: <str, required> type of Entry, must equal "issue" (case sensitive)
-action: <str, required> action to be made
-        ("new" -> create a new issue, OR "update" -> add a comment to existing issue)
+action: <str, required> action to be executed
+    ("create" -> create a new issue, OR "update" -> add a comment to existing issue)
 repo: <str, required> name of repo to create the issue in. Formatted as <org>/<repo_name>
-body: <str, required> body of the issue tracker or comment
-labels: <List[str], optional> list of labels to add to the issue tracker
+body: <str, required> body of the issue or comment
+labels: <List[str], optional> list of labels to add to the issue
 # Conditional properties
-title: <str, conditional> title of the new issue tracker, required if action is "new"
-number: <int, conditional> number of the existing issue tracker,
+title: <str, conditional> title of the new issue, required if action is "new"
+number: <int, conditional> number of the existing issue,
         required if action is "update"
 ```
 
@@ -231,12 +229,12 @@ Here are some examples of configuration to create and update issues on GitHub:
 
 ```yml
 type: issue
-action: new
-repo: test_org/test_user
+action: create
+repo: example_org/example_user
 title: some new issue
-body: test body
+body: example body
 labels:
-  - GridGopher
+  - SheetShuttle
   - Automated
 ```
 
@@ -245,11 +243,11 @@ labels:
 ```yml
 type: issue
 action: update
-repo: test_org/test_user
+repo: example_org/example_user
 number: 12
-body: test body
+body: example body
 labels:
-  - GridGopher
+  - SheetShuttle
   - Automated
 ```
 
@@ -260,38 +258,182 @@ labels:
         "type": "object",
         "properties": {
             "type": {"type": "string", "const": "issue"},
-            "action": {"type": "string", "enum": ["new", "update"]},
-            "repo": {"type": "string"},
+            "action": {"type": "string", "enum": ["create", "update"]},
+            "repo": {"type": "string", "pattern": r"^.+[^\s]\/[^\s].+$"},
+            "body": {"type": "string", "minLength": 1},
         },
-        "required": ["type", "action", "repo"],
-        "if": {"properties": {"action": {"const": "new"}}},
+        "required": ["type", "action", "repo", "body"],
+        "if": {"properties": {"action": {"const": "create"}}},
         "then": {
             "properties": {
                 "title": {"type": "string", "minLength": 1},
-                "body": {"type": "string", "minLength": 1},
                 "labels": {
                     "type": "array",
                     "items": {"type": "string", "minLength": 1},
                     "minItems": 1,
                 },
             },
-            "required": ["title", "body"],
+            "required": ["title"],
         },
         "else": {
             "properties": {
-                "number": {"type": "number"},
-                "body": {"type": "string", "minLength": 1},
+                "number": {"type": "integer"},
                 "labels": {
                     "type": "array",
                     "items": {"type": "string", "minLength": 1},
                     "minItems": 1,
                 },
             },
-            "required": ["number", "body"],
+            "required": ["number"],
         },
     }
 ```
 
 ### Pull Request Schema
 
+This schema structure is responsible for creating pull requests and updating
+them with comments. It's very similar to the Issue schema with few exceptions.
+
+```yml
+type: <str, required> type of Entry, must equal "pull request" (case sensitive)
+action: <str, required> action to be executed
+        ("create" -> create a new PR, OR "update" -> add a comment to existing PR)
+repo: <str, required> name of repo to create the issue in. Formatted as <org>/<repo_name>
+body: <str, required> body of the pull request or comment
+# Conditional properties if action is "create"
+title: <str, conditional> title of the new issue, required if action is "new"
+base: <str,conditional> name of the branch to merge into, required if action is "new"
+head: <str,conditional> name of the branch to merge from, required if action is "new"
+# Conditional properties if action is "update"
+number: <int, conditional> number of the existing pull request,
+        required if action is "update"
+```
+
+Here are some examples of configuration to create and update issues on GitHub:
+
+**Example 1:** Create a new pull request
+
+```yml
+type: pull request
+action: create
+repo: example_org/example_user
+title: some new pull request
+body: example body
+base: main
+head: my_branch
+```
+
+**Example 2:** Update pull request #5 with a new comment
+
+```yml
+type: pull request
+action: update
+repo: example_org/example_user
+number: 12
+body: example body
+```
+
+**JSON Schema Structure:**
+
+```json
+{
+        "type": "object",
+        "properties": {
+            "type": {"type": "string", "const": "pull request"},
+            "action": {"type": "string", "enum": ["create", "update"]},
+            "repo": {"type": "string", "pattern": r"^.+[^\s]\/[^\s].+$"},
+            "body": {"type": "string", "minLength": 1},
+        },
+        "required": ["type", "action", "repo", "body"],
+        "if": {"properties": {"action": {"const": "create"}}},
+        "then": {
+            "properties": {
+                "title": {"type": "string", "minLength": 1},
+                "base": {"type": "string", "minLength": 1},
+                "head": {"type": "string", "minLength": 1},
+            },
+            "required": ["title", "base", "head"],
+        },
+        "else": {
+            "properties": {
+                "number": {"type": "integer"},
+            },
+            "required": ["number"],
+        },
+    }
+```
+
 ### File Schema
+
+This schema structure is responsible for creating files and updating
+them as well as replacing them entirely. Unlike the issue and pull request
+schemas, this one supports 3 actions `create`, `update`, and `replace`.
+While `update` preserves the ordinal content of the file, `replace` erases the
+old content.
+
+```yml
+type: <str, required> type of Entry, must equal "file" (case sensitive)
+action: <str, required> action to be executed
+        ("create" OR "update" OR "replace")
+repo: <str, required> name of repo to create the issue in. Formatted as <org>/<repo_name>
+path: <str, required> path to the file to be impacted
+content: <str, required> content of the file
+branch: <str, required> name of the branch that the file exists in
+commit_message: <str, optional> the commit message to used when executing the action
+```
+
+Here are some examples of configuration to create, update, and replace files:
+
+**Example 1:** Create a new markdown file
+
+```yml
+type: file
+action: create
+repo: example_org/example_user
+path: folder/file.md
+content: "# Hello world!"
+branch: main
+commit_message: add example markdown file
+```
+
+**Example 2:** Update an existing markdown file
+
+```yml
+type: file
+action: update
+repo: example_org/example_user
+path: folder/file.md
+content: this is an example
+branch: main
+commit_message: update example markdown file
+```
+
+**Example 3:** Replace an existing markdown file
+
+```yml
+type: file
+action: replace
+repo: example_org/example_user
+path: folder/file.md
+content: "# Section 1"
+branch: main
+commit_message: replace example markdown file
+```
+
+**JSON Schema Structure:**
+
+```json
+{
+        "type": "object",
+        "properties": {
+            "type": {"type": "string", "const": "file"},
+            "action": {"type": "string", "enum": ["create", "update", "replace"]},
+            "repo": {"type": "string", "pattern": r"^.+[^\s]\/[^\s].+$"},
+            "path": {"type": "string", "minLength": 1},
+            "content": {"type": "string", "minLength": 1},
+            "branch": {"type": "string", "minLength": 1},
+            "commit_message": {"type": "string", "minLength": 1},
+        },
+        "required": ["type", "action", "repo", "path", "content", "branch"],
+    }
+```
