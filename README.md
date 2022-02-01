@@ -63,6 +63,8 @@ SheetShuttle is ready for use!
 
 ## Running SheetShuttle
 
+For a thorough steps refer to this [tutorial](docs/tutorial.md)
+
 ### API Setup
 
 SheetShuttle requires authentication tokens for a Google Sheets API service
@@ -95,7 +97,9 @@ Note that variable names must be in upper case.
 TYPE="value"
 PROJECT_ID="value"
 PRIVATE_KEY_ID="value"
-PRIVATE_KEY="Value"
+PRIVATE_KEY="value"
+CLIENT_EMAIL="value"
+CLIENT_ID="value"
 AUTH_URI="value"
 TOKEN_URI="value"
 AUTH_PROVIDER_X509_CERT_URL="value"
