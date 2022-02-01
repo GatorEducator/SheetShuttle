@@ -3,8 +3,8 @@
 # pylint: disable=C0103
 # pylint: disable=W0603
 
-import typer
 import json
+import typer
 
 from pluginbase import PluginBase  # type: ignore[import]
 from dotenv import load_dotenv
@@ -40,7 +40,7 @@ def sheetshuttle(
         "-pn",
         help="Name of plugin to use for processing",
     ),
-    json_args = typer.Option(
+    json_args=typer.Option(
         None,
         "--json_args",
         "-ja",
@@ -56,8 +56,9 @@ def sheetshuttle(
     ]
     if "run" not in methods_list:
         raise Exception(f"ERROR: function run was not found in {plugin_name} plugin.")
-    # TODO: change the name of `args`?
-    my_plugin.run(sheets_keys_file, sheets_config_directory, args=load_json_file(json_args))
+    my_plugin.run(
+        sheets_keys_file, sheets_config_directory, args=load_json_file(json_args)
+    )
 
 
 def load_plugin(directory: str, name: str):
@@ -66,12 +67,15 @@ def load_plugin(directory: str, name: str):
     my_plugin = plugin_source.load_plugin(name)
     return plugin_source, my_plugin
 
+
 def load_json_file(file_path):
+    """Return the contents of a json file in the file path."""
     if not file_path:
         return {}
-    with open(file_path) as read_file:
+    with open(file_path, encoding="uts-8") as read_file:
         data = json.load(read_file)
         return data
+
 
 if __name__ == "__main__":
     app()
