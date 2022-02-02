@@ -5,7 +5,7 @@ from datetime import datetime
 import pytest
 from github import Github
 from jsonschema.exceptions import ValidationError
-from sheetshuttle import github_objects, util
+from sheetshuttle import github_objects, util, mock_gh_api
 
 ENV_VAR_NAME = "GH_ACCESS_TOKEN"
 TEST_REPO_NAME = "AC-GopherBot/test-1"
@@ -42,12 +42,10 @@ def test_issues_schema_throws_error(test_data):
             github_objects.IssueEntry(test_item)
 
 
-@gh_skipable
 def test_create_update_issue_with_lables():
     """Check that issues with labels can be created and updated on a sample repo."""
     # Check that GitHub token exists as environment variable
-    token = os.getenv(ENV_VAR_NAME)
-    api = Github(token)
+    api = mock_gh_api.MockGH()
     # Setup issue creation
     create_config = {
         "type": "issue",
@@ -83,12 +81,10 @@ def test_create_update_issue_with_lables():
     issue_entry.gh_object.edit(state="closed")
 
 
-@gh_skipable
 def test_create_update_issue_no_lables():
     """Check that issues with no labels can be created and updated on a sample repo."""
     # Check that GitHub token exists as environment variable
-    token = os.getenv(ENV_VAR_NAME)
-    api = Github(token)
+    api = mock_gh_api.MockGH()
     # Setup issue creation
     create_config = {
         "type": "issue",
@@ -123,11 +119,9 @@ def test_create_update_issue_no_lables():
     issue_entry.gh_object.edit(state="closed")
 
 
-@gh_skipable
 def test_issue_post_unknown_action():
     """Check that post throws error for unknown action."""
-    token = os.getenv(ENV_VAR_NAME)
-    api = Github(token)
+    api = mock_gh_api.MockGH()
     # Setup issue creation
     create_config = {
         "type": "issue",
@@ -144,12 +138,12 @@ def test_issue_post_unknown_action():
         issue_entry.post(api)
 
 
-@gh_skipable
 def test_update_nonexistent_issue(capfd):
     """Check that a warning is shown when trying to update a nonexistent issue."""
-    token = os.getenv(ENV_VAR_NAME)
-    api = Github(token)
+    api = mock_gh_api.MockGH()
     repo = api.get_repo(TEST_REPO_NAME)
+    # !Note: this test can fail if the repo under test has no issues to start
+    # !with. Mock API currently handles that
     latest_issue_number = repo.get_issues(state="all")[0].number
     # Setup issue creation
     update_config = {
