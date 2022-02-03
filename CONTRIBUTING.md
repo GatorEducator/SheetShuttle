@@ -14,7 +14,6 @@ help you to effectively get started and contribute to the project.
     - [Automated Testing](#automated-testing)
     - [Test Coverage](#test-coverage)
     - [Code Linting](#code-linting)
-    - [Outreach](#outreach)
 
 ## Raising an Issue
 
@@ -26,7 +25,7 @@ template and use as much detail as possible when describing your issue.
 
 ## Making a Pull Request
 
-Xx
+The development team uses the GitHub Flow Model to guide our engineering of this tool and we invite you to also follow it as you make a contribution. If you have a new feature or bug fix that you want the project maintainers to merge into SheetShuttle, then you should make a pull request. Please follow the provided template when you are describing your pull request, bearing in mind that the project maintainers will not merge any pull requests that either do not adhere to the template or break any aspects of the automated build. You should read the following subsection to learn more about the project standards to which all of SheetShuttle's contributors adhere.
 
 ## Project Standards
 
@@ -36,16 +35,24 @@ Xx
 
 ### Automated Testing
 
-Xx
+The developers use Pytest for testing SheetShuttle. If you want to run the test suite to see if the test cases are passing, then you can type this command into the terminal window.
+
+```bash
+poetry run task test
+```
 
 ### Test Coverage
 
-Xx
+Along with running the test suite, the developers of SheetShuttle use statement and branch coverage to inform their testing activities. Please make sure that you maintain 100% statement and branch coverage as you add new features or introduce bug fixes. If it is not possible for you to maintain complete statement and branch coverage, please document the circumstances in your pull request. To see the coverage of the tests while also highlighting the lines that are not currently covered by the tests, you can type this command in a terminal window.
+
+```bash
+poetry run task coverage
+```
 
 ### Code Linting
 
-Xx
+The developers of SheetShuttle use linting and code formatting tools such as Pylint, Pydocstyle, Flake8 and Black. Please make sure that the source code in your pull request fully adheres to the project's coding standard as enforced by all of the automated linting tools. If it is not possible for you to maintain compliance with the checks made by these tools, then please document the circumstances in your pull request. If you have installed SheetShuttle's development dependencies with Poetry, you can run all of the linters by typing this command in a terminal window.
 
-### Outreach
-
-Xx
+```bash
+poetry run task lint
+```
