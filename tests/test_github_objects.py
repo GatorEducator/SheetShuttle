@@ -11,10 +11,6 @@ TEST_REPO_NAME = "AC-GopherBot/test-1"
 HEAD_BRANCH = "test_branch"
 BASE_BRANCH = "main"
 
-gh_skipable = pytest.mark.skipif(
-    util.gh_token_exists(), reason="Github token not found"
-)
-
 
 ####################################
 # ###### IssueEntry tests ##########
