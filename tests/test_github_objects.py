@@ -4,7 +4,7 @@ from datetime import datetime
 import pytest
 from jsonschema.exceptions import ValidationError
 from mock_api import mock_gh_api
-from sheetshuttle import github_objects, util
+from sheetshuttle import github_objects
 
 ENV_VAR_NAME = "GH_ACCESS_TOKEN"
 TEST_REPO_NAME = "AC-GopherBot/test-1"
