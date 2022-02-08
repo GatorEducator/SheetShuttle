@@ -22,6 +22,9 @@ Tracker](https://github.com/GatorEducator/SheetShuttle/issues)
 to ensure someone has not already raised it. Select whether your
 issue is a bug report or a feature request. Please follow the provided
 template and use as much detail as possible when describing your issue.
+For bug reports, it is important to provide steps to replicate the bug
+and to provide all system information as well as the Python version
+being used.
 
 ## Making a Pull Request
 
@@ -31,7 +34,13 @@ The development team uses the GitHub Flow Model to guide our engineering of this
 
 ### Development Environment
 
-Xx
+If you want to participate in the development of GatorGrader, the project maintainers suggest the installation of the latest Python release. In addition to installing Git to access the project's GitHub repository, you should also install Poetry for its support of package and virtual environment management. The project's maintainers do not require the use of a specific text editor on integrated development environment. Once you have installed Git and Poetry you can type the following command in your terminal window to clone SheetShuttle's GitHub repository:
+
+```
+git clone git@github.com:GatorEducator/SheetShuttle.git
+```
+
+If you are not already a member of SheetShuttle's development team, then we suggest that you fork its GitHub repository and use it for the work that you intend to contribute. If you plan to develop new features for SheetShuttle then you will want to run the tool's test suite as well as other tasks with Poetry. Therefore, you will need to type `poetry install`.
 
 ### Automated Testing
 
@@ -56,3 +65,5 @@ The developers of SheetShuttle use linting and code formatting tools such as Pyl
 ```bash
 poetry run task lint
 ```
+
+Please note that if any linter fails the rest of them will not run. Because of this, the command should be run until no linting errors are produced.
