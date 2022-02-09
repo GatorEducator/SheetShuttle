@@ -5,7 +5,7 @@ import yaml
 
 import pytest
 from jsonschema.exceptions import ValidationError
-from gridgopher import github_interaction, github_objects, util
+from sheetshuttle import github_interaction, github_objects, util
 
 
 ENV_VAR_NAME = "GH_ACCESS_TOKEN"

@@ -1,11 +1,11 @@
 [tool.poetry]
-name = "GridGopher"
+name = "SheetShuttle"
 version = "0.1.0"
 description = ""
 authors = ["Noor Buchi <buchin@allegheny.edu>"]
 
 [tool.poetry.scripts]
-gridgopher = "gridgopher.main:app"
+sheetshuttle = "sheetshuttle.main:app"
 
 [tool.poetry.dependencies]
 python = "^3.9.6"
@@ -18,15 +18,15 @@ pandas = "^1.3.3"
 PyYAML = "^5.4.1"
 tabulate = "^0.8.9"
 types-PyYAML = "^6.0.0"
-pytest-cov = "^3.0.0"
 jsonschema = "^4.1.2"
-pytest-sugar = "^0.9.4"
 python-dotenv = "^0.19.1"
 pluginbase = "^1.0.1"
 PyGithub = "^1.55"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
+pytest-sugar = "^0.9.4"
+pytest-cov = "^3.0.0"
 black = "^21.8b0"
 taskipy = "^1.8.1"
 flake8 = "^3.9.2"
@@ -35,12 +35,12 @@ pylint = "^2.10.2"
 mypy = "^0.910"
 
 [tool.taskipy.tasks]
-black = { cmd = "black gridgopher tests --check", help = "Run the black checks for source code format" }
-coverage = {cmd = "pytest -s -vv --cov-report term-missing --cov=gridgopher --cov-report xml --cov-branch"}
-flake8 = { cmd = "flake8 gridgopher tests", help = "Run the flake8 checks for source code documentation" }
-mypy = { cmd = "poetry run mypy gridgopher --show-error-codes", help = "Run the mypy type checker for potential type errors" }
-pydocstyle = { cmd = "pydocstyle gridgopher tests", help = "Run the pydocstyle checks for source code documentation" }
-pylint = { cmd = "pylint gridgopher tests", help = "Run the pylint checks for source code documentation" }
+black = { cmd = "black sheetshuttle tests --check", help = "Run the black checks for source code format" }
+coverage = {cmd = "pytest -s -vv --cov-report term-missing --cov=sheetshuttle --cov-report xml --cov-branch"}
+flake8 = { cmd = "flake8 sheetshuttle tests", help = "Run the flake8 checks for source code documentation" }
+mypy = { cmd = "poetry run mypy sheetshuttle --show-error-codes", help = "Run the mypy type checker for potential type errors" }
+pydocstyle = { cmd = "pydocstyle sheetshuttle tests", help = "Run the pydocstyle checks for source code documentation" }
+pylint = { cmd = "pylint sheetshuttle tests", help = "Run the pylint checks for source code documentation" }
 test = { cmd = "pytest -x -s", help = "Run the pytest test suite" }
 test-verbose = { cmd = "pytest -x -s -vv", help = "Run the pytest test suite" }
 test-silent = { cmd = "pytest -x --show-capture=no", help = "Run the pytest test suite without showing output" }

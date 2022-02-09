@@ -12,7 +12,7 @@ from google.oauth2 import service_account  # type: ignore[import]
 from googleapiclient.discovery import build  # type: ignore[import]
 from jsonschema import validate  # type: ignore[import]
 
-from gridgopher import util
+from sheetshuttle import util
 
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 CONFIG_SCHEMA = {

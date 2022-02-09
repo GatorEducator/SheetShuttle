@@ -1,14 +1,13 @@
-""""Default plugin for GridGopher."""
+""""Default plugin for SheetShuttle."""
 
-from gridgopher import sheet_collector
+from sheetshuttle import github_objects
+from sheetshuttle import sheet_collector
+
+from github import Github
 
 # import os
 
 
-def run():
+def run(sheets_keys_file, sheets_config_directory, **kwargs):
     """Standard run function."""
-    # collector = sheet_collector.SheetCollector()
     print("hello from the default plugin")
-    my_collector = sheet_collector.SheetCollector()
-    my_collector.collect_files()
-    my_collector.print_contents()

@@ -9,7 +9,7 @@ import yaml
 
 import pandas as pd
 
-from gridgopher import sheet_collector
+from sheetshuttle import sheet_collector
 
 
 def test_region_initialize():

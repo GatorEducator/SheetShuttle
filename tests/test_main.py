@@ -1,7 +1,7 @@
-"""Test the main module of GridGopher"""
+"""Test the main module of SheetShuttle"""
 import pytest
 
-from gridgopher import main
+from sheetshuttle import main
 
 
 @pytest.mark.parametrize(
