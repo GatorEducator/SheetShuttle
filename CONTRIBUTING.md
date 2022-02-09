@@ -43,7 +43,7 @@ contributors adhere.
 
 ### Development Environment
 
-If you want to participate in the development of GatorGrader, the project
+If you want to participate in the development of SheetShuttle, the project
 maintainers suggest the installation of the latest Python release. In
 addition to installing Git to access the project's GitHub repository,
 you should also install Poetry for its support of package and virtual
