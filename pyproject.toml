@@ -50,3 +50,8 @@ lint = "task black && task flake8 && task pydocstyle && task pylint"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+markers = [
+    "webtest: mark a test as a webtest",
+]

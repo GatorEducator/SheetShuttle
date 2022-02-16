@@ -200,7 +200,7 @@ def test_sheet_to_dataframe_one_row_input():
         sheet_collector.Sheet.to_dataframe(data, headers_in_data=True)
     assert True
 
-
+@pytest.mark.webtest
 def test_sheet_execute_sheet_call_no_error():
     """Call a test google sheet and assert that the values are as expected.
 
@@ -228,7 +228,7 @@ def test_sheet_execute_sheet_call_no_error():
     )
     assert reversed_range_data_from_call == expected_data
 
-
+@pytest.mark.webtest
 def test_sheet_execute_sheet_call_empty_return():
     """Call a test google sheet and assert that the values are empty.
 
@@ -245,7 +245,7 @@ def test_sheet_execute_sheet_call_empty_return():
     assert len(data_from_call) == 0
     assert data_from_call == []
 
-
+@pytest.mark.webtest
 def test_sheet_execute_sheet_call_throws_error():
     """Call a test google sheet and assert that an error is thrown.
 
@@ -289,7 +289,7 @@ def test_sheet_collect_regions(test_data):
     for region_key in regions_keys:
         assert region_key in my_sheet.regions
 
-
+@pytest.mark.webtest
 def test_sheet_collector_authenticate_api_json(tmp_path):
     """Check that the sheets api can be authenticated successfully from json
     file.
@@ -319,7 +319,7 @@ def test_sheet_collector_authenticate_api_json(tmp_path):
     assert service
     assert sheets
 
-
+@pytest.mark.webtest
 def test_sheet_collector_authenticate_api_env():
     """Check that the sheets api can be authenticated successfully from
     environment variables.
@@ -340,7 +340,7 @@ def test_sheet_collector_authenticate_api_env():
     assert service
     assert sheets
 
-
+@pytest.mark.webtest
 def test_sheet_collector_authenticate_api_throws_error():
     """Check that an error is thrown when a file other than .env and .json is
     used to authenticate the Sheets api.
@@ -348,7 +348,7 @@ def test_sheet_collector_authenticate_api_throws_error():
     with pytest.raises(Exception):
         sheet_collector.SheetCollector.authenticate_api(".yaml")
 
-
+@pytest.mark.webtest
 def test_sheet_collector_collect_files_throws_error():
     """Check that collect_files() throws an error when the api isn't
     authenticated.
