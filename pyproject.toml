@@ -37,6 +37,7 @@ mypy = "^0.910"
 [tool.taskipy.tasks]
 black = { cmd = "black sheetshuttle tests --check", help = "Run the black checks for source code format" }
 test = { cmd = 'pytest -s -m "not webtest"', help = "Run the pytest test suite except webtests" }
+test-interaction = { cmd = 'pytest -v -m webtest', help = "Run the pytest webtests" }
 test-all = {cmd = "pytest -v -s", help = "Run the full pytest test suite"}
 coverage = {cmd = 'pytest -s -vv -m "not webtest" --cov-report term-missing --cov=sheetshuttle --cov-report xml --cov-branch', help = "Run the coverage report for the test suite except webtests"}
 coverage-all = {cmd = 'pytest -s -vv --cov-report term-missing --cov=sheetshuttle --cov-report xml --cov-branch', help = "Run the coverage report for full test suite"}

@@ -267,7 +267,7 @@ def test_sheet_execute_sheet_call_throws_error():
         )
     assert True
 
-
+@pytest.mark.webtest
 def test_sheet_collect_regions(test_data):
     """Assert that regions are collected correctly in a Sheet object.
 
