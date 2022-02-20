@@ -5,6 +5,7 @@ import yaml
 
 import pytest
 from jsonschema.exceptions import ValidationError
+from mock_api import mock_gh_api
 from sheetshuttle import github_interaction, github_objects, util
 
 
@@ -15,6 +16,7 @@ gh_skipable = pytest.mark.skipif(
     util.gh_token_exists(), reason="Github token not found"
 )
 
+
 @pytest.mark.webtest
 @gh_skipable
 def test_github_manager_init():
@@ -23,6 +25,7 @@ def test_github_manager_init():
     assert my_manager.key_file == ".env"
     assert my_manager.api
     assert not my_manager.config_data
+
 
 @pytest.mark.webtest
 @gh_skipable
@@ -40,11 +43,13 @@ def test_authenticate_api_no_error(tmp_path):
         json.dump(creds_dict, writefile)
     assert github_interaction.GithubManager.authenticate_api(str(temporary_json))
 
+
 @pytest.mark.webtest
 def test_authenticate_api_throws_error():
     """Check that a github object authentication throws error."""
     with pytest.raises(Exception):
         github_interaction.GithubManager.authenticate_api(".yaml")
+
 
 @pytest.mark.webtest
 def test_authenticate_api_json_key_error(tmp_path):
@@ -124,6 +129,7 @@ def test_post_all(test_data):
     # create github manager object with the directory as argument
     manager = github_interaction.GithubManager()
     manager.parse_config_list(test_data["collect_config_test"]["postable_sample"])
+    manager.api = mock_gh_api.MockGH()
     assert (
         len(manager.issue_entries) == 1
         and len(manager.pull_request_entries) == 1

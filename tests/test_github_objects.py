@@ -36,7 +36,7 @@ def test_issues_schema_throws_error(test_data):
         with pytest.raises(ValidationError):
             github_objects.IssueEntry(test_item)
 
-            
+
 def test_create_update_issue_with_lables():
     """Check that issues with labels can be created and updated on a sample repo."""
     api = mock_gh_api.MockGH()
