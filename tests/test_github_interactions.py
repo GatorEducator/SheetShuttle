@@ -17,6 +17,7 @@ gh_skipable = pytest.mark.skipif(
 )
 
 
+@pytest.mark.webtest
 @gh_skipable
 def test_github_manager_init():
     """Check that a github manager object is initialized correctly."""
@@ -26,6 +27,7 @@ def test_github_manager_init():
     assert not my_manager.config_data
 
 
+@pytest.mark.webtest
 @gh_skipable
 def test_authenticate_api_no_error(tmp_path):
     """Check that a github object can be authenticated correctly."""
@@ -42,12 +44,14 @@ def test_authenticate_api_no_error(tmp_path):
     assert github_interaction.GithubManager.authenticate_api(str(temporary_json))
 
 
+@pytest.mark.webtest
 def test_authenticate_api_throws_error():
     """Check that a github object authentication throws error."""
     with pytest.raises(Exception):
         github_interaction.GithubManager.authenticate_api(".yaml")
 
 
+@pytest.mark.webtest
 def test_authenticate_api_json_key_error(tmp_path):
     """Check that a key error is thrown when an invalid json is used to authenticate."""
     # Check with temporary .json file
