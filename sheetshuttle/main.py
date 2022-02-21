@@ -18,31 +18,31 @@ app = typer.Typer()
 def sheetshuttle(
     sheets_keys_file: str = typer.Option(
         ".env",
-        "--sheets_keys_file",
+        "--sheets-keys-file",
         "-kf",
         help="Path to the Sheets api keys, either .json or .env file",
     ),
     sheets_config_directory: str = typer.Option(
         "config/sheet_sources/",
-        "--sheets_config_directory",
+        "--sheets-config-directory",
         "-cd",
         help="Directory to get the sheets configuration .yaml files from",
     ),
     plugins_directory: str = typer.Option(
         "plugins/",
-        "--plugins_directory",
+        "--plugins-directory",
         "-pd",
         help="Directory to get plugins from",
     ),
     plugin_name: str = typer.Option(
         "default",
-        "--plugin_name",
+        "--plugin-name",
         "-pn",
         help="Name of plugin to use for processing",
     ),
     json_args=typer.Option(
         None,
-        "--json_args",
+        "--json-args",
         "-ja",
         help="Path to the JSON file with additional arguments.",
     ),
@@ -72,9 +72,13 @@ def load_json_file(file_path):
     """Return the contents of a json file in the file path."""
     if not file_path:
         return {}
-    with open(file_path, encoding="uts-8") as read_file:
-        data = json.load(read_file)
-        return data
+    try:
+        with open(file_path, "r", encoding="uts-8") as read_file:
+            data = json.load(read_file)
+            return data
+    except FileNotFoundError as e:
+        print(f"ERROR: JSON argument file '{file_path}' was not found.")
+        raise e
 
 
 if __name__ == "__main__":
