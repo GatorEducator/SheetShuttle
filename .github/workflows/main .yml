@@ -75,12 +75,12 @@ jobs:
             AUTH_PROVIDER_X509_CERT_URL: ${{ secrets.AUTH_PROVIDER_X509_CERT_URL }}
             CLIENT_X509_CERT_URL: ${{ secrets.CLIENT_X509_CERT_URL }}
             GH_ACCESS_TOKEN: ${{ secrets.GH_ACCESS_TOKEN }}
-          run: poetry run task coverage
+          run: poetry run task coverage-all
         - name: Upload Coverage
           uses: codecov/codecov-action@v2
           with:
             token: ${{ secrets.CODECOV_TOKEN }}
             files: ./coverage.xml
             flags: unittests
-            fail_ci_if_error: true 
+            fail_ci_if_error: true
             verbose: true

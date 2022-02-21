@@ -10,6 +10,11 @@ from dotenv import load_dotenv
 full_test_data = {}
 
 
+def pytest_configure(config):
+    """Register the marker with hooks."""
+    config.addinivalue_line("markers", "webtest: run on actions only")
+
+
 @pytest.hookimpl()
 def pytest_sessionstart():
     """Read and collect test data as part of the global test data dictionary.
