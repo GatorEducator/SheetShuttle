@@ -128,8 +128,8 @@ def test_post_all(test_data):
     """Check that all collected entries from config can be posted."""
     # create github manager object with the directory as argument
     manager = github_interaction.GithubManager()
-    manager.parse_config_list(test_data["collect_config_test"]["postable_sample"])
     manager.api = mock_gh_api.MockGH()
+    manager.parse_config_list(test_data["collect_config_test"]["postable_sample"])
     assert (
         len(manager.issue_entries) == 1
         and len(manager.pull_request_entries) == 1
