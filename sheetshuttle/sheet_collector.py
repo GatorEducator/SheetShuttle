@@ -149,10 +149,11 @@ class SheetCollector:
             try:
                 with open(key_file, "r", encoding="utf-8") as input_file:
                     creds_dict = json.load(input_file)
-            except FileNotFoundError as e:
+            except FileNotFoundError as error_obj:
                 print(
                     f"ERROR: file {key_file} not found, credentials could not be collected."
                 )
+                raise error_obj
             # validate that only the needed keys are in the dictionary
             keys_to_remove = []
             lower_case_vars = map(lambda x: x.lower(), ENV_VAR_LIST)

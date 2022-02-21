@@ -76,9 +76,9 @@ def load_json_file(file_path):
         with open(file_path, "r", encoding="uts-8") as read_file:
             data = json.load(read_file)
             return data
-    except FileNotFoundError as e:
+    except FileNotFoundError as error_obj:
         print(f"ERROR: JSON argument file '{file_path}' was not found.")
-        raise e
+        raise error_obj
 
 
 if __name__ == "__main__":
