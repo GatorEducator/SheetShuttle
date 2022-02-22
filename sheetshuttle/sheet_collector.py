@@ -143,12 +143,32 @@ class SheetCollector:
             key_file (str, optional): Path to file containing API tokens.
                 Can be either JSON or .env file
         """
+        creds_dict = {}
+        # Retreive the credentials
         if key_file.endswith(".json"):
-            credentials = service_account.Credentials.from_service_account_file(
-                key_file, scopes=SCOPES
-            )
+            try:
+                with open(key_file, "r", encoding="utf-8") as input_file:
+                    creds_dict = json.load(input_file)
+            except FileNotFoundError as error_obj:
+                print(
+                    f"ERROR: file {key_file} not found, credentials could not be collected."
+                )
+                raise error_obj
+            # validate that only the needed keys are in the dictionary
+            keys_to_remove = []
+            lower_case_vars = map(lambda x: x.lower(), ENV_VAR_LIST)
+            for variable_name in creds_dict.keys():
+                # remove any extra values from the dictionary if they exist
+                if variable_name not in lower_case_vars:
+                    keys_to_remove.append(variable_name)
+            for removable_key in keys_to_remove:
+                creds_dict.pop(removable_key)
+            diff = set(lower_case_vars).difference(set(creds_dict.keys()))
+            if not len(diff) == 0:
+                raise MissingAuthenticationVariable(
+                    f"Variables {diff} could not be found"
+                )
         elif key_file.endswith(".env"):
-            creds_dict = {}
             for env_var in ENV_VAR_LIST:
                 var_value = os.getenv(env_var)
                 if not var_value:
@@ -156,15 +176,14 @@ class SheetCollector:
                         f"Variable {env_var} could not be found"
                     )
                 creds_dict[env_var.lower()] = var_value
-            credentials = service_account.Credentials.from_service_account_info(
-                creds_dict, scopes=SCOPES
-            )
         else:
             raise Exception(
                 f"Unclear source of Sheets authentication keys {key_file}."
                 + "Must be a .env or .json file"
             )
-
+        credentials = service_account.Credentials.from_service_account_info(
+            creds_dict, scopes=SCOPES
+        )
         service = build("sheets", "v4", credentials=credentials)
         # pylint: disable=E1101
         sheets = service.spreadsheets()
