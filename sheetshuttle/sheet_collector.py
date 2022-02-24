@@ -39,6 +39,36 @@ CONFIG_SCHEMA = {
                     "items": {"type": "string"},
                     "minItems": 1,
                 },
+                # TODO: include in schema documentation
+                "types": {
+                    "anyOf": [
+                        {
+                            "type": "string",
+                            "enum": [
+                                "object",
+                                "string",
+                                "int",
+                                "float",
+                                "bool",
+                                "datetime",
+                            ],
+                        },
+                        {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string",
+                                "enum": [
+                                    "object",
+                                    "string",
+                                    "int",
+                                    "float",
+                                    "bool",
+                                    "datetime",
+                                ],
+                            },
+                        },
+                    ]
+                },
             },
             "required": ["name", "start", "end", "contains_headers"],
             "if": {"properties": {"contains_headers": {"const": False}}},
@@ -122,6 +152,8 @@ class SheetCollector:
             raise Exception("ERROR: Collector was not authenticated")
         # get a list of all yaml and yml path objects in the config_dir
         config_files: List[pathlib.Path] = util.get_yaml_files(self.config_dir)
+        if not config_files:
+            raise Exception(f"ERROR: No configuration files found in {self.config_dir}")
         for yaml_file in config_files:
             # Open yaml file as read
             with open(yaml_file, "r", encoding="utf-8") as config_file:
@@ -217,13 +249,18 @@ class Sheet:
                     region["start"],
                     region["end"],
                 )
+                # set the default type as string
+                types = "string"
+                if "types" in region:
+                    types = region["types"]
                 if region["contains_headers"]:
-                    data = Sheet.to_dataframe(region_data)
+                    data = Sheet.to_dataframe(region_data, types=types)
                 else:
                     data = Sheet.to_dataframe(
                         region_data,
                         headers_in_data=False,
                         headers=region["headers"],
+                        types=types,
                     )
                 region_object = Region(
                     region["name"],
@@ -255,7 +292,7 @@ class Sheet:
 
     @staticmethod
     def to_dataframe(
-        data: List[List], headers_in_data=True, headers=None
+        data: List[List], headers_in_data=True, headers=None, types="string"
     ) -> pd.DataFrame:
         """Convert the data from Sheets API from List[List] pandas dataframe.
 
@@ -265,6 +302,9 @@ class Sheet:
                 data. Defaults to True.
             headers (list, optional): If column headers are not included, use
             the headers in this list. Defaults to [].
+            types (string or dict): one pandas datatype for the whole dataframe
+                or a dictionary with column labels and their data types.
+                Defaults to string.
 
         Raises:
             Exception: thrown when headers is empty and headers_in_data
@@ -284,10 +324,12 @@ class Sheet:
                 raise Exception(
                     "ERROR: data must contain at least two rows if headers are in data."
                 )
-            return pd.DataFrame(data[1:], columns=data[0])
+            result_data = pd.DataFrame(data[1:], columns=data[0]).astype(types)
+            return result_data
         if not headers:
             raise Exception("No passed table headers")
-        return pd.DataFrame(data, columns=headers)
+        result_data = pd.DataFrame(data, columns=headers).astype(types)
+        return result_data
 
     @staticmethod
     def check_config_schema(config: Dict):
