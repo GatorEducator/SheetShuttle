@@ -4,7 +4,7 @@ import json
 import os
 import pathlib
 import pickle
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 import pandas as pd  # type: ignore[import]
 import yaml
@@ -40,6 +40,7 @@ CONFIG_SCHEMA = {
                     "minItems": 1,
                 },
                 # TODO: include in schema documentation
+                "fill": {"type": "boolean"},
                 "types": {
                     "anyOf": [
                         {
@@ -249,6 +250,13 @@ class Sheet:
                     region["start"],
                     region["end"],
                 )
+                # TODO: add this `fill` option to the schema and documentation
+                if "fill" in region and region["fill"]:
+                    # Find region dimensions
+                    columns, rows = util.calculate_dimensions(
+                        region["start"], region["end"]
+                    )
+                    region_data = util.fill_to_dimensions(region_data, columns, rows)
                 # set the default type as string
                 types = "string"
                 if "types" in region:
