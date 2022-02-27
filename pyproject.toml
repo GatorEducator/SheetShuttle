@@ -23,6 +23,8 @@ python-dotenv = "^0.19.1"
 pluginbase = "^1.0.1"
 PyGithub = "^1.55"
 openpyxl = "^3.0.9"
+openpyxl-stubs = "^0.1.21"
+types-jsonschema = "^4.4.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
@@ -47,7 +49,7 @@ mypy = { cmd = "poetry run mypy sheetshuttle --show-error-codes", help = "Run th
 pydocstyle = { cmd = "pydocstyle sheetshuttle tests", help = "Run the pydocstyle checks for source code documentation" }
 pylint = { cmd = "pylint sheetshuttle tests", help = "Run the pylint checks for source code documentation" }
 all = "task black && task flake8 && task pydocstyle && task mypy && task pylint && task test"
-lint = "task black && task flake8 && task pydocstyle && task pylint"
+lint = "task black && task flake8 && task pydocstyle && task mypy && task pylint "
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

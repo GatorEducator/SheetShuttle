@@ -7,7 +7,7 @@ from typing import Dict, List
 import yaml
 from github import Github
 
-from jsonschema import validate  # type: ignore[import]
+from jsonschema import validate
 from sheetshuttle import github_objects, util
 
 

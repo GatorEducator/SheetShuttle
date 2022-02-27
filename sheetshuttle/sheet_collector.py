@@ -4,13 +4,13 @@ import json
 import os
 import pathlib
 import pickle
-from typing import Dict, List, Tuple
+from typing import Dict, List
 
 import pandas as pd  # type: ignore[import]
 import yaml
 from google.oauth2 import service_account  # type: ignore[import]
 from googleapiclient.discovery import build  # type: ignore[import]
-from jsonschema import validate  # type: ignore[import]
+from jsonschema import validate
 
 from sheetshuttle import util
 
@@ -258,6 +258,8 @@ class Sheet:
                     )
                     region_data = util.fill_to_dimensions(region_data, columns, rows)
                 # set the default type as string
+                # TODO: INCLUDE IN DOCS THAT IF MISSING DATA EXISTS, FLOAT TYPE MUST BE USED
+                # AS TYPE
                 types = "string"
                 if "types" in region:
                     types = region["types"]

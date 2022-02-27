@@ -6,7 +6,7 @@ from github.Issue import Issue
 from github.PullRequest import PullRequest
 from github.ContentFile import ContentFile
 from github.GithubException import GithubException
-from jsonschema import validate  # type: ignore[import]
+from jsonschema import validate
 
 
 class Entry:

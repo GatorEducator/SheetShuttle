@@ -1,0 +1,15 @@
+source_id: 10-Mvx5Eiw9-i1jYCN-BXdHKtbRWSBOC15LXiFMuKuzA
+sheets:
+    - name: Sheet1
+      regions:
+      - name: names
+        start: A1
+        end: A29
+        contains_headers: true
+        types: string
+      - name: EE
+        start: B1
+        end: AG29
+        contains_headers: true
+        types: float
+        fill: true

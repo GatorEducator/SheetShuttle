@@ -195,7 +195,7 @@ grpcio-gcp = ["grpcio-gcp (>=0.2.2)"]
 
 [[package]]
 name = "google-api-python-client"
-version = "2.31.0"
+version = "2.38.0"
 description = "Google API Client Library for Python"
 category = "main"
 optional = false
@@ -206,7 +206,7 @@ google-api-core = ">=1.21.0,<3.0.0dev"
 google-auth = ">=1.16.0,<3.0.0dev"
 google-auth-httplib2 = ">=0.1.0"
 httplib2 = ">=0.15.0,<1dev"
-uritemplate = ">=3.0.0,<5"
+uritemplate = ">=3.0.1,<5"
 
 [[package]]
 name = "google-auth"
@@ -354,7 +354,7 @@ python-versions = ">=3.5"
 name = "mypy"
 version = "0.910"
 description = "Optional static typing for Python"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=3.5"
 
@@ -371,7 +371,7 @@ python2 = ["typed-ast (>=1.4.0,<1.5.0)"]
 name = "mypy-extensions"
 version = "0.4.3"
 description = "Experimental type system extensions for programs checked with the mypy typechecker."
-category = "dev"
+category = "main"
 optional = false
 python-versions = "*"
 
@@ -406,6 +406,19 @@ python-versions = ">=3.6"
 
 [package.dependencies]
 et-xmlfile = "*"
+
+[[package]]
+name = "openpyxl-stubs"
+version = "0.1.21"
+description = "Type stubs for openpyxl"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+mypy = ">=0.720"
+openpyxl = ">=3.0.0"
+typing-extensions = ">=3.7.4"
 
 [[package]]
 name = "packaging"
@@ -870,7 +883,7 @@ python-versions = "*"
 name = "toml"
 version = "0.10.2"
 description = "Python Library for Tom's Obvious, Minimal Language"
-category = "dev"
+category = "main"
 optional = false
 python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 
@@ -902,6 +915,14 @@ dev = ["autoflake (>=1.3.1,<2.0.0)", "flake8 (>=3.8.3,<4.0.0)"]
 doc = ["mkdocs (>=1.1.2,<2.0.0)", "mkdocs-material (>=5.4.0,<6.0.0)", "markdown-include (>=0.5.1,<0.6.0)"]
 
 [[package]]
+name = "types-jsonschema"
+version = "4.4.1"
+description = "Typing stubs for jsonschema"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "types-pyyaml"
 version = "6.0.1"
 description = "Typing stubs for PyYAML"
@@ -911,11 +932,11 @@ python-versions = "*"
 
 [[package]]
 name = "typing-extensions"
-version = "4.0.0"
-description = "Backported and Experimental Type Hints for Python 3.6+"
-category = "dev"
+version = "3.10.0.2"
+description = "Backported and Experimental Type Hints for Python 3.5+"
+category = "main"
 optional = false
-python-versions = ">=3.6"
+python-versions = "*"
 
 [[package]]
 name = "uritemplate"
@@ -957,7 +978,7 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9.6"
-content-hash = "dc9442ac862d195da38b59f5c685a9d4099f5629436e3c4f8b34dbf63ca3e67d"
+content-hash = "5781fdd10d77cf1b56a831a78a4f367dddbe70a1eeecc8ff4fa6631d9e3cbd6d"
 
 [metadata.files]
 astroid = [
@@ -1112,8 +1133,8 @@ google-api-core = [
     {file = "google_api_core-2.2.2-py2.py3-none-any.whl", hash = "sha256:e7853735d4f51f4212d6bf9750620d76fc0106c0f271be0c3f43b73501c7ddf9"},
 ]
 google-api-python-client = [
-    {file = "google-api-python-client-2.31.0.tar.gz", hash = "sha256:3f64a5eee6fa03ab51806dccf48e342fda83fea60c290518c6a2dfdbf2de9efd"},
-    {file = "google_api_python_client-2.31.0-py2.py3-none-any.whl", hash = "sha256:d9f1539db48abfea3d7d65e4cfba258a5a95c901e99fb49c7cfe4de99921a757"},
+    {file = "google-api-python-client-2.38.0.tar.gz", hash = "sha256:911b3e78981ffb26fa77791a41654d11ac42d863cbc3b7cce992761b826f1a96"},
+    {file = "google_api_python_client-2.38.0-py2.py3-none-any.whl", hash = "sha256:895fd24a5707d4696b754e8cbbd13082087ed6d6e9da43854999faab3e283afc"},
 ]
 google-auth = [
     {file = "google-auth-2.3.3.tar.gz", hash = "sha256:d83570a664c10b97a1dc6f8df87e5fdfff012f48f62be131e449c20dfc32630e"},
@@ -1251,6 +1272,10 @@ oauthlib = [
 openpyxl = [
     {file = "openpyxl-3.0.9-py2.py3-none-any.whl", hash = "sha256:8f3b11bd896a95468a4ab162fc4fcd260d46157155d1f8bfaabb99d88cfcf79f"},
     {file = "openpyxl-3.0.9.tar.gz", hash = "sha256:40f568b9829bf9e446acfffce30250ac1fa39035124d55fc024025c41481c90f"},
+]
+openpyxl-stubs = [
+    {file = "openpyxl-stubs-0.1.21.tar.gz", hash = "sha256:8a8c433e4874bae3cc2bfcb0d7b9e24e82c666f7e5478ff35d86c54b7cbe2551"},
+    {file = "openpyxl_stubs-0.1.21-py3-none-any.whl", hash = "sha256:8b67d71707dffd881cef6743f19950b55227dedc1455a1456f1315c995a3754c"},
 ]
 packaging = [
     {file = "packaging-21.3-py3-none-any.whl", hash = "sha256:ef103e05f519cdc783ae24ea4e2e0f508a9c99b2d4969652eed6a2e1ea5bd522"},
@@ -1648,13 +1673,18 @@ typer = [
     {file = "typer-0.3.2-py3-none-any.whl", hash = "sha256:ba58b920ce851b12a2d790143009fa00ac1d05b3ff3257061ff69dbdfc3d161b"},
     {file = "typer-0.3.2.tar.gz", hash = "sha256:5455d750122cff96745b0dec87368f56d023725a7ebc9d2e54dd23dc86816303"},
 ]
+types-jsonschema = [
+    {file = "types-jsonschema-4.4.1.tar.gz", hash = "sha256:bd68b75217ebbb33b0242db10047581dad3b061a963a46ee80d4a9044080663e"},
+    {file = "types_jsonschema-4.4.1-py3-none-any.whl", hash = "sha256:ab3ecfdc912d6091cc82f4b7556cfbf1a7cbabc26da0ceaa1cbbc232d1d09971"},
+]
 types-pyyaml = [
     {file = "types-PyYAML-6.0.1.tar.gz", hash = "sha256:2e27b0118ca4248a646101c5c318dc02e4ca2866d6bc42e84045dbb851555a76"},
     {file = "types_PyYAML-6.0.1-py3-none-any.whl", hash = "sha256:d5b318269652e809b5c30a5fe666c50159ab80bfd41cd6bafe655bf20b29fcba"},
 ]
 typing-extensions = [
-    {file = "typing_extensions-4.0.0-py3-none-any.whl", hash = "sha256:829704698b22e13ec9eaf959122315eabb370b0884400e9818334d8b677023d9"},
-    {file = "typing_extensions-4.0.0.tar.gz", hash = "sha256:2cdf80e4e04866a9b3689a51869016d36db0814d84b8d8a568d22781d45d27ed"},
+    {file = "typing_extensions-3.10.0.2-py2-none-any.whl", hash = "sha256:d8226d10bc02a29bcc81df19a26e56a9647f8b0a6d4a83924139f4a8b01f17b7"},
+    {file = "typing_extensions-3.10.0.2-py3-none-any.whl", hash = "sha256:f1d25edafde516b146ecd0613dabcc61409817af4766fbbcfb8d1ad4ec441a34"},
+    {file = "typing_extensions-3.10.0.2.tar.gz", hash = "sha256:49f75d16ff11f1cd258e1b988ccff82a3ca5570217d7ad8c5f48205dd99a677e"},
 ]
 uritemplate = [
     {file = "uritemplate-4.1.1-py2.py3-none-any.whl", hash = "sha256:830c08b8d99bdd312ea4ead05994a38e8936266f84b9a7878232db50b044e02e"},

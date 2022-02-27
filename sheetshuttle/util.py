@@ -2,7 +2,8 @@
 
 import os
 import pathlib
-from typing import List, Tuple
+from typing import List, Tuple, Any
+
 from openpyxl.utils.cell import coordinate_from_string, column_index_from_string
 
 
@@ -51,9 +52,9 @@ def calculate_dimensions(start_range: str, end_range: str) -> Tuple[int, int]:
 
 
 def fill_to_dimensions(
-    data: List[List[str]], columns: int, rows: int
-) -> List[List[str]]:
-    """Append None where there is a mismatch in the data and the dimensions
+    data: List[List[Any]], columns: int, rows: int
+) -> List[List[Any]]:
+    """Append None where there is a mismatch in the data and the dimensions.
 
     Args:
         data (List[List[str]]): data to fill
