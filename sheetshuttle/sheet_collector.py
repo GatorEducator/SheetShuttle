@@ -249,7 +249,6 @@ class Sheet:
                     region["start"],
                     region["end"],
                 )
-                print(region_data)
                 if "fill" in region and region["fill"]:
                     # Find region dimensions
                     columns, rows = util.calculate_dimensions(
