@@ -1,0 +1,225 @@
+# NOTE: This file was automatically generated
+- action: create
+  body: 'Current engineering effort grade is: 0.17462499999999997'
+  labels:
+  - SheetShuttle
+  - Automated Grading
+  repo: sample_org/sample_template_name1_uname
+  title: name1 Automated Grade Update
+  type: issue
+- action: create
+  body: 'Current engineering effort grade is: 0.3'
+  labels:
+  - SheetShuttle
+  - Automated Grading
+  repo: sample_org/sample_template_name2_uname
+  title: name2 Automated Grade Update
+  type: issue
+- action: create
+  body: 'Current engineering effort grade is: 0.26875'
+  labels:
+  - SheetShuttle
+  - Automated Grading
+  repo: sample_org/sample_template_name3_uname
+  title: name3 Automated Grade Update
+  type: issue
+- action: create
+  body: 'Current engineering effort grade is: 0.28124999999999994'
+  labels:
+  - SheetShuttle
+  - Automated Grading
+  repo: sample_org/sample_template_name4_uname
+  title: name4 Automated Grade Update
+  type: issue
+- action: create
+  body: 'Current engineering effort grade is: 0.28125'
+  labels:
+  - SheetShuttle
+  - Automated Grading
+  repo: sample_org/sample_template_name5_uname
+  title: name5 Automated Grade Update
+  type: issue
+- action: create
+  body: 'Current engineering effort grade is: 0.28124999999999994'
+  labels:
+  - SheetShuttle
+  - Automated Grading
+  repo: sample_org/sample_template_name6_uname
+  title: name6 Automated Grade Update
+  type: issue
+- action: create
+  body: 'Current engineering effort grade is: 0.2046875'
+  labels:
+  - SheetShuttle
+  - Automated Grading
+  repo: sample_org/sample_template_name7_uname
+  title: name7 Automated Grade Update
+  type: issue
+- action: create
+  body: 'Current engineering effort grade is: 0.2534375'
+  labels:
+  - SheetShuttle
+  - Automated Grading
+  repo: sample_org/sample_template_name8_uname
+  title: name8 Automated Grade Update
+  type: issue
+- action: create
+  body: 'Current engineering effort grade is: 0.27499999999999997'
+  labels:
+  - SheetShuttle
+  - Automated Grading
+  repo: sample_org/sample_template_name9_uname
+  title: name9 Automated Grade Update
+  type: issue
+- action: create
+  body: 'Current engineering effort grade is: 0.28125'
+  labels:
+  - SheetShuttle
+  - Automated Grading
+  repo: sample_org/sample_template_name10_uname
+  title: name10 Automated Grade Update
+  type: issue
+- action: create
+  body: 'Current engineering effort grade is: 0.17512500000000003'
+  labels:
+  - SheetShuttle
+  - Automated Grading
+  repo: sample_org/sample_template_name11_uname
+  title: name11 Automated Grade Update
+  type: issue
+- action: create
+  body: 'Current engineering effort grade is: 0.29374999999999996'
+  labels:
+  - SheetShuttle
+  - Automated Grading
+  repo: sample_org/sample_template_name12_uname
+  title: name12 Automated Grade Update
+  type: issue
+- action: create
+  body: 'Current engineering effort grade is: 0.2875'
+  labels:
+  - SheetShuttle
+  - Automated Grading
+  repo: sample_org/sample_template_name13_uname
+  title: name13 Automated Grade Update
+  type: issue
+- action: create
+  body: 'Current engineering effort grade is: 0.3'
+  labels:
+  - SheetShuttle
+  - Automated Grading
+  repo: sample_org/sample_template_name14_uname
+  title: name14 Automated Grade Update
+  type: issue
+- action: create
+  body: 'Current engineering effort grade is: 0.16481249999999997'
+  labels:
+  - SheetShuttle
+  - Automated Grading
+  repo: sample_org/sample_template_name15_uname
+  title: name15 Automated Grade Update
+  type: issue
+- action: create
+  body: 'Current engineering effort grade is: 0.2875'
+  labels:
+  - SheetShuttle
+  - Automated Grading
+  repo: sample_org/sample_template_name16_uname
+  title: name16 Automated Grade Update
+  type: issue
+- action: create
+  body: 'Current engineering effort grade is: 0.29374999999999996'
+  labels:
+  - SheetShuttle
+  - Automated Grading
+  repo: sample_org/sample_template_name17_uname
+  title: name17 Automated Grade Update
+  type: issue
+- action: create
+  body: 'Current engineering effort grade is: 0.28124999999999994'
+  labels:
+  - SheetShuttle
+  - Automated Grading
+  repo: sample_org/sample_template_name18_uname
+  title: name18 Automated Grade Update
+  type: issue
+- action: create
+  body: 'Current engineering effort grade is: 0.3'
+  labels:
+  - SheetShuttle
+  - Automated Grading
+  repo: sample_org/sample_template_name19_uname
+  title: name19 Automated Grade Update
+  type: issue
+- action: create
+  body: 'Current engineering effort grade is: 0.2875'
+  labels:
+  - SheetShuttle
+  - Automated Grading
+  repo: sample_org/sample_template_name20_uname
+  title: name20 Automated Grade Update
+  type: issue
+- action: create
+  body: 'Current engineering effort grade is: 0.2375'
+  labels:
+  - SheetShuttle
+  - Automated Grading
+  repo: sample_org/sample_template_name21_uname
+  title: name21 Automated Grade Update
+  type: issue
+- action: create
+  body: 'Current engineering effort grade is: 0.3'
+  labels:
+  - SheetShuttle
+  - Automated Grading
+  repo: sample_org/sample_template_name22_uname
+  title: name22 Automated Grade Update
+  type: issue
+- action: create
+  body: 'Current engineering effort grade is: 0.2875'
+  labels:
+  - SheetShuttle
+  - Automated Grading
+  repo: sample_org/sample_template_name23_uname
+  title: name23 Automated Grade Update
+  type: issue
+- action: create
+  body: 'Current engineering effort grade is: 0.26875'
+  labels:
+  - SheetShuttle
+  - Automated Grading
+  repo: sample_org/sample_template_name24_uname
+  title: name24 Automated Grade Update
+  type: issue
+- action: create
+  body: 'Current engineering effort grade is: 0.1835625'
+  labels:
+  - SheetShuttle
+  - Automated Grading
+  repo: sample_org/sample_template_name25_uname
+  title: name25 Automated Grade Update
+  type: issue
+- action: create
+  body: 'Current engineering effort grade is: 0.273875'
+  labels:
+  - SheetShuttle
+  - Automated Grading
+  repo: sample_org/sample_template_name26_uname
+  title: name26 Automated Grade Update
+  type: issue
+- action: create
+  body: 'Current engineering effort grade is: 0.21143749999999997'
+  labels:
+  - SheetShuttle
+  - Automated Grading
+  repo: sample_org/sample_template_name27_uname
+  title: name27 Automated Grade Update
+  type: issue
+- action: create
+  body: 'Current engineering effort grade is: 0.183'
+  labels:
+  - SheetShuttle
+  - Automated Grading
+  repo: sample_org/sample_template_name28_uname
+  title: name28 Automated Grade Update
+  type: issue
