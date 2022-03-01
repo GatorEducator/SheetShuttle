@@ -1,6 +1,6 @@
 """Implement mock APIs for github for the purposes of testing"""
 
-# TODO: this module does get checked by linters
+# !Note: this module does get checked by linters
 
 
 class MockGH:

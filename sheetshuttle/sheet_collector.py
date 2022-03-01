@@ -39,7 +39,6 @@ CONFIG_SCHEMA = {
                     "items": {"type": "string"},
                     "minItems": 1,
                 },
-                # TODO: include in schema documentation
                 "fill": {"type": "boolean"},
                 "types": {
                     "anyOf": [
@@ -250,7 +249,7 @@ class Sheet:
                     region["start"],
                     region["end"],
                 )
-                # TODO: add this `fill` option to the schema and documentation
+                print(region_data)
                 if "fill" in region and region["fill"]:
                     # Find region dimensions
                     columns, rows = util.calculate_dimensions(
@@ -258,8 +257,6 @@ class Sheet:
                     )
                     region_data = util.fill_to_dimensions(region_data, columns, rows)
                 # set the default type as string
-                # TODO: INCLUDE IN DOCS THAT IF MISSING DATA EXISTS, FLOAT TYPE MUST BE USED
-                # AS TYPE
                 types = "string"
                 if "types" in region:
                     types = region["types"]
@@ -406,7 +403,7 @@ class Region:
         self.full_name = f"{parent_sheet_name}_{region_name}"
         self.start_range = start_range
         self.end_range = end_range
-        self.data = data
+        self.data: pd.DataFrame = data
 
     def print_region(self):
         """Print the contents of the region in a markdown table format."""

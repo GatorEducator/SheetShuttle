@@ -8,6 +8,10 @@ configuration must follow the specified format.
   - [Sheets Schema](#sheets-schema)
     - [Defining Objects](#defining-objects)
       - [Region Object](#region-object)
+        - [`contains_headers` Explained](#contains_headers-explained)
+        - [`fill` Explained](#fill-explained)
+        - [`types` Explained](#types-explained)
+        - [Examples](#examples)
       - [Sheet Object](#sheet-object)
     - [Overall Structure](#overall-structure)
   - [GitHub Interactions Schema](#github-interactions-schema)
@@ -27,18 +31,7 @@ There are two main nested object structures used in the Sheets schema.
 #### Region Object
 
 This is the simplest object that does not contain complex nested objects in it. It
-has the following structure:
-
-```yml
-name: <string, required> name of the region to create
-start: <string, required> cell to start from (eg. A1)
-end: <string, required> cell to end at (eg. H12)
-contains_headers: <boolean, required> if selected range contains
-                  headers in the first row
-```
-
-If `contains_headers` was set to `false`, another key must be provided. The new
-key is called `headers` and the structure would look as follows:
+has the following general structure:
 
 ```yml
 name: <string, required> name of the region to create
@@ -48,7 +41,145 @@ contains_headers: <boolean, required> if selected range contains
                   headers in the first row
 headers: <list of strings, conditional> headers to be used, only
          required if contains_headers is false
+fill: <boolean, optional> fill the region with `None` if there are missing values.
+      Defaults to false
+types: <string or object, optional> data type to use for the whole region or
+       for specific columns. Defaults to `string`
 ```
+
+Some values in this structure are a bit ambiguous, the following section will
+provide further explanation on their usage:
+
+##### `contains_headers` Explained
+
+In many cases, the region being retrieved already contains the headers to the
+data. Set this option to `true` in order to set the column headers of the
+resulting Pandas dataframe equal to the first row of the data.
+
+In the case that the data does not contain headers, another value `headers` is
+required by the schema. It should be a list of strings with the headers of the
+data.
+
+**NOTE:** The length of the headers list must match the number of columns in the
+data. Otherwise a Pandas error will be thrown.
+
+##### `fill` Explained
+
+SheetShuttle attempts to deal with missing data, but many limitations exist. The
+following screenshot shows a dataset with empty cells. Let's see how
+SheetShuttle allows you to deal with it.
+
+![Missing Data screenshot](../images/missing_data1.png)
+
+When retrieved from the Google Sheets API, the data looks as follows:
+
+```python
+[
+    ['Student Name', 'EE1-1', 'EE1-2', 'EE1-3'],
+    ['name1', '85', '0'],
+    ['name2', '100', '1'],
+    ['name3', '100', '1'],
+    ['name4', '100', '0'],
+    ['name5', '100', '1'],
+    ['name6', '100', '1']
+]
+```
+
+As seen in the sample output, the missing data simply does not show up in the
+returned value from the API. By enabling `fill`, the data is converted to the
+following and then a dataframe is created using it.
+
+```python
+[
+    ['Student Name', 'EE1-1', 'EE1-2', 'EE1-3'],
+    ['name1', '85', '0', None],
+    ['name2', '100', '1', None],
+    ['name3', '100', '1', None],
+    ['name4', '100', '0', None],
+    ['name5', '100', '1', None],
+    ['name6', '100', '1', None]
+]
+```
+
+The same applies to empty rows, where a row full of `None` is appended in some cases.
+
+Example:
+
+```python
+[
+    ['Student Name', 'EE1-1', 'EE1-2', 'EE1-3'],
+    ['name1', '85', '0', None],
+    ['name2', '100', '1', None],
+    ['name3', '100', '1', None],
+    ['name4', '100', '0', None],
+    ['name5', '100', '1', None],
+    ['name6', '100', '1', None],
+    [None, None, None, None]
+]
+```
+
+`None` will then get converted to Not a Number `NaN` values in the resulting
+Pandas dataframe.
+
+**A problem with this approach is the following:**
+
+Using a similar example where the missing data is not in the last row/column as
+seen here:
+
+![Missing Data screenshot 2](../images/missing_data2.png)
+
+The resulting data from the API is the following:
+
+```python
+[
+    ['Student Name', 'EE1-1', 'EE1-2', 'EE1-3'],
+    ['name1', '85', '', '0'],
+    ['name2', '100', '', '1'],
+    ['name3', '100', '', '0'],
+    ['name4', '100', '', '1'],
+    ['name5', '100', '', '0'],
+    ['name6', '100', '', '0']
+]
+```
+
+In this case, the `''` will not be replace by `None` and will stay the same even
+when `fill` is enabled.
+
+**IMPORTANT NOTE:** If working with numerical data with possibly some missing
+fields, you MUST use the `float` type. This is because `int` cannot be converted
+to `NaN` by Pandas while `float` can.
+
+##### `types` Explained
+
+By default, all data retrieved from Google Sheets is string. However, in the
+case that a user would like to work with a variety of data types, they can use
+this option to set the data type of the pandas dataframe.
+
+The available data types are:
+
+- `object`
+- `string`
+- `int`
+- `float`
+- `bool`
+- `datetime`
+
+`types` can be set to any of the items on that list. Additionally, the user can
+determine data types for individual columns by doing the following:
+
+```yaml
+types:
+    col1: int
+    col2: string
+    col3: bool
+```
+
+Where the keys are the names of the columns in the data and the value is the
+data type of that specific column.
+
+**Note:** using a name of a column that does not exist will throw an error
+
+##### Examples
 
 With the possible structures in mind, here are a couple of examples of how a
 region object can look like:
@@ -76,6 +207,19 @@ headers:
     - Apr
     - May
     - Jun
+fill: true
+```
+
+```yml
+name: expenses
+start: A1
+end: D6
+contains_headers: true
+types:
+    day: string
+    date: datetime
+    expense: float
+    paid: bool
 ```
 
 #### Sheet Object
@@ -176,6 +320,36 @@ This is the structure used to validate the configuration using `jsonschema`:
                     "type": "array",
                     "items": {"type": "string"},
                     "minItems": 1,
+                },
+                "fill": {"type": "boolean"},
+                "types": {
+                    "anyOf": [
+                        {
+                            "type": "string",
+                            "enum": [
+                                "object",
+                                "string",
+                                "int",
+                                "float",
+                                "bool",
+                                "datetime",
+                            ],
+                        },
+                        {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string",
+                                "enum": [
+                                    "object",
+                                    "string",
+                                    "int",
+                                    "float",
+                                    "bool",
+                                    "datetime",
+                                ],
+                            },
+                        },
+                    ]
                 },
             },
             "required": ["name", "start", "end", "contains_headers"],
