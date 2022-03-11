@@ -11,11 +11,16 @@ from dotenv import load_dotenv
 
 PLUGIN_BASE = PluginBase("sheetshuttle.plugins")
 
-app = typer.Typer()
+app = typer.Typer(name="sheetshuttle")
+
+# TODO: implement this
+@app.command("init")
+def init():
+    print("I am init")
 
 
-@app.command()
-def sheetshuttle(
+@app.command("run")
+def sheetshuttle_run(
     sheets_keys_file: str = typer.Option(
         ".env",
         "--sheets-keys-file",
@@ -25,8 +30,14 @@ def sheetshuttle(
     sheets_config_directory: str = typer.Option(
         "config/sheet_sources/",
         "--sheets-config-directory",
-        "-cd",
+        "-sd",
         help="Directory to get the sheets configuration .yaml files from",
+    ),
+    gh_config_directory: str = typer.Option(
+        "config/gh_sources/",
+        "--gh-config-directory",
+        "-gd",
+        help="Directory to get the Github configuration .yaml files from",
     ),
     plugins_directory: str = typer.Option(
         "plugins/",
@@ -57,7 +68,10 @@ def sheetshuttle(
     if "run" not in methods_list:
         raise Exception(f"ERROR: function run was not found in {plugin_name} plugin.")
     my_plugin.run(
-        sheets_keys_file, sheets_config_directory, args=load_json_file(json_args)
+        sheets_keys_file,
+        sheets_config_directory,
+        gh_config_directory,
+        args=load_json_file(json_args),
     )
 
 
