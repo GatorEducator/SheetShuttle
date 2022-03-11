@@ -3,6 +3,9 @@ name = "SheetShuttle"
 version = "0.1.0"
 description = ""
 authors = ["Noor Buchi <buchin@allegheny.edu>"]
+readme = "README.md"
+repository = "https://github.com/GatorEducator/SheetShuttle"
+
 
 [tool.poetry.scripts]
 sheetshuttle = "sheetshuttle.main:app"
