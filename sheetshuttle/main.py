@@ -4,6 +4,7 @@
 # pylint: disable=W0603
 
 import json
+from pathlib import Path
 import typer
 
 from pluginbase import PluginBase  # type: ignore[import]
@@ -13,13 +14,36 @@ PLUGIN_BASE = PluginBase("sheetshuttle.plugins")
 
 app = typer.Typer(name="sheetshuttle")
 
-# TODO: implement this
-@app.command("init")
-def init():
-    print("I am init")
+STANDARD_PLUGIN = '''""""Standard empty plugin for SheetShuttle."""
+
+from sheetshuttle import github_objects
+from sheetshuttle import sheet_collector
+
+# This function is required
+def run(sheets_keys_file, sheets_config_directory, gh_config_directory, **kwargs):
+    """Standard run function."""
+    pass
+'''
 
 
-@app.command("run")
+@app.command("init", help="Create a plugin in the current directory.")
+def init(
+    plugin_name: str = typer.Argument(
+        ...,
+        help="Path to the Sheets api keys, either .json or .env file",
+    ),
+):
+    """Genererate an empty plugin."""
+    file_path = Path(plugin_name + ".py")
+    if file_path.exists():
+        print("ERROR: file already exists")
+    with open(file_path, "w+", encoding="utf-8") as writefile:
+        writefile.write(STANDARD_PLUGIN)
+    print(f"{plugin_name} created successfully")
+
+
+# pylint: disable=R0913
+@app.command("run", help="Run sheetshuttle using your custom plugin.")
 def sheetshuttle_run(
     sheets_keys_file: str = typer.Option(
         ".env",
