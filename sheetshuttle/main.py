@@ -30,7 +30,7 @@ def run(sheets_keys_file, sheets_config_directory, gh_config_directory, **kwargs
 def init(
     plugin_name: str = typer.Argument(
         ...,
-        help="Path to the Sheets api keys, either .json or .env file",
+        help="Name of the plugin to create. Should NOT end in '.py'",
     ),
 ):
     """Genererate an empty plugin."""
@@ -79,7 +79,7 @@ def sheetshuttle_run(
         None,
         "--json-args",
         "-ja",
-        help="Path to the JSON file with additional arguments.",
+        help="Path to the JSON file with additional arguments. [Optional]",
     ),
 ):
     """Create the CLI and runs the chosen plugin."""
