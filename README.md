@@ -85,7 +85,8 @@ SheetShuttle is ready for use!
 
 After the development environment is ready, you can build an installable `.whl`
 file using `poetry build` command, or continue to use the tool by running
-`poetry run sheetshuttle` from the project directory and passing any additional CLI arguments.
+`poetry run sheetshuttle` from the project directory and passing any additional
+CLI arguments.
 
 ## Running SheetShuttle
 
