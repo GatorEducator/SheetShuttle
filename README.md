@@ -29,6 +29,7 @@ applications.
       - [Initialize a New Plugin](#initialize-a-new-plugin)
       - [Running an Existing Plugin](#running-an-existing-plugin)
     - [Plugin System](#plugin-system)
+  - [Contributors ✨](#contributors-)
 
 ## Set Up and Installation
 
@@ -258,5 +259,27 @@ tool. These plugins typically follow a specific format where they must contain a
 `run` function. When the directory and name of the plugin are provided in the
 `sheetshuttle run` command, the plugin is validated and then immediately ran.
 
-## Contributors
+## Contributors ✨
 
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/noorbuchi"><img src="https://avatars.githubusercontent.com/u/55197145?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Noor Buchi</b></sub></a><br /><a href="https://github.com/GatorEducator/SheetShuttle/commits?author=noorbuchi" title="Code">💻</a> <a href="https://github.com/GatorEducator/SheetShuttle/commits?author=noorbuchi" title="Documentation">📖</a> <a href="#plugin-noorbuchi" title="Plugin/utility libraries">🔌</a> <a href="https://github.com/GatorEducator/SheetShuttle/pulls?q=is%3Apr+reviewed-by%3Anoorbuchi" title="Reviewed Pull Requests">👀</a> <a href="https://github.com/GatorEducator/SheetShuttle/commits?author=noorbuchi" title="Tests">⚠️</a> <a href="#projectManagement-noorbuchi" title="Project Management">📆</a></td>
+    <td align="center"><a href="https://tommyantle.netlify.app/"><img src="https://avatars.githubusercontent.com/u/55158626?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Tommy Antle</b></sub></a><br /><a href="https://github.com/GatorEducator/SheetShuttle/commits?author=antlet" title="Documentation">📖</a> <a href="https://github.com/GatorEducator/SheetShuttle/pulls?q=is%3Apr+reviewed-by%3Aantlet" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://github.com/tuduun"><img src="https://avatars.githubusercontent.com/u/62280291?v=4?s=100" width="100px;" alt=""/><br /><sub><b>tuduun</b></sub></a><br /><a href="https://github.com/GatorEducator/SheetShuttle/commits?author=tuduun" title="Code">💻</a> <a href="https://github.com/GatorEducator/SheetShuttle/pulls?q=is%3Apr+reviewed-by%3Atuduun" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://github.com/Yanqiao4396"><img src="https://avatars.githubusercontent.com/u/79415648?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Yanqiao4396</b></sub></a><br /><a href="https://github.com/GatorEducator/SheetShuttle/commits?author=Yanqiao4396" title="Code">💻</a> <a href="https://github.com/GatorEducator/SheetShuttle/pulls?q=is%3Apr+reviewed-by%3AYanqiao4396" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://www.gregorykapfhammer.com/"><img src="https://avatars.githubusercontent.com/u/926029?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Gregory M. Kapfhammer</b></sub></a><br /><a href="#mentoring-gkapfham" title="Mentoring">🧑‍🏫</a> <a href="#projectManagement-gkapfham" title="Project Management">📆</a> <a href="#ideas-gkapfham" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="http://www.douglasjluman.com/"><img src="https://avatars.githubusercontent.com/u/1552764?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Douglas Luman</b></sub></a><br /><a href="#ideas-dluman" title="Ideas, Planning, & Feedback">🤔</a> <a href="#design-dluman" title="Design">🎨</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!

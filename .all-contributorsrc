@@ -1,8 +1,80 @@
 {
+  "projectName": "SheetShuttle",
+  "projectOwner": "GatorEducator",
+  "repoType": "github",
+  "repoHost": "https://github.com",
   "files": [
     "README.md"
   ],
   "imageSize": 100,
-  "contributorsPerLine": 7,
-  "contributors": []
+  "commit": false,
+  "commitConvention": "gitmoji",
+  "contributors": [
+    {
+      "login": "noorbuchi",
+      "name": "Noor Buchi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/55197145?v=4",
+      "profile": "https://github.com/noorbuchi",
+      "contributions": [
+        "code",
+        "doc",
+        "plugin",
+        "review",
+        "test",
+        "projectManagement"
+      ]
+    },
+    {
+      "login": "antlet",
+      "name": "Tommy Antle",
+      "avatar_url": "https://avatars.githubusercontent.com/u/55158626?v=4",
+      "profile": "https://tommyantle.netlify.app/",
+      "contributions": [
+        "doc",
+        "review"
+      ]
+    },
+    {
+      "login": "tuduun",
+      "name": "tuduun",
+      "avatar_url": "https://avatars.githubusercontent.com/u/62280291?v=4",
+      "profile": "https://github.com/tuduun",
+      "contributions": [
+        "code",
+        "review"
+      ]
+    },
+    {
+      "login": "Yanqiao4396",
+      "name": "Yanqiao4396",
+      "avatar_url": "https://avatars.githubusercontent.com/u/79415648?v=4",
+      "profile": "https://github.com/Yanqiao4396",
+      "contributions": [
+        "code",
+        "review"
+      ]
+    },
+    {
+      "login": "gkapfham",
+      "name": "Gregory M. Kapfhammer",
+      "avatar_url": "https://avatars.githubusercontent.com/u/926029?v=4",
+      "profile": "https://www.gregorykapfhammer.com/",
+      "contributions": [
+        "mentoring",
+        "projectManagement",
+        "ideas"
+      ]
+    },
+    {
+      "login": "dluman",
+      "name": "Douglas Luman",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1552764?v=4",
+      "profile": "http://www.douglasjluman.com/",
+      "contributions": [
+        "ideas",
+        "design"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7
 }
