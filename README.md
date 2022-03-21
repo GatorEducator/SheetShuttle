@@ -163,3 +163,5 @@ files can be used if preferred.
 ### Using Command Line Interface
 
 ### Plugin System
+
+## Contributors
