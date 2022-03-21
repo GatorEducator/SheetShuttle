@@ -4,6 +4,7 @@
 # pylint: disable=W0603
 
 import json
+from pathlib import Path
 import typer
 
 from pluginbase import PluginBase  # type: ignore[import]
@@ -11,11 +12,39 @@ from dotenv import load_dotenv
 
 PLUGIN_BASE = PluginBase("sheetshuttle.plugins")
 
-app = typer.Typer()
+app = typer.Typer(name="sheetshuttle")
+
+STANDARD_PLUGIN = '''""""Standard empty plugin for SheetShuttle."""
+
+from sheetshuttle import github_objects
+from sheetshuttle import sheet_collector
+
+# This function is required
+def run(sheets_keys_file, sheets_config_directory, gh_config_directory, **kwargs):
+    """Standard run function."""
+    pass
+'''
 
 
-@app.command()
-def sheetshuttle(
+@app.command("init", help="Create a plugin in the current directory.")
+def init(
+    plugin_name: str = typer.Argument(
+        ...,
+        help="Name of the plugin to create. Should NOT end in '.py'",
+    ),
+):
+    """Genererate an empty plugin."""
+    file_path = Path(plugin_name + ".py")
+    if file_path.exists():
+        print("ERROR: file already exists")
+    with open(file_path, "w+", encoding="utf-8") as writefile:
+        writefile.write(STANDARD_PLUGIN)
+    print(f"{plugin_name} created successfully")
+
+
+# pylint: disable=R0913
+@app.command("run", help="Run sheetshuttle using your custom plugin.")
+def sheetshuttle_run(
     sheets_keys_file: str = typer.Option(
         ".env",
         "--sheets-keys-file",
@@ -25,8 +54,14 @@ def sheetshuttle(
     sheets_config_directory: str = typer.Option(
         "config/sheet_sources/",
         "--sheets-config-directory",
-        "-cd",
+        "-sd",
         help="Directory to get the sheets configuration .yaml files from",
+    ),
+    gh_config_directory: str = typer.Option(
+        "config/gh_sources/",
+        "--gh-config-directory",
+        "-gd",
+        help="Directory to get the Github configuration .yaml files from",
     ),
     plugins_directory: str = typer.Option(
         "plugins/",
@@ -44,7 +79,7 @@ def sheetshuttle(
         None,
         "--json-args",
         "-ja",
-        help="Path to the JSON file with additional arguments.",
+        help="Path to the JSON file with additional arguments. [Optional]",
     ),
 ):
     """Create the CLI and runs the chosen plugin."""
@@ -57,7 +92,10 @@ def sheetshuttle(
     if "run" not in methods_list:
         raise Exception(f"ERROR: function run was not found in {plugin_name} plugin.")
     my_plugin.run(
-        sheets_keys_file, sheets_config_directory, args=load_json_file(json_args)
+        sheets_keys_file,
+        sheets_config_directory,
+        gh_config_directory,
+        args=load_json_file(json_args),
     )
 
 

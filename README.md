@@ -6,7 +6,7 @@
 [![codecov](https://codecov.io/gh/noorbuchi/SheetShuttle/branch/main/graph/badge.svg?token=02353FAN4W)](https://codecov.io/gh/noorbuchi/SheetShuttle)
 ![stars](https://img.shields.io/github/stars/noorbuchi/SheetShuttle.svg)
 
-<!-- ![SheetShuttleLogo](images/Logo.png) -->
+![SheetShuttleLogo](images/Logo.png)
 
 SheetShuttle is a plugin friendly tool that connects Google Sheets
 and GitHub by allowing the user to post collected data to issue trackers, pull
@@ -16,6 +16,8 @@ applications.
 
 - [SheetShuttle](#sheetshuttle)
   - [Set Up and Installation](#set-up-and-installation)
+    - [Recommended Installation Using `pip`](#recommended-installation-using-pip)
+    - [Manually Building SheetShuttle](#manually-building-sheetshuttle)
   - [Running SheetShuttle](#running-sheetshuttle)
     - [API Setup](#api-setup)
       - [Google Sheets Service Account](#google-sheets-service-account)
@@ -24,12 +26,31 @@ applications.
       - [Sheets Collector](#sheets-collector)
       - [Github Interactions](#github-interactions)
     - [Using Command Line Interface](#using-command-line-interface)
+      - [Initialize a New Plugin](#initialize-a-new-plugin)
+      - [Running an Existing Plugin](#running-an-existing-plugin)
     - [Plugin System](#plugin-system)
+  - [Contributors ✨](#contributors-)
 
 ## Set Up and Installation
 
-**Installation using `pip` is currently not supported. However, it is planned for
-future releases**
+### Recommended Installation Using `pip`
+
+SheetShuttle can be installed using Python's package manager `pip`. By running
+the following command, SheetShuttle and all its dependencies are installed.
+
+```shell
+pip install sheetshuttle
+```
+
+Using this command to install SheetShuttle will ensure that you have the latest
+most stable version of the tool. Additionally, you will be able to run the tool
+anywhere on your system using the `sheetshuttle` command.
+
+### Manually Building SheetShuttle
+
+To get the latest changes from `main` or other development branches, make sure
+to clone the project's repository and follow these steps to create Python
+virtual environment, install dependencies, and build the tool.
 
 SheetShuttle uses Poetry to create a Python virtual environment and manage
 dependencies. For more information about Poetry, check out [the
@@ -42,7 +63,7 @@ Install Poetry using the steps outlined
 [here](https://python-poetry.org/docs/#installation). To verify that Poetry was
 installed successfully run the following:
 
-```
+```shell
 poetry -V
 ```
 
@@ -54,12 +75,19 @@ Once Poetry has been installed successfully, clone or download the repository
 and navigate to the root of the repository. Use the following command to install
 all the dependencies used by SheetShuttle:
 
-```
+```shell
 poetry install
 ```
 
 This command might take some time to finish running. Once it is completed,
 SheetShuttle is ready for use!
+
+**3- Build SheetShuttle or Run Using Poetry:**
+
+After the development environment is ready, you can build an installable `.whl`
+file using `poetry build` command, or continue to use the tool by running
+`poetry run sheetshuttle` from the project directory and passing any additional
+CLI arguments.
 
 ## Running SheetShuttle
 
@@ -157,11 +185,101 @@ Another component of SheetShuttle is the GitHub Interaction interface. It is
 responsible for making API requests to GitHub and posting user specified
 information to GitHub in the form of issue trackers, ull requests, and files.
 The user has complete control of this component's behavior through YAML
-configuration files found in `config/github_interactions` directory. Multliple
+configuration files found in `config/github_interactions` directory. Multiple
 files can be used if preferred.
 
 ### Using Command Line Interface
 
+After installing SheetShuttle using `pip`, the command `sheetshuttle` becomes
+available to run the tool from any location on your system. To get help on the
+CLI commands for SheetShuttle, you can always run `sheetshuttle --help` to get
+the available options. This section gives additional details on the available
+subcommands for the tool.
+
+#### Initialize a New Plugin
+
+To make the process of creating a new plugin more convenient and less error
+prone, the `init` command will create a plugin template that
+fulfils the structural requirement.
+
+```shell
+sheetshuttle init my_plugin_name
+```
+
+This command creates a Python file named `my_plugin_name.py` in the same
+directory the command was ran in. This file can then be edited and used as the
+plugin for SheetShuttle.
+
+#### Running an Existing Plugin
+
+The `run` command is responsible for executing a user defined plugin. It
+supports a help message that displays all the available arguments and their
+description. Some of these arguments are required while others are optional.
+Additionally, most of them already hold a default value that gets used when no
+value is passed through the command.
+
+```shell
+$ sheetshuttle run --help
+
+Usage: sheetshuttle run [OPTIONS]
+
+  Run sheetshuttle using your custom plugin.
+
+Options:
+  -kf, --sheets-keys-file TEXT    Path to the Sheets api keys, either .json or
+                                  .env file  [default: .env]
+
+  -sd, --sheets-config-directory TEXT
+                                  Directory to get the sheets configuration
+                                  .yaml files from  [default:
+                                  config/sheet_sources/]
+
+  -gd, --gh-config-directory TEXT
+                                  Directory to get the Github configuration
+                                  .yaml files from  [default:
+                                  config/gh_sources/]
+
+  -pd, --plugins-directory TEXT   Directory to get plugins from  [default:
+                                  plugins/]
+
+  -pn, --plugin-name TEXT         Name of plugin to use for processing
+                                  [default: default]
+
+  -ja, --json-args TEXT           Path to the JSON file with additional
+                                  arguments. [Optional]
+
+  --help                          Show this message and exit.
+
+```
+
 ### Plugin System
 
-## Contributors
+SheetShuttle supports user defined plugins that use the API provided by the
+tool. These plugins typically follow a specific format where they must contain a
+`run` function. When the directory and name of the plugin are provided in the
+`sheetshuttle run` command, the plugin is validated and then immediately ran.
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/noorbuchi"><img src="https://avatars.githubusercontent.com/u/55197145?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Noor Buchi</b></sub></a><br /><a href="https://github.com/GatorEducator/SheetShuttle/commits?author=noorbuchi" title="Code">💻</a> <a href="https://github.com/GatorEducator/SheetShuttle/commits?author=noorbuchi" title="Documentation">📖</a> <a href="#plugin-noorbuchi" title="Plugin/utility libraries">🔌</a> <a href="https://github.com/GatorEducator/SheetShuttle/pulls?q=is%3Apr+reviewed-by%3Anoorbuchi" title="Reviewed Pull Requests">👀</a> <a href="https://github.com/GatorEducator/SheetShuttle/commits?author=noorbuchi" title="Tests">⚠️</a> <a href="#projectManagement-noorbuchi" title="Project Management">📆</a></td>
+    <td align="center"><a href="https://tommyantle.netlify.app/"><img src="https://avatars.githubusercontent.com/u/55158626?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Tommy Antle</b></sub></a><br /><a href="https://github.com/GatorEducator/SheetShuttle/commits?author=antlet" title="Documentation">📖</a> <a href="https://github.com/GatorEducator/SheetShuttle/pulls?q=is%3Apr+reviewed-by%3Aantlet" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://github.com/tuduun"><img src="https://avatars.githubusercontent.com/u/62280291?v=4?s=100" width="100px;" alt=""/><br /><sub><b>tuduun</b></sub></a><br /><a href="https://github.com/GatorEducator/SheetShuttle/commits?author=tuduun" title="Code">💻</a> <a href="https://github.com/GatorEducator/SheetShuttle/pulls?q=is%3Apr+reviewed-by%3Atuduun" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://github.com/Yanqiao4396"><img src="https://avatars.githubusercontent.com/u/79415648?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Yanqiao4396</b></sub></a><br /><a href="https://github.com/GatorEducator/SheetShuttle/commits?author=Yanqiao4396" title="Code">💻</a> <a href="https://github.com/GatorEducator/SheetShuttle/pulls?q=is%3Apr+reviewed-by%3AYanqiao4396" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://www.gregorykapfhammer.com/"><img src="https://avatars.githubusercontent.com/u/926029?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Gregory M. Kapfhammer</b></sub></a><br /><a href="#mentoring-gkapfham" title="Mentoring">🧑‍🏫</a> <a href="#projectManagement-gkapfham" title="Project Management">📆</a> <a href="#ideas-gkapfham" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="http://www.douglasjluman.com/"><img src="https://avatars.githubusercontent.com/u/1552764?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Douglas Luman</b></sub></a><br /><a href="#ideas-dluman" title="Ideas, Planning, & Feedback">🤔</a> <a href="#design-dluman" title="Design">🎨</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
