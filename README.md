@@ -257,3 +257,6 @@ SheetShuttle supports user defined plugins that use the API provided by the
 tool. These plugins typically follow a specific format where they must contain a
 `run` function. When the directory and name of the plugin are provided in the
 `sheetshuttle run` command, the plugin is validated and then immediately ran.
+
+## Contributors
+
