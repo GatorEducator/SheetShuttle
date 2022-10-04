@@ -1,0 +1,9 @@
+source_id: 1b1e0ml8klRF4VOq03D1M_Quk_33KBYONigQ3WXhbNkU
+sheets:
+  - name: Git Creative Config
+    regions:
+      - name: Testing
+        start: A1
+        end: D14
+        contains_headers: true
+        types: string
