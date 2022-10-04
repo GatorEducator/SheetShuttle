@@ -1,9 +1,12 @@
 """"Standard empty plugin for SheetShuttle."""
 
 # If collecting data from Google Sheets, sheet_collector should be imported
-from sheetshuttle import sheet_collector
+from sheetshuttle import github_interaction, sheet_collector, util
 # To manipulate collected data, pandas should also be imported
 import pandas as pd
+import numpy as np
+import yaml
+
 # If Working with GitHub, the following modules should also be imported
 from sheetshuttle import github_interaction
 from github import Github
