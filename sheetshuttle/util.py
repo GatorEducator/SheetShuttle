@@ -26,6 +26,17 @@ def gh_token_exists() -> bool:
     return False
 
 
+def extract_sheet_id(url: str) -> str:
+    """Extract a sheet ID from a Google Sheets URL."""
+    url_segments = url.split('/')
+    collect = False
+    for segment in url_segments:
+        if collect:
+            return segment
+        if segment == "d":
+            collect = True
+
+
 def calculate_dimensions(start_range: str, end_range: str) -> Tuple[int, int]:
     """Calculate region dimensions (columns, rows) using the start and end ranges.
 
