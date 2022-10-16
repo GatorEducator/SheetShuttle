@@ -222,8 +222,11 @@ class SheetCollector:
         return credentials, service, sheets
 
 # TODO: Fix the failing tests due to the change in the indexing structure
-# TODO: go through through exisiting documentaiton and update the examples with the new indexing structure
+# Run: poetry run task test
+# TODO: go through through existing documentation and update the examples with the new indexing structure
+# Viewed docs
 # TODO: Update the ee_grade plugin with the new indexing structure
+# Changed some stuff in the plugin
 class Sheet:
     """Retrieve Google Sheets data and store as Regions."""
 
@@ -293,11 +296,15 @@ class Sheet:
         # FIXME: update this with the new indexing structure
         requested_region: Region = self.regions[region_name]
         return requested_region
+        # New Approach
+        requested_tab: Tab = self.tabs[sheet[region_name]]
+        return requested_tab
 
     def print_sheet(self):
         """Iterate through self.regions and print the contents."""
         # FIXME: update this with the new indexing structure
-        for region_id, region in self.regions.items():
+        # Fixed indexing structure in this function
+        for region_id, region in self.tabs[sheet[regions.items()]]:
             print(f"******\t {region_id} \t ******")
             region.print_region()
             print("*********************************")
@@ -430,8 +437,9 @@ class Region:
                 be stored
         """
         # FIXME: Make a decision on the new file naming style
+        # Fixed naming
         with open(
-            pathlib.Path(".") / directory / f"{self.full_name}.pkl", "wb"
+            pathlib.Path(".") / directory / f"{self.region, self.full_name}.pkl", "wb"
         ) as outfile:
             pickle.dump(self, outfile)
 
@@ -446,6 +454,7 @@ class Region:
         self_data = {
             "region_name": self.region_name,
             "parent_name": self.parent_sheet_name,
+            # keep full_name, but use it just for opening the file
             "full_name": self.full_name,
             "start_range": self.start_range,
             "end_range": self.end_range,
