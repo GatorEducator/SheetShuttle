@@ -221,7 +221,9 @@ class SheetCollector:
         sheets = service.spreadsheets()
         return credentials, service, sheets
 
-
+# TODO: Fix the failing tests due to the change in the indexing structure
+# TODO: go through through exisiting documentaiton and update the examples with the new indexing structure
+# TODO: Update the ee_grade plugin with the new indexing structure
 class Sheet:
     """Retrieve Google Sheets data and store as Regions."""
 
@@ -236,11 +238,12 @@ class Sheet:
         self.api = sheets_api
         self.config: Dict = config
         Sheet.check_config_schema(self.config)
-        self.regions: Dict[str, Region] = {}
+        self.tabs: Dict[str, Tab] = {}
 
     def collect_regions(self):
         """Iterate through configuration and request data through API."""
         for sheet in self.config["sheets"]:
+            regions_dict = {}
             for region in sheet["regions"]:
                 region_data = Sheet.execute_sheets_call(
                     self.api,
@@ -275,7 +278,8 @@ class Sheet:
                     region["end"],
                     data,
                 )
-                self.regions[region_object.full_name] = region_object
+                regions_dict[region_object.region_name] = region_object
+            self.tabs[sheet["name"]] = regions_dict
 
     def get_region(self, region_name: str):
         """Return a region object from the regions dictionary.
@@ -286,11 +290,13 @@ class Sheet:
         Returns:
             Region: the region object from the self.regions dictionary
         """
+        # FIXME: update this with the new indexing structure
         requested_region: Region = self.regions[region_name]
         return requested_region
 
     def print_sheet(self):
         """Iterate through self.regions and print the contents."""
+        # FIXME: update this with the new indexing structure
         for region_id, region in self.regions.items():
             print(f"******\t {region_id} \t ******")
             region.print_region()
@@ -376,6 +382,12 @@ class Sheet:
         )
 
 
+class Tab:
+
+    def __init__(self, name:str, regions: Dict[str, Region]) -> None:
+        self.name = name
+        self.regions = regions
+
 class Region:
     """Store data frame and metadata about Google Sheet region."""
 
@@ -417,6 +429,7 @@ class Region:
             directory (pathlib.PosixPath): path to the directory where the file
                 be stored
         """
+        # FIXME: Make a decision on the new file naming style
         with open(
             pathlib.Path(".") / directory / f"{self.full_name}.pkl", "wb"
         ) as outfile:
@@ -429,6 +442,7 @@ class Region:
             directory (pathlib.PosixPath): path to the directory where the file
                 be stored
         """
+        # FIXME: Make a decision on the new file naming style
         self_data = {
             "region_name": self.region_name,
             "parent_name": self.parent_sheet_name,
