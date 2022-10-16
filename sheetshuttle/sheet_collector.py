@@ -240,6 +240,7 @@ class Sheet:
 
     def collect_regions(self):
         """Iterate through configuration and request data through API."""
+        # Extract ID if URL used as source_id
         if "/" in self.config["source_id"]:
             self.config["source_id"] = util.extract_sheet_id(self.config["source_id"])
         for sheet in self.config["sheets"]:
