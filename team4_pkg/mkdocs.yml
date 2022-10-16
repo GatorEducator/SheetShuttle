@@ -1,0 +1,15 @@
+site_name: team4_pkg
+site url: https://SheetShuttle.github.io
+nav:
+    - Home: index.md
+    - Google_API_Setup: Google_API_Setup.md
+    - Getting_Started: Getting_Started.md
+    - Schemas: Schemas.md
+    - Tutorial: tutorial.md
+
+
+theme: readthedocs
+
+
+
+

@@ -1,0 +1,193 @@
+/* css Zen Garden default style v1.02 */
+/* css released under Creative Commons License - http://creativecommons.org/licenses/by-nc-sa/1.0/  */
+
+/* This file based on 'Tranquille' by Dave Shea */
+/* You may use this file as a foundation for any new work, but you may find it easier to start from scratch. */
+
+/* COLOR SCHEME  */
+/* Blue = #222c40 */
+/* Green = #40391a */
+/* Yellow = #f2ad85 */
+/* Mod Yellow = #c7845d */
+/* Orange = #f28066 */
+/* Mod Orange = #ce7d6f */
+/* Red = #d9695f */
+
+
+/* HTML ELEMENTS  */
+
+html {
+    font-family: 'Averia Serif Libre', cursive;
+    margin: 8%;
+    background: -webkit-linear-gradient(#40391a, #222c40);
+    /*Green, Blue*/
+}
+
+h1 {
+    padding-top: 5%;
+    margin-bottom: 0;
+    text-align: center;
+    font-size: 5em;
+    font-style: italic;
+    background: -webkit-linear-gradient(transparent, #FFFFFF);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+}
+
+h2 {
+    padding-top: 5%;
+    text-align: center;
+    font-style: italic;
+    margin-bottom: 0;
+    font-size: 2em;
+    background: -webkit-linear-gradient(#FFFFFF, #f2ad85);
+    /*White, Yellow*/
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+h3 {
+    font-style: italic;
+}
+
+a:link {
+    color: #f2ad85;
+    /*Yellow*/
+}
+
+a:visited {
+    color: #f2ad85;
+    /*Yellow*/
+}
+
+a:hover {
+    color: #FFFFFF;
+}
+
+/* IDs */
+#css-zen-garden {}
+
+#zen-intro {
+    text-align: center;
+}
+
+#zen-summary {
+
+    color: #f2ad85;
+    /*Yellow*/
+    text-align: center;
+    padding-bottom: 5%;
+}
+
+#zen-preamble {
+    text-align: center;
+    color: #222c40;
+    /* Blue */
+    margin-bottom: 6vw;
+    border: solid #d9695f 5px;
+    /*Red*/
+    border-radius: 15px;
+    background: -webkit-linear-gradient(#f2ad85, #c7845d);
+    /*Yellow, Mod Yellow*/
+    padding: 5px;
+}
+
+#zen-supporting {
+    gap: 15px;
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 25px;
+    padding: 10px;
+}
+
+#zen-explanation {
+    grid-column: 1;
+    grid-row: 1;
+    color: #222c40;
+    /* Blue */
+    border: solid #d9695f 5px;
+    /*Red*/
+    border-radius: 15px;
+    background: -webkit-linear-gradient(#f28066, #9e433a);
+    /*Orange, #ce7d6f*/
+    padding: 5px;
+}
+
+#zen-participation {
+    grid-column: 2;
+    grid-row: 1;
+    color: #222c40;
+    /* Blue */
+    border: solid #d9695f 5px;
+    /*Red*/
+    border-radius: 15px;
+    background: -webkit-linear-gradient(#f2ad85, #c7845d);
+    /*Yellow, Mod Yellow*/
+    padding: 5px;
+}
+
+#zen-benefits {
+    grid-column: 1;
+    grid-row: 2;
+    color: #222c40;
+    /* Blue */
+    border: solid #d9695f 5px;
+    /*Red*/
+    border-radius: 15px;
+    background: -webkit-linear-gradient(#f2ad85, #c7845d);
+    /*Yellow, Mod Yellow*/
+    padding: 5px;
+}
+
+#zen-requirements {
+    grid-column: 2;
+    grid-row: 2;
+    color: #222c40;
+    /* Blue */
+    border: solid #d9695f 5px;
+    /*Red*/
+    border-radius: 15px;
+    background: -webkit-linear-gradient(#f28066, #9e433a);
+    /*Orange, #ce7d6f*/
+    padding: 5px;
+}
+
+#design-selection {
+    color: #FFFFFF;
+}
+
+#design-archives {
+    color: #FFFFFF;
+}
+
+#zen-resources {
+    color: #FFFFFF;
+}
+
+/* Classes */
+.zen-validate-html {
+    color: #FFFFFF;
+    padding: 5px;
+}
+
+.zen-validate-css {
+    color: #FFFFFF;
+    padding: 5px;
+}
+
+.zen-license {
+    color: #FFFFFF;
+    padding: 5px;
+}
+
+.zen-github {
+    color: #FFFFFF;
+    padding: 5px;
+}
+
+.sidebar {
+    position: absolute;
+    padding-top: 2%;
+    padding-bottom: 2%;
+}

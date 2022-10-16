@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Schemas - team4_pkg</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Schemas";
+        var mkdocs_page_input_path = "Schemas.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> team4_pkg
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Google_API_Setup/">Google_API_Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Getting_Started/">Getting_Started</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Schemas</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#sheets-schema">Sheets Schema</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#defining-objects">Defining Objects</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#region-object">Region Object</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#sheet-object">Sheet Object</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#overall-structure">Overall Structure</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#github-interactions-schema">GitHub Interactions Schema</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#issue-schema">Issue Schema</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pull-request-schema">Pull Request Schema</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#file-schema">File Schema</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="" href="../tutorial.md">Tutorial</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">team4_pkg</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+      <li>Schemas</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="config-schemas">Config Schemas</h1>
+<p>The examples shown here demonstrate the schemas for configuration read by
+SheetShuttle. In order for the tool to function with no errors, user written
+configuration must follow the specified format.</p>
+<ul>
+<li><a href="#config-schemas">Config Schemas</a></li>
+<li><a href="#sheets-schema">Sheets Schema</a><ul>
+<li><a href="#defining-objects">Defining Objects</a></li>
+<li><a href="#region-object">Region Object</a><ul>
+<li><a href="#contains_headers-explained"><code>contains_headers</code> Explained</a></li>
+<li><a href="#fill-explained"><code>fill</code> Explained</a></li>
+<li><a href="#types-explained"><code>types</code> Explained</a></li>
+<li><a href="#examples">Examples</a></li>
+</ul>
+</li>
+<li><a href="#sheet-object">Sheet Object</a></li>
+<li><a href="#overall-structure">Overall Structure</a></li>
+</ul>
+</li>
+<li><a href="#github-interactions-schema">GitHub Interactions Schema</a><ul>
+<li><a href="#issue-schema">Issue Schema</a></li>
+<li><a href="#pull-request-schema">Pull Request Schema</a></li>
+<li><a href="#file-schema">File Schema</a></li>
+</ul>
+</li>
+</ul>
+<h2 id="sheets-schema">Sheets Schema</h2>
+<p>Sheets schema describe the format for configuration used to
+retrieve Google Sheet data.</p>
+<h3 id="defining-objects">Defining Objects</h3>
+<p>There are two main nested object structures used in the Sheets schema.</p>
+<h4 id="region-object">Region Object</h4>
+<p>This is the simplest object that does not contain complex nested objects in it. It
+has the following general structure:</p>
+<pre><code class="language-yml">name: &lt;string, required&gt; name of the region to create
+start: &lt;string, required&gt; cell to start from (eg. A1)
+end: &lt;string, required&gt; cell to end at (eg. H12)
+contains_headers: &lt;boolean, required&gt; if selected range contains
+                  headers in the first row
+headers: &lt;list of strings, conditional&gt; headers to be used, only
+         required if contains_headers is false
+fill: &lt;boolean, optional&gt; fill the region with `None` if there are missing values.
+      Defaults to false
+types: &lt;string or object, optional&gt; data type to use for the whole region or
+       for specific columns. Defaults to `string`
+</code></pre>
+<p>Some values in this structure are a bit ambiguous, the following section will
+provide further explanation on their usage:</p>
+<h5 id="contains_headers-explained"><code>contains_headers</code> Explained</h5>
+<p>In many cases, the region being retrieved already contains the headers to the
+data. Set this option to <code>true</code> in order to set the column headers of the
+resulting Pandas dataframe equal to the first row of the data.</p>
+<p>In the case that the data does not contain headers, another value <code>headers</code> is
+required by the schema. It should be a list of strings with the headers of the
+data.</p>
+<p><strong>NOTE:</strong> The length of the headers list must match the number of columns in the
+data. Otherwise a Pandas error will be thrown.</p>
+<h5 id="fill-explained"><code>fill</code> Explained</h5>
+<p>SheetShuttle attempts to deal with missing data, but many limitations exist. The
+following screenshot shows a dataset with empty cells. Let's see how
+SheetShuttle allows you to deal with it.</p>
+<p><img alt="Missing Data screenshot" src="../images/missing_data1.png" /></p>
+<p>When retrieved from the Google Sheets API, the data looks as follows:</p>
+<pre><code class="language-python">[
+    ['Student Name', 'EE1-1', 'EE1-2', 'EE1-3'],
+    ['name1', '85', '0'],
+    ['name2', '100', '1'],
+    ['name3', '100', '1'],
+    ['name4', '100', '0'],
+    ['name5', '100', '1'],
+    ['name6', '100', '1']
+]
+</code></pre>
+<p>As seen in the sample output, the missing data simply does not show up in the
+returned value from the API. By enabling <code>fill</code>, the data is converted to the
+following and then a dataframe is created using it.</p>
+<pre><code class="language-python">[
+    ['Student Name', 'EE1-1', 'EE1-2', 'EE1-3'],
+    ['name1', '85', '0', None],
+    ['name2', '100', '1', None],
+    ['name3', '100', '1', None],
+    ['name4', '100', '0', None],
+    ['name5', '100', '1', None],
+    ['name6', '100', '1', None]
+]
+</code></pre>
+<p>The same applies to empty rows, where a row full of <code>None</code> is appended in some cases.</p>
+<p>Example:</p>
+<pre><code class="language-python">[
+    ['Student Name', 'EE1-1', 'EE1-2', 'EE1-3'],
+    ['name1', '85', '0', None],
+    ['name2', '100', '1', None],
+    ['name3', '100', '1', None],
+    ['name4', '100', '0', None],
+    ['name5', '100', '1', None],
+    ['name6', '100', '1', None],
+    [None, None, None, None]
+]
+</code></pre>
+<p><code>None</code> will then get converted to Not a Number <code>NaN</code> values in the resulting
+Pandas dataframe.</p>
+<p><strong>A problem with this approach is the following:</strong></p>
+<p>Using a similar example where the missing data is not in the last row/column as
+seen here:</p>
+<p><img alt="Missing Data screenshot 2" src="../images/missing_data2.png" /></p>
+<p>The resulting data from the API is the following:</p>
+<pre><code class="language-python">[
+    ['Student Name', 'EE1-1', 'EE1-2', 'EE1-3'],
+    ['name1', '85', '', '0'],
+    ['name2', '100', '', '1'],
+    ['name3', '100', '', '0'],
+    ['name4', '100', '', '1'],
+    ['name5', '100', '', '0'],
+    ['name6', '100', '', '0']
+]
+</code></pre>
+<p>In this case, the <code>''</code> will not be replace by <code>None</code> and will stay the same even
+when <code>fill</code> is enabled.</p>
+<p><strong>IMPORTANT NOTE:</strong> If working with numerical data with possibly some missing
+fields, you MUST use the <code>float</code> type. This is because <code>int</code> cannot be converted
+to <code>NaN</code> by Pandas while <code>float</code> can.</p>
+<h5 id="types-explained"><code>types</code> Explained</h5>
+<p>By default, all data retrieved from Google Sheets is string. However, in the
+case that a user would like to work with a variety of data types, they can use
+this option to set the data type of the pandas dataframe.</p>
+<p>The available data types are:</p>
+<ul>
+<li><code>object</code></li>
+<li><code>string</code></li>
+<li><code>int</code></li>
+<li><code>float</code></li>
+<li><code>bool</code></li>
+<li><code>datetime</code></li>
+</ul>
+<p><code>types</code> can be set to any of the items on that list. Additionally, the user can
+determine data types for individual columns by doing the following:</p>
+<pre><code class="language-yaml">types:
+    col1: int
+    col2: string
+    col3: bool
+</code></pre>
+<p>Where the keys are the names of the columns in the data and the value is the
+data type of that specific column.</p>
+<p><strong>Note:</strong> using a name of a column that does not exist will throw an error</p>
+<h5 id="examples">Examples</h5>
+<p>With the possible structures in mind, here are a couple of examples of how a
+region object can look like:</p>
+<p><strong>Example 1:</strong></p>
+<pre><code class="language-yml">name: grades
+start: A1
+end: L4
+contains_headers: true
+</code></pre>
+<p><strong>Example 2:</strong></p>
+<pre><code class="language-yml">name: expenses
+start: F5
+end: K12
+contains_headers: false
+headers:
+    - Jan
+    - Feb
+    - Mar
+    - Apr
+    - May
+    - Jun
+fill: true
+</code></pre>
+<pre><code class="language-yml">name: expenses
+start: A1
+end: D6
+contains_headers: true
+types:
+    day: string
+    date: datetime
+    expense: float
+    paid: bool
+</code></pre>
+<h4 id="sheet-object">Sheet Object</h4>
+<p>The sheet object is one level above the region structure and it looks as follow:</p>
+<pre><code class="language-yml">name: &lt;string, required&gt; name of sheet to read from in Google Sheets
+regions: &lt;list of region object, required&gt; Regions to create from the sheet
+</code></pre>
+<p><strong>Example:</strong></p>
+<pre><code class="language-yml">name: sheet1
+regions:
+    - name: grades
+      start: A1
+      end: L4
+      contains_headers: true
+    - name: expenses
+      start: F5
+      end: K12
+      contains_headers: false
+      headers:
+          - Jan
+          - Feb
+          - Mar
+          - Apr
+          - May
+          - Jun
+</code></pre>
+<h3 id="overall-structure">Overall Structure</h3>
+<p>The outermost keys of the configuration must contain only two keys as follows:</p>
+<pre><code class="language-yml">source_id: &lt;string, required&gt; ID of sheet to read
+sheets: &lt;list of sheet objects, required&gt;
+</code></pre>
+<p><strong>Example:</strong></p>
+<pre><code class="language-yml">source_id: my_sheet_id
+sheets:
+    - name: sheet1
+      regions:
+      - name: grades
+        start: A1
+        end: L4
+        contains_headers: true
+      - name: expenses
+        start: F5
+        end: K12
+        contains_headers: false
+        headers:
+            - Jan
+            - Feb
+            - Mar
+            - Apr
+            - May
+            - Jun
+    - name: sheet2
+      regions:
+      - name: some_data
+        start: A1
+        end: Z10
+        contains_headers: true
+</code></pre>
+<p><strong>JSON Schema Structure:</strong></p>
+<p>This is the structure used to validate the configuration using <code>jsonschema</code>:</p>
+<pre><code class="language-json">{
+    &quot;type&quot;: &quot;object&quot;,
+    &quot;properties&quot;: {
+        &quot;source_id&quot;: {&quot;type&quot;: &quot;string&quot;},
+        &quot;sheets&quot;: {
+            &quot;type&quot;: &quot;array&quot;,
+            &quot;items&quot;: {&quot;$ref&quot;: &quot;#/$defs/sheet&quot;},
+            &quot;minItems&quot;: 1,
+        },
+    },
+    &quot;required&quot;: [&quot;source_id&quot;, &quot;sheets&quot;],
+    &quot;$defs&quot;: {
+        &quot;region&quot;: {
+            &quot;type&quot;: &quot;object&quot;,
+            &quot;properties&quot;: {
+                &quot;name&quot;: {&quot;type&quot;: &quot;string&quot;},
+                &quot;start&quot;: {&quot;type&quot;: &quot;string&quot;},
+                &quot;end&quot;: {&quot;type&quot;: &quot;string&quot;},
+                &quot;contains_headers&quot;: {&quot;type&quot;: &quot;boolean&quot;},
+                &quot;headers&quot;: {
+                    &quot;type&quot;: &quot;array&quot;,
+                    &quot;items&quot;: {&quot;type&quot;: &quot;string&quot;},
+                    &quot;minItems&quot;: 1,
+                },
+                &quot;fill&quot;: {&quot;type&quot;: &quot;boolean&quot;},
+                &quot;types&quot;: {
+                    &quot;anyOf&quot;: [
+                        {
+                            &quot;type&quot;: &quot;string&quot;,
+                            &quot;enum&quot;: [
+                                &quot;object&quot;,
+                                &quot;string&quot;,
+                                &quot;int&quot;,
+                                &quot;float&quot;,
+                                &quot;bool&quot;,
+                                &quot;datetime&quot;,
+                            ],
+                        },
+                        {
+                            &quot;type&quot;: &quot;object&quot;,
+                            &quot;additionalProperties&quot;: {
+                                &quot;type&quot;: &quot;string&quot;,
+                                &quot;enum&quot;: [
+                                    &quot;object&quot;,
+                                    &quot;string&quot;,
+                                    &quot;int&quot;,
+                                    &quot;float&quot;,
+                                    &quot;bool&quot;,
+                                    &quot;datetime&quot;,
+                                ],
+                            },
+                        },
+                    ]
+                },
+            },
+            &quot;required&quot;: [&quot;name&quot;, &quot;start&quot;, &quot;end&quot;, &quot;contains_headers&quot;],
+            &quot;if&quot;: {&quot;properties&quot;: {&quot;contains_headers&quot;: {&quot;const&quot;: false}}},
+            &quot;then&quot;: {
+                &quot;required&quot;: [&quot;headers&quot;],
+            },
+        },
+        &quot;sheet&quot;: {
+            &quot;type&quot;: &quot;object&quot;,
+            &quot;properties&quot;: {
+                &quot;name&quot;: {&quot;type&quot;: &quot;string&quot;},
+                &quot;regions&quot;: {
+                    &quot;type&quot;: &quot;array&quot;,
+                    &quot;items&quot;: {&quot;$ref&quot;: &quot;#/$defs/region&quot;},
+                    &quot;minItems&quot;: 1,
+                },
+            },
+            &quot;required&quot;: [&quot;name&quot;, &quot;regions&quot;],
+        },
+    },
+}
+</code></pre>
+<h2 id="github-interactions-schema">GitHub Interactions Schema</h2>
+<p>This type of schema describes the structure of configurations used to post
+entries to Github such as issues, pull requests, and files.</p>
+<h3 id="issue-schema">Issue Schema</h3>
+<p>Issue schemas follow a simple one-level structure.
+The following example shows the structure:</p>
+<pre><code class="language-yml">type: &lt;str, required&gt; type of Entry, must equal &quot;issue&quot; (case sensitive)
+action: &lt;str, required&gt; action to be executed
+    (&quot;create&quot; -&gt; create a new issue, OR &quot;update&quot; -&gt; add a comment to existing issue)
+repo: &lt;str, required&gt; name of repo to create the issue in. Formatted as &lt;org&gt;/&lt;repo_name&gt;
+body: &lt;str, required&gt; body of the issue or comment
+labels: &lt;List[str], optional&gt; list of labels to add to the issue
+# Conditional properties
+title: &lt;str, conditional&gt; title of the new issue, required if action is &quot;new&quot;
+number: &lt;int, conditional&gt; number of the existing issue,
+        required if action is &quot;update&quot;
+</code></pre>
+<p>Here are some examples of configuration to create and update issues on GitHub:</p>
+<p><strong>Example 1:</strong> Create a new issue</p>
+<pre><code class="language-yml">type: issue
+action: create
+repo: example_org/example_user
+title: some new issue
+body: example body
+labels:
+  - SheetShuttle
+  - Automated
+</code></pre>
+<p><strong>Example 2:</strong> Update issue #12 with a new comment and labels</p>
+<pre><code class="language-yml">type: issue
+action: update
+repo: example_org/example_user
+number: 12
+body: example body
+labels:
+  - SheetShuttle
+  - Automated
+</code></pre>
+<p><strong>JSON Schema Structure:</strong></p>
+<pre><code class="language-json">{
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+            &quot;type&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;const&quot;: &quot;issue&quot;},
+            &quot;action&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;enum&quot;: [&quot;create&quot;, &quot;update&quot;]},
+            &quot;repo&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;pattern&quot;: r&quot;^.+[^\s]\/[^\s].+$&quot;},
+            &quot;body&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;minLength&quot;: 1},
+        },
+        &quot;required&quot;: [&quot;type&quot;, &quot;action&quot;, &quot;repo&quot;, &quot;body&quot;],
+        &quot;if&quot;: {&quot;properties&quot;: {&quot;action&quot;: {&quot;const&quot;: &quot;create&quot;}}},
+        &quot;then&quot;: {
+            &quot;properties&quot;: {
+                &quot;title&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;minLength&quot;: 1},
+                &quot;labels&quot;: {
+                    &quot;type&quot;: &quot;array&quot;,
+                    &quot;items&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;minLength&quot;: 1},
+                    &quot;minItems&quot;: 1,
+                },
+            },
+            &quot;required&quot;: [&quot;title&quot;],
+        },
+        &quot;else&quot;: {
+            &quot;properties&quot;: {
+                &quot;number&quot;: {&quot;type&quot;: &quot;integer&quot;},
+                &quot;labels&quot;: {
+                    &quot;type&quot;: &quot;array&quot;,
+                    &quot;items&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;minLength&quot;: 1},
+                    &quot;minItems&quot;: 1,
+                },
+            },
+            &quot;required&quot;: [&quot;number&quot;],
+        },
+    }
+</code></pre>
+<h3 id="pull-request-schema">Pull Request Schema</h3>
+<p>This schema structure is responsible for creating pull requests and updating
+them with comments. It's very similar to the Issue schema with few exceptions.</p>
+<pre><code class="language-yml">type: &lt;str, required&gt; type of Entry, must equal &quot;pull request&quot; (case sensitive)
+action: &lt;str, required&gt; action to be executed
+        (&quot;create&quot; -&gt; create a new PR, OR &quot;update&quot; -&gt; add a comment to existing PR)
+repo: &lt;str, required&gt; name of repo to create the issue in. Formatted as &lt;org&gt;/&lt;repo_name&gt;
+body: &lt;str, required&gt; body of the pull request or comment
+# Conditional properties if action is &quot;create&quot;
+title: &lt;str, conditional&gt; title of the new issue, required if action is &quot;new&quot;
+base: &lt;str,conditional&gt; name of the branch to merge into, required if action is &quot;new&quot;
+head: &lt;str,conditional&gt; name of the branch to merge from, required if action is &quot;new&quot;
+# Conditional properties if action is &quot;update&quot;
+number: &lt;int, conditional&gt; number of the existing pull request,
+        required if action is &quot;update&quot;
+</code></pre>
+<p>Here are some examples of configuration to create and update issues on GitHub:</p>
+<p><strong>Example 1:</strong> Create a new pull request</p>
+<pre><code class="language-yml">type: pull request
+action: create
+repo: example_org/example_user
+title: some new pull request
+body: example body
+base: main
+head: my_branch
+</code></pre>
+<p><strong>Example 2:</strong> Update pull request #5 with a new comment</p>
+<pre><code class="language-yml">type: pull request
+action: update
+repo: example_org/example_user
+number: 12
+body: example body
+</code></pre>
+<p><strong>JSON Schema Structure:</strong></p>
+<pre><code class="language-json">{
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+            &quot;type&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;const&quot;: &quot;pull request&quot;},
+            &quot;action&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;enum&quot;: [&quot;create&quot;, &quot;update&quot;]},
+            &quot;repo&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;pattern&quot;: r&quot;^.+[^\s]\/[^\s].+$&quot;},
+            &quot;body&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;minLength&quot;: 1},
+        },
+        &quot;required&quot;: [&quot;type&quot;, &quot;action&quot;, &quot;repo&quot;, &quot;body&quot;],
+        &quot;if&quot;: {&quot;properties&quot;: {&quot;action&quot;: {&quot;const&quot;: &quot;create&quot;}}},
+        &quot;then&quot;: {
+            &quot;properties&quot;: {
+                &quot;title&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;minLength&quot;: 1},
+                &quot;base&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;minLength&quot;: 1},
+                &quot;head&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;minLength&quot;: 1},
+            },
+            &quot;required&quot;: [&quot;title&quot;, &quot;base&quot;, &quot;head&quot;],
+        },
+        &quot;else&quot;: {
+            &quot;properties&quot;: {
+                &quot;number&quot;: {&quot;type&quot;: &quot;integer&quot;},
+            },
+            &quot;required&quot;: [&quot;number&quot;],
+        },
+    }
+</code></pre>
+<h3 id="file-schema">File Schema</h3>
+<p>This schema structure is responsible for creating files and updating
+them as well as replacing them entirely. Unlike the issue and pull request
+schemas, this one supports 3 actions <code>create</code>, <code>update</code>, and <code>replace</code>.
+While <code>update</code> preserves the ordinal content of the file, <code>replace</code> erases the
+old content.</p>
+<pre><code class="language-yml">type: &lt;str, required&gt; type of Entry, must equal &quot;file&quot; (case sensitive)
+action: &lt;str, required&gt; action to be executed
+        (&quot;create&quot; OR &quot;update&quot; OR &quot;replace&quot;)
+repo: &lt;str, required&gt; name of repo to create the issue in. Formatted as &lt;org&gt;/&lt;repo_name&gt;
+path: &lt;str, required&gt; path to the file to be impacted
+content: &lt;str, required&gt; content of the file
+branch: &lt;str, required&gt; name of the branch that the file exists in
+commit_message: &lt;str, optional&gt; the commit message to used when executing the action
+</code></pre>
+<p>Here are some examples of configuration to create, update, and replace files:</p>
+<p><strong>Example 1:</strong> Create a new markdown file</p>
+<pre><code class="language-yml">type: file
+action: create
+repo: example_org/example_user
+path: folder/file.md
+content: &quot;# Hello world!&quot;
+branch: main
+commit_message: add example markdown file
+</code></pre>
+<p><strong>Example 2:</strong> Update an existing markdown file</p>
+<pre><code class="language-yml">type: file
+action: update
+repo: example_org/example_user
+path: folder/file.md
+content: this is an example
+branch: main
+commit_message: update example markdown file
+</code></pre>
+<p><strong>Example 3:</strong> Replace an existing markdown file</p>
+<pre><code class="language-yml">type: file
+action: replace
+repo: example_org/example_user
+path: folder/file.md
+content: &quot;# Section 1&quot;
+branch: main
+commit_message: replace example markdown file
+</code></pre>
+<p><strong>JSON Schema Structure:</strong></p>
+<pre><code class="language-json">{
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+            &quot;type&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;const&quot;: &quot;file&quot;},
+            &quot;action&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;enum&quot;: [&quot;create&quot;, &quot;update&quot;, &quot;replace&quot;]},
+            &quot;repo&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;pattern&quot;: r&quot;^.+[^\s]\/[^\s].+$&quot;},
+            &quot;path&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;minLength&quot;: 1},
+            &quot;content&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;minLength&quot;: 1},
+            &quot;branch&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;minLength&quot;: 1},
+            &quot;commit_message&quot;: {&quot;type&quot;: &quot;string&quot;, &quot;minLength&quot;: 1},
+        },
+        &quot;required&quot;: [&quot;type&quot;, &quot;action&quot;, &quot;repo&quot;, &quot;path&quot;, &quot;content&quot;, &quot;branch&quot;],
+    }
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../Getting_Started/" class="btn btn-neutral float-left" title="Getting_Started"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../Getting_Started/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>
