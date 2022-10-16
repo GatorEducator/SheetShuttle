@@ -14,7 +14,8 @@ CONFIG_WRITE_FILENAME = "ee_grader_gh_config.yml"
 def run(sheets_keys_file, sheets_config_directory, gh_config_directory, **kwargs):
     my_collector = sheet_collector.SheetCollector(sources_dir=sheets_config_directory)
     my_collector.collect_files()
-    used_config = my_collector.sheets_data["sample_config"]
+    # Update ee_plugin with the new indexing structure
+    used_config = my_collector.sheets_data["sample_config"].sheets["students"].regions["names"]
 
     # Get our data frames
     # FIXME: issue with sheetshuttle: unable to fill empty fields to be NaN when
