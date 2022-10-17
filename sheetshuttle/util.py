@@ -78,9 +78,9 @@ def fill_to_dimensions(
         for _ in range(0, row_difference):
             data.append([None] * columns)
 
-    for region in data:
-        for i in region:
-            if data[i] == "":
-                data[i] = None
+    for list in data:
+        for i in range(len(list)):
+            if list[i] == "":
+                list[i] = None
 
     return data
