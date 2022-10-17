@@ -79,7 +79,7 @@ def fill_to_dimensions(
             data.append([None] * columns)
 
     for i in range(len(data)):
-        if data[i] == "":
+        if data[i] == " ":
             data[i] = None
 
     return data
