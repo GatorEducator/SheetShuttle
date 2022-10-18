@@ -221,6 +221,7 @@ class SheetCollector:
         sheets = service.spreadsheets()
         return credentials, service, sheets
 
+
 # TODO: Fix the failing tests due to the change in the indexing structure
 # Run: poetry run task test
 # TODO: go through through existing documentation and update the examples with the new indexing structure
@@ -294,10 +295,11 @@ class Sheet:
             Region: the region object from the self.regions dictionary
         """
         # FIXME: update this with the new indexing structure
-        requested_region: Region = self.regions[region_name]
-        return requested_region
+        # requested_region: Region = self.regions[region_name]
+        # return requested_region
         # New Approach
         requested_tab: Tab = self.tabs[sheet[region_name]]
+        print(requested_tab)
         return requested_tab
 
     def print_sheet(self):
@@ -389,12 +391,6 @@ class Sheet:
         )
 
 
-class Tab:
-
-    def __init__(self, name:str, regions: Dict[str, Region]) -> None:
-        self.name = name
-        self.regions = regions
-
 class Region:
     """Store data frame and metadata about Google Sheet region."""
 
@@ -466,3 +462,9 @@ class Region:
             encoding="utf-8",
         ) as outfile:
             json.dump(self_data, outfile, indent=4)
+
+
+class Tab:
+    def __init__(self, name: str, regions: Dict[str, Region]) -> None:
+        self.name = name
+        self.regions = regions
