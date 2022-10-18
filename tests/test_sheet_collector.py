@@ -400,11 +400,15 @@ def test_sheet_collector_collect_files_prints_output(tmpdir, test_data, capfd):
 
 def test_grab_returns_actual_url():
     expected_id = "1XKnoa1BBzEnJ1TA_LTRs5e0zcva0SCgNyt7cfMVGHWc"
-    url_one = util.extract_sheet_id("https://docs.google.com/spreadsheets/d/1XKnoa1BBzEnJ1TA_LTRs5e0zcva0SCgNyt7cfMVGHWc/edit#gid=0")
+    url_one = util.extract_sheet_id(
+        "https://docs.google.com/spreadsheets/d/1XKnoa1BBzEnJ1TA_LTRs5e0zcva0SCgNyt7cfMVGHWc/edit#gid=0"
+    )
     assert url_one == expected_id
 
 
 def test_grab_returns_no_prefix():
     expected_id = "my_very_important_key"
-    url_two = util.extract_sheet_id("docs.google.com/spreadsheets/d/my_very_important_key/edit#gid=0")
+    url_two = util.extract_sheet_id(
+        "docs.google.com/spreadsheets/d/my_very_important_key/edit#gid=0"
+    )
     assert url_two == expected_id
