@@ -399,14 +399,16 @@ def test_sheet_collector_collect_files_prints_output(tmpdir, test_data, capfd):
 
 
 def test_grab_returns_actual_url():
+    """Test that function returns correct ID from full URL."""
     expected_id = "1XKnoa1BBzEnJ1TA_LTRs5e0zcva0SCgNyt7cfMVGHWc"
     url_one = util.extract_sheet_id(
-        "https://docs.google.com/spreadsheets/d/1XKnoa1BBzEnJ1TA_LTRs5e0zcva0SCgNyt7cfMVGHWc/edit#gid=0"
+        "https://docs.google.com/spreadsheets/d/1XKnoa1BBzEnJ1TA_LTRs5e0zcva0SCgNyt7cfMVGHWc/edit"
     )
     assert url_one == expected_id
 
 
 def test_grab_returns_no_prefix():
+    """Test that function returns correct ID from partial URL."""
     expected_id = "my_very_important_key"
     url_two = util.extract_sheet_id(
         "docs.google.com/spreadsheets/d/my_very_important_key/edit#gid=0"
