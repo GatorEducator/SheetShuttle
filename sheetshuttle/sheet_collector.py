@@ -298,7 +298,7 @@ class Sheet:
         # requested_region: Region = self.regions[region_name]
         # return requested_region
         # New Approach
-        requested_tab: Tab = self.tabs[self.sheet[self.region[region_name]]]
+        requested_tab: Tab = self.tabs[sheet[region_name]]
         print(requested_tab)
         return requested_tab
 
@@ -306,7 +306,7 @@ class Sheet:
         """Iterate through self.regions and print the contents."""
         # update this with the new indexing structure
         # Fixed indexing structure in this function
-        for region_id, region in self.tabs[self.sheet[self.region[regions.items()]]]:
+        for region_id, region in self.tabs[sheet[regions.items()]]:
             print(f"******\t {region_id} \t ******")
             region.print_region()
             print("*********************************")
@@ -397,7 +397,6 @@ class Region:
     # pylint: disable=R0913
     def __init__(
         self,
-        region: str,
         region_name: str,
         parent_sheet_name: str,
         start_range: str,
@@ -413,7 +412,6 @@ class Region:
             end_range (str): Cell name to end at (eg. H5)
             data (pd.DataFrame): Data in the region
         """
-        self.regions = regions
         self.region_name = region_name
         self.parent_sheet_name = parent_sheet_name
         self.full_name = f"{parent_sheet_name}_{region_name}"
@@ -467,7 +465,6 @@ class Region:
 
 
 class Tab:
-    """ Tab class for tabs in sheets files"""
     def __init__(self, name: str, regions: Dict[str, Region]) -> None:
         self.name = name
         self.regions = regions
