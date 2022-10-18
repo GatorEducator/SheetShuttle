@@ -29,10 +29,10 @@ def gh_token_exists() -> bool:
 def extract_sheet_id(url: str) -> str:
     """Extract a sheet ID from a Google Sheets URL."""
     try:
-        url_segments = url.split('/')
+        url_segments = url.split("/")
         for i in range(len(url_segments)):
             if url_segments[i] == "d":
-                return url_segments[i+1]
+                return url_segments[i + 1]
     except:
         print("The URL provided is not valid for Google Sheets ID extraction.")
 
