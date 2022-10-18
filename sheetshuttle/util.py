@@ -30,6 +30,7 @@ def extract_sheet_id(url: str) -> str:
     """Extract a sheet ID from a Google Sheets URL."""
     try:
         url_segments = url.split("/")
+        # Return the url_segment following the segment that contains only "d"
         return next(
             (
                 url_segments[i + 1]
