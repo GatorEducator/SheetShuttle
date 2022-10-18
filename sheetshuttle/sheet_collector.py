@@ -222,11 +222,11 @@ class SheetCollector:
         return credentials, service, sheets
 
 
-# TODO: Fix the failing tests due to the change in the indexing structure
+# Fix the failing tests due to the change in the indexing structure
 # Run: poetry run task test
-# TODO: go through through existing documentation and update the examples with the new indexing structure
+# go through through existing documentation and update the examples with the new indexing structure
 # Viewed docs
-# TODO: Update the ee_grade plugin with the new indexing structure
+# Update the ee_grade plugin with the new indexing structure
 # Changed some stuff in the plugin
 class Sheet:
     """Retrieve Google Sheets data and store as Regions."""
@@ -294,7 +294,7 @@ class Sheet:
         Returns:
             Region: the region object from the self.regions dictionary
         """
-        # FIXME: update this with the new indexing structure
+        # update this with the new indexing structure
         # requested_region: Region = self.regions[region_name]
         # return requested_region
         # New Approach
@@ -304,7 +304,7 @@ class Sheet:
 
     def print_sheet(self):
         """Iterate through self.regions and print the contents."""
-        # FIXME: update this with the new indexing structure
+        # update this with the new indexing structure
         # Fixed indexing structure in this function
         for region_id, region in self.tabs[sheet[regions.items()]]:
             print(f"******\t {region_id} \t ******")
@@ -432,7 +432,7 @@ class Region:
             directory (pathlib.PosixPath): path to the directory where the file
                 be stored
         """
-        # FIXME: Make a decision on the new file naming style
+        # Make a decision on the new file naming style
         # Fixed naming
         with open(
             pathlib.Path(".") / directory / f"{self.region, self.full_name}.pkl", "wb"
@@ -446,7 +446,7 @@ class Region:
             directory (pathlib.PosixPath): path to the directory where the file
                 be stored
         """
-        # FIXME: Make a decision on the new file naming style
+        # Make a decision on the new file naming style
         self_data = {
             "region_name": self.region_name,
             "parent_name": self.parent_sheet_name,
