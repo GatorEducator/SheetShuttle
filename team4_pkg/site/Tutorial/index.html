@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Tutorial - SheetShuttle API Documentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Tutorial";
+        var mkdocs_page_input_path = "Tutorial.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <script src="../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> SheetShuttle API Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Google_API_Setup/">Google API Setup</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Getting_Started/">Getting Started</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Schemas/">Schemas</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Tutorial</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#setting-up-and-running-your-plugin">Setting Up and Running Your Plugin</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#setup-the-path-and-plugin-name">Setup The Path and Plugin Name</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#add-a-run-function">Add a run() Function</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#importing-from-sheetshuttle">Importing from SheetShuttle</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#using-the-google-sheets-api">Using the Google Sheets API</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#ensure-that-all-authentication-variables-are-available-and-accessible">Ensure that All Authentication Variables are Available and Accessible</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#share-the-google-sheets-files-with-the-created-service-account">Share the Google Sheets file(s) with the created service account</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#write-yaml-configuration-used-to-retrieved-data">Write YAML configuration used to retrieved data</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#call-sheet_collector-from-the-plugin">Call sheet_collector from the plugin</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#using-the-github-api">Using the GitHub API</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#add-github-access-token">Add GitHub Access Token</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#write-or-generate-yaml-configuration">Write or Generate YAML Configuration</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#call-githubmanager-from-your-plugin">Call GithubManager from Your Plugin</a>
+    </li>
+        </ul>
+    </li>
+    </ul>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">SheetShuttle API Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+      <li>Tutorial</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="getting-started-with-sheetshuttle">Getting Started with SheetShuttle</h1>
+<ul>
+<li><a href="#getting-started-with-sheetshuttle">Getting Started with SheetShuttle</a></li>
+<li><a href="#setting-up-and-running-your-plugin">Setting Up and Running Your Plugin</a><ul>
+<li><a href="#setup-the-path-and-plugin-name">Setup The Path and Plugin Name</a></li>
+<li><a href="#add-a-run-function">Add a <code>run()</code> Function</a></li>
+<li><a href="#importing-from-sheetshuttle">Importing from SheetShuttle</a></li>
+</ul>
+</li>
+<li><a href="#using-the-google-sheets-api">Using the Google Sheets API</a><ul>
+<li><a href="#ensure-that-all-authentication-variables-are-available-and-accessible">Ensure that All Authentication Variables are Available and Accessible</a></li>
+<li><a href="#share-the-google-sheets-files-with-the-created-service-account">Share the Google Sheets file(s) with the created service account</a></li>
+<li><a href="#write-yaml-configuration-used-to-retrieved-data">Write YAML configuration used to retrieved data</a></li>
+<li><a href="#call-sheet_collector-from-the-plugin">Call <code>sheet_collector</code> from the plugin</a></li>
+</ul>
+</li>
+<li><a href="#using-the-github-api">Using the GitHub API</a><ul>
+<li><a href="#add-github-access-token">Add GitHub Access Token</a></li>
+<li><a href="#write-or-generate-yaml-configuration">Write or Generate YAML Configuration</a></li>
+<li><a href="#call-githubmanager-from-your-plugin">Call <code>GithubManager</code> from Your Plugin</a></li>
+</ul>
+</li>
+</ul>
+<p>SheetShuttle provides a simple infrastructure to interact with Google Sheets API
+as well as GitHub API. It gives the user the ability to create custom plugins
+that integrate with the tool's workflow. This tutorial will provide some
+examples and code snippets to get started with SheetShuttle.</p>
+<h2 id="setting-up-and-running-your-plugin">Setting Up and Running Your Plugin</h2>
+<p>There are few requirements to be met before diving in developing your plugin,
+the following tasks are important to make sure SheetShuttle can find and run
+your custom plugin:</p>
+<h3 id="setup-the-path-and-plugin-name">Setup The Path and Plugin Name</h3>
+<p>By default, SheetShuttle searches the <code>plugins</code> directory for the <code>default</code>
+plugin named <code>default.py</code>. If you wish to run your own plugin, you can
+create a Python file in any directory on your system. However, the directory
+and name of the this Python file must be passed into SheetShuttle's CLI in
+order to be detected. For example, if the plugin <code>my_plugin.py</code> was created
+in <code>../projects/my_plugins/</code>, then the CLI argument for <code>plugin_name</code> would be
+<code>my_plugin</code> (<strong>Note</strong> that <code>.py</code> is omitted) and the value of
+<code>plugins_directory</code> argument would be <code>../projects/my_plugins/</code></p>
+<h3 id="add-a-run-function">Add a <code>run()</code> Function</h3>
+<p>SheetShuttle assumes that a <code>run()</code> function exists in your plugin which gets
+called in order to execute your custom code. To prevent errors while loading
+and running the plugin, this function signature is required for every
+plugin.</p>
+<!-- TODO: update this once **kwargs are fully supported -->
+
+<pre><code class="language-python">def run(sheets_keys_file, sheets_config_directory, **kwargs):
+    # rest of your plugin code
+</code></pre>
+<p><code>TODO: More information is needed here after full support is added</code></p>
+<h3 id="importing-from-sheetshuttle">Importing from SheetShuttle</h3>
+<p>In order to use the functionalities in SheetShuttle's infrastructure, your
+plugin should import the needed modules.</p>
+<pre><code class="language-python">   # If collecting data from Google Sheets, sheet_collector should be imported
+   from sheetshuttle import sheet_collector
+   # To manipulate collected data, pandas should also be imported
+   import pandas as pd
+
+    # If Working with GitHub, the following modules should also be imported
+   from sheetshuttle import github_interaction
+   from github import Github
+</code></pre>
+<h2 id="using-the-google-sheets-api">Using the Google Sheets API</h2>
+<p>The <code>sheets_collector</code> module is responsible for retrieving data from Google
+Sheets and organizing it in nested objects such as sheets, and regions. In order
+to make API request calls, <code>sheets_collector</code> relies on user-written YAML
+configuration that follow the structure specified in the <a href="schemas.md#sheets-schema">schemas
+guidline</a>. In this section, the structure of
+the retrieved data is discussed as well as the supported functions of
+the <code>sheets_collector</code> module.</p>
+<h3 id="ensure-that-all-authentication-variables-are-available-and-accessible">Ensure that All Authentication Variables are Available and Accessible</h3>
+<p>There are two main ways to provide Google Sheets authentication tokens to
+SheetShuttle. The tokens are obtained after setting up a service account.
+Authentication information can be stored in a <code>.json</code> file or as part of a
+<code>.env</code> file. This process is discussed in <a href="../README.md#google-sheets-service-account">Google Sheets Service Account
+section</a> of the README file.
+Regardless of which approach is used, the name of the file should be
+passed as a CLI argument to SheetShuttle</p>
+<h3 id="share-the-google-sheets-files-with-the-created-service-account">Share the Google Sheets file(s) with the created service account</h3>
+<p>Before attempting to access the data in the Google Sheets file, the created
+service account must have access to the file. To do that please follow
+<a href="../Google_API_Setup/#sharing-a-file-with-the-service-account">these instructions</a>.</p>
+<h3 id="write-yaml-configuration-used-to-retrieved-data">Write YAML configuration used to retrieved data</h3>
+<p><code>TODO: add and cite API References</code></p>
+<p>In this step, the user outlines the structure that data should be organized
+after being collected from Google Sheets. Various objects are created and
+store in different formats. This section concerns how configuration is
+formatted and read, however, more information regarding what
+each object supports are discussed in API references.
+In general, each Google Sheets file requires it's own YAML configuration
+file, so in the case that the user is reading multiple Google Sheet files,
+there needs to be more than one YAML file in the configuration directory.
+The example below shows configuration for one Google Sheets file and splits
+it up into multiple sheets and regions.</p>
+<pre><code class="language-yaml">source_id: my_sheet_id
+sheets:
+    - name: sheet1
+      regions:
+      - name: grades
+        start: A1
+        end: L4
+        contains_headers: true
+      - name: expenses
+        start: F5
+        end: K12
+        contains_headers: false
+        headers:
+            - Jan
+            - Feb
+            - Mar
+            - Apr
+            - May
+            - Jun
+    - name: sheet2
+      regions:
+      - name: some_data
+        start: A1
+        end: Z10
+        contains_headers: true
+</code></pre>
+<p>Here is a general description of the keys listed in the configuration:</p>
+<ul>
+<li><code>source_id</code>: The ID of the Google Sheet file should be pasted as this
+  value, it's typically found between the <code>/d/</code> and <code>/edit</code> in the URL of the
+  file. The pasted ID should not include the <code>/d/</code> and <code>/edit</code> when pasted
+  into the configuration.</li>
+<li><code>sheets</code>: this key should include a list of sheet objects with two main
+  keys, the name of the sheet, and a list of regions to break it down into.</li>
+<li>The data inside each region is stored as a Pandas DataFrame</li>
+</ul>
+<p>With that in mind, the above configuration does the following:</p>
+<ol>
+<li>In general retrieve the data from the file with ID <code>my_sheet_id</code></li>
+<li>Create two regions from <code>sheet1</code></li>
+<li>First region is named <code>grades</code>, where data bounded by cell <code>A1</code> and
+  <code>L4</code> are stored with the first row of the data as headers.</li>
+<li>Second region is named <code>expenses</code> and it stores data bound by cell <code>F5</code>
+  and <code>K12</code>. The headers of the data frame are custom and they're listed
+  in the <code>headers</code> list.</li>
+<li>Create one region from <code>sheet2</code> named <code>some_data</code> which is bound by <code>A1</code>
+  and <code>Z10</code></li>
+</ol>
+<h3 id="call-sheet_collector-from-the-plugin">Call <code>sheet_collector</code> from the plugin</h3>
+<p>Once all previous setup steps are completed, you can begin writing your
+plugin and utilizing the infrastructure of SheetShuttle. A quick way to get
+started is the simple code snippet below which initializes a <code>SheetCollector</code>
+object and executes the configuration to retrieve and store data from Google
+Sheets.</p>
+<pre><code class="language-python">from sheetshuttle import sheet_collector
+
+my_collector = sheet_collector.SheetCollector()
+my_collector.collect_files()
+</code></pre>
+<p>Note that initializing a <code>SheetCollector</code> object accepts the following
+optional arguments:</p>
+<ul>
+<li><code>key_file</code>: path to the file containing Google Sheets API authentication
+  tokens. The file can be either a <code>.env</code> or <code>.json</code> format. The default
+  value of this argument is <code>.env</code>.</li>
+<li><code>sources_dir</code>: path to the directory containing all the YAML configuration
+  to be read. The default value is <code>config/sheet_sources</code></li>
+</ul>
+<p>Once <code>collect_files()</code> finishes running, <code>my_collector.sheets_data</code> instance
+variable is populated with all the collected data. The variable is a
+dictionary where sheet names are keys in the dictionary and the values are
+corresponding <code>Sheet</code> objects.</p>
+<h2 id="using-the-github-api">Using the GitHub API</h2>
+<p>Similar to using the Google Sheets API, the GitHub API relies on authentication
+token as well as user written or plugin generated configuration to execute all
+the requests. The following sections describe the needed steps to set up and use
+the GitHub API.</p>
+<h3 id="add-github-access-token">Add GitHub Access Token</h3>
+<p>The <a href="../README.md#github-access-token">GitHub Access Token section</a> in README
+discusses how to generate a GitHub token and make it accessible to SheetShuttle.
+Without the token, SheetShuttle will not be able to authenticate with the API and
+post entries such as issues, pull requests, or files.</p>
+<h3 id="write-or-generate-yaml-configuration">Write or Generate YAML Configuration</h3>
+<p>GitHub interactions also uses YAML configuration to execute API requests and
+post entries to a GitHub repository. This configuration can be user written or
+automatically generated by your plugin. The configuration must follow the
+structure described in the <a href="schemas.md#github-interactions-schema">schemas
+guide</a> but an example is also shown and
+explained below.</p>
+<p>The configuration should be structured as a list of Entry objects that contain
+the type of entry as well as the action to be done. Different entries support
+different actions and attributes in their structure. For more information,
+refer to the schemas guide.</p>
+<pre><code class="language-yaml"># Create an issue
+# labels are optional
+- type: issue
+  action: create
+  repo: repo_org/repo_name
+  title: some new issue
+  body: test body
+  labels:
+    - label1
+    - label2
+
+# update/comment on an issue
+# Number of issue to update must be used instead of title
+# New labels can be added
+- type: issue
+  action: update
+  repo: repo_org/repo_name
+  number: 1
+  body: test body
+  labels:
+    - label1
+    - label2
+
+# Create a pull request
+# base is the name of branch to merge into
+# head is the name of branch to merge from
+- type: pull request
+  action: create
+  repo: repo_org/repo_name
+  title: test create pull request
+  body: Test pull request create
+  base: main
+  head: test_branch
+
+# Update/add comment on a pull request
+# Number of pull request is used instead of title
+- type: pull request
+  action: update
+  repo: repo_org/repo_name
+  number: 2
+  body: Test pull request create
+
+
+# Create a new file in a branch
+# the path must include the format of the file to be created
+- type: file
+  action: create
+  repo: repo_org/repo_name
+  path: folder1/file2.txt
+  content: hello world!
+  branch: main
+  commit_message: sample commit message
+
+# Append to an existing file
+# This action appends the new content to the old content of the file
+- type: file
+  action: update
+  repo: repo_org/repo_name
+  path: folder1/file2.txt
+  content: hello world!
+  branch: main
+  commit_message: sample commit message
+
+# Replace an existing file
+# This action completely erases the old content of the file
+# and replaces it with the new content
+- type: file
+  action: replace
+  repo: repo_org/repo_name
+  path: folder1/file2.txt
+  content: hello world!
+  branch: main
+  commit_message: sample commit message
+</code></pre>
+<h3 id="call-githubmanager-from-your-plugin">Call <code>GithubManager</code> from Your Plugin</h3>
+<p>Once configuration has been written or automatically generated, a
+<code>GitHubManager</code> object can be initialized in your plugin to collect and parse
+the configuration. The object also supports the ability to post the entries. The
+code snippet below shows an example of how it can be used.</p>
+<pre><code class="language-python">from sheetshuttle import github_interaction
+
+my_manager = github_interaction.GitHubManager()
+my_manager.collect_config()
+
+# All collected entries can be posted at once
+my_manager.post_all()
+
+# OR they can be posted individually by type
+my_manager.post_issues()
+my_manager.post_pull_requests()
+my_manager.post_files()
+</code></pre>
+<p>Note that when initializing a <code>GitHubManager</code> object, two optional arguments can
+be accepted:</p>
+<ul>
+<li><code>key_file</code>: the path to the file containing the GitHub token. By default the
+  the value of this argument is <code>.env</code> causing the manager to look for the token
+  in environment variables. Tokens can be stored in <code>.json</code> files or as
+  environment variables.</li>
+<li><code>sources_dir</code>: the path to the directory containing YAML configuration files
+  for the <code>GitHubManager</code> object. All YAML files are collected and parsed to
+  create corresponding Entry objects. By default, the value of this argument is
+  <code>config/github_interactions</code>.</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../Schemas/" class="btn btn-neutral float-left" title="Schemas"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../Schemas/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+  </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme_extra.js" defer></script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

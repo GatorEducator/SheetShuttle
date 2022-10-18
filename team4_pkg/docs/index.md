@@ -1,122 +1,285 @@
-# Getting Started
+# SheetShuttle
 
-- [Getting Started](#getting-started)
-  - [What's the point of this?](#whats-the-point-of-this)
-  - [Why SheetShuttle?](#why-sheetshuttle)
-  - [Before we jump in](#before-we-jump-in)
-    - [Code Dependencies](#code-dependencies)
-    - [Setting up API keys](#setting-up-api-keys)
-    - [How does SheetShuttle work?](#how-does-sheetshuttle-work)
-  - [Let's start coding](#lets-start-coding)
-    - [Why is this code so messy?](#why-is-this-code-so-messy)
-    - [Time to write some tests](#time-to-write-some-tests)
-  - [How do I run this thing?](#how-do-i-run-this-thing)
-  - [Ok, but now what?](#ok-but-now-what)
-    - [SheetShuttle needs some fixes](#sheetshuttle-needs-some-fixes)
-    - [Write your own plugins](#write-your-own-plugins)
+![License](https://img.shields.io/badge/license-MIT-blue?style=flat)
+![BuiltWith](https://img.shields.io/badge/Built%20With-Python-blue?style=flat&logo=python&logoColor=yellow)
+![Actions Status](https://github.com/noorbuchi/SheetShuttle/workflows/Lint%20and%20Test/badge.svg)
+[![codecov](https://codecov.io/gh/noorbuchi/SheetShuttle/branch/main/graph/badge.svg?token=02353FAN4W)](https://codecov.io/gh/noorbuchi/SheetShuttle)
+![stars](https://img.shields.io/github/stars/noorbuchi/SheetShuttle.svg)
 
-## What's the point of this?
+![SheetShuttleLogo](images/Logo.png)
 
-This guide should help you get started as a developer of SheetShuttle. Specifically, it will help you understand
-the purpose of the project, clarify some of the reasoning behind the design decisions, and much more.
-It's inevitable that some details will be missed here, so **this should be a living document**.
-Always feel free to update it as the implementation changes and when you have new ideas/questions/requests about the project.
+SheetShuttle is a plugin friendly tool that connects Google Sheets
+and GitHub by allowing the user to post collected data to issue trackers, pull
+requests, and files. The tool
+provides and object oriented API and encourages users to utilize it in their
+applications.
 
-## Why SheetShuttle?
+- [SheetShuttle](#sheetshuttle)
+  - [Set Up and Installation](#set-up-and-installation)
+    - [Recommended Installation Using `pip`](#recommended-installation-using-pip)
+    - [Manually Building SheetShuttle](#manually-building-sheetshuttle)
+  - [Running SheetShuttle](#running-sheetshuttle)
+    - [API Setup](#api-setup)
+      - [Google Sheets Service Account](#google-sheets-service-account)
+      - [Github Access Token](#github-access-token)
+    - [Writing Config](#writing-config)
+      - [Sheets Collector](#sheets-collector)
+      - [Github Interactions](#github-interactions)
+    - [Using Command Line Interface](#using-command-line-interface)
+      - [Initialize a New Plugin](#initialize-a-new-plugin)
+      - [Running an Existing Plugin](#running-an-existing-plugin)
+    - [Plugin System](#plugin-system)
+  - [Contributors ✨](#contributors-)
 
-The purpose of SheetShuttle is to create infrastructure to automate:
+## Set Up and Installation
 
-1. Retrieving data from Google Sheets
-2. Processing this data through user-defined plugins
-3. Publishing the processed data through different ways on GitHub
+### Recommended Installation Using `pip`
 
-You might say: "This is very broad, I don't think much was explained here", but that's exactly the point.
-SheetShuttle is simply the infrastructure that allows more specific problems to be solved. We want to allow the
-user to define their own approach to solving a problem, and use our infrastructure do implement it.
-With that in mind, SheetShuttle is meant to be plugin-friendly. This means that the user can write their
-own code and integrate it into SheetShuttle workflow.
+SheetShuttle can be installed using Python's package manager `pip`. By running
+the following command, SheetShuttle and all its dependencies are installed.
 
-## Before we jump in
+```shell
+pip install sheetshuttle
+```
 
-I know you're really excited to jump in and start coding but we gotta set up few things first.
-This is not the most fun part, but the good thing is that you'll only have to do it once!
+Using this command to install SheetShuttle will ensure that you have the latest
+most stable version of the tool. Additionally, you will be able to run the tool
+anywhere on your system using the `sheetshuttle` command.
 
-### Code Dependencies
+### Manually Building SheetShuttle
 
-SheetShuttle uses many dependencies that you're likely already familiar with. Tools like Python and poetry
-are used in many labs and practicals in the CS department and you likely already have some experience with them.
-If you don't already have these two installed, then you should start by doing that. I recommend installing Python
-through Pyenv or another equivalent since it makes switching to the right version easier. As for Poetry, you can
-find the instructions in the [official website](https://python-poetry.org/docs/). It's also worth taking some time
-to review poetry commands and how they're used.
-Once you have both, Python and Poetry installed, make sure to run `poetry install` inside your repository home. This will
-install all needed dependencies on your Python virtualenv.
+To get the latest changes from `main` or other development branches, make sure
+to clone the project's repository and follow these steps to create Python
+virtual environment, install dependencies, and build the tool.
 
-### Setting up API keys
+SheetShuttle uses Poetry to create a Python virtual environment and manage
+dependencies. For more information about Poetry, check out [the
+documentation](https://python-poetry.org/). To set up the tool for use, please
+follow the steps outlined below:
 
-Setting up API keys is very important to be able to use SheetShuttle. If you're interested in using the GoogleSheets side,
-then you must set up a service account and have your authentication token and other information stored on your computer.
-[This guide](./Google_API_Setup.md) shows the needed steps to set up a service account.
+**1- Install Poetry:**
 
-As for the GitHub side of things, you will need a personal access token store on your computer to be able to use
-the GitHub features of SheetShuttle. This [online guide](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
-has the steps needed to do that.
+Install Poetry using the steps outlined
+[here](https://python-poetry.org/docs/#installation). To verify that Poetry was
+installed successfully run the following:
 
-**Make sure to keep all keys and tokens secure. DO NOT commit files containing keys, it will cause a security problem and invalidate your keys.**
+```shell
+poetry -V
+```
 
-**Side note**: If you're planning to create Google Sheets service account or get a GitHub access token, I recommend that you use a throwaway account.
-Do not use your personal Google or GitHub account to avoid any issues that could happen such as loss of personal data or other problems we can't anticipate.
+The expected output is the version of Poetry installed.
 
-### How does SheetShuttle work?
+**2- Install Python Dependencies:**
 
-There are three main components in SheetShuttle: Google Sheets handler, GitHub handler, and the user defined plugin. There are some requirements
-for the user defined plugin but it could include anything the user wants. As for the two handlers, they provide the API that the user defined
-plugin can use.
+Once Poetry has been installed successfully, clone or download the repository
+and navigate to the root of the repository. Use the following command to install
+all the dependencies used by SheetShuttle:
 
-Both handlers operate on the same concepts and they share the following:
+```shell
+poetry install
+```
 
-- Require configuration file that is either user written or automatically generated
-- Configuration file must follow the schema outlined in the infrastructure of each handler
-  - **NOTE:** The schema guide is a _very_ important resource. You can find it [here](./schemas.md)
-- Each handler iterates through the configuration and makes a series of API requests to send out/retrieve the
-    data specified in the configuration files
+This command might take some time to finish running. Once it is completed,
+SheetShuttle is ready for use!
 
-## Let's start coding
+**3- Build SheetShuttle or Run Using Poetry:**
 
-Now that you know the concept behind SheetShuttle, you can start contributing to the project!
-Make sure you follow the code of conduct and the contribution guide while you write code and
-send it for review.
+After the development environment is ready, you can build an installable `.whl`
+file using `poetry build` command, or continue to use the tool by running
+`poetry run sheetshuttle` from the project directory and passing any additional
+CLI arguments.
 
-### Why is this code so messy?
+## Running SheetShuttle
 
-A lot of the code in SheetShuttle was written as proof of concept to see that we can implement something
-that links Google Sheets and GitHub. This means that there is plenty of room to polish it up, refactor, and make
-it more clear to read and understand. If you find some parts to be confusing, missing documentation, or outright
-disorganized, feel free to go in and make the necessary changes! Many linters are also included in the project
-to make sure that you're following industry standards of code hygiene and keeping things clean and tidy.
+For a thorough steps refer to this [tutorial](docs/tutorial.md)
 
-### Time to write some tests
+### API Setup
 
-Testing is very important when you're adding new changes or making fixes to existing problems. We don't want
-to ship a broken product so we always want to make sure that SheetShuttle is working as expected. The existing
-test suite covers most of the code in the tool but there is room for improvement. Any changes to the infrastructure
-code should be accompanies with some testing to validate that things are running correctly.
+SheetShuttle requires authentication tokens for a Google Sheets API service
+account. A GitHub access token is also needed if some features are used. To set
+up a service account and get the tokens, please follow the steps below:
 
-## How do I run this thing?
+#### Google Sheets Service Account
 
-After you run `poetry install`, the command you need is `poetry run sheetshuttle <your_arguments>`. If you want to know more about the available arguments,
-you can run `poetry run sheetshuttle -h` to display the help message.
+[This tutorial](https://youtu.be/4ssigWmExak?t=215)
+from `3:35` until `8:20` gives clear and
+detailed steps on how to create a service account and create an authentication
+key. However, it includes extra steps that not everyone will need to follow. You
+can follow the video if preferred or the [Sheets API
+Guide](docs/Google_API_Setup.md).
 
-## Ok, but now what?
+Once API credentials have been downloaded, there are 2 ways to allow SheetShuttle
+to use them.
 
-### SheetShuttle needs some fixes
+1. Place the downloaded JSON file in the root of the project repository
+1. OR create a new `.env` file and transfer the information from the `.json`
+   file to the environment file in the following format.
 
-There are some existing open issues in the repository that need to be addressed. Some of them are major problems, and others are smaller ones.
-This is one of the main priorities to make sure that the infrastructure is bug-free before we start using it.
+**Important Note:** Values in the `.env` file must be surrounded
+by double quotation marks `"` otherwise, newline character `\n`
+will cause issues.
 
-### Write your own plugins
+Note that variable names must be in upper case.
 
-Once existing issues have been resolved, we can start adding new features in the form of plugins! These plugins
-can look very different depending on what you want them to do. However, they should probably live somewhere else and
-not with the infrastructure code. So please don't commit plugins directly to this repository since we're only planning
-to ship the infrastructure and everything else is an addon.
+```.evn
+TYPE="value"
+PROJECT_ID="value"
+PRIVATE_KEY_ID="value"
+PRIVATE_KEY="value"
+CLIENT_EMAIL="value"
+CLIENT_ID="value"
+AUTH_URI="value"
+TOKEN_URI="value"
+AUTH_PROVIDER_X509_CERT_URL="value"
+CLIENT_X509_CERT_URL="value"
+```
+
+#### Github Access Token
+
+If you intend to use SheetShuttle's GitHub interactions features, it is
+required to create a GitHub access token and place it correctly in
+the project repository. To create a token, please use the official
+guide found
+[here](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).
+The created token should be granted `repo` access.
+
+Once a token has been created, there are two ways to allow SheetShuttle
+to use it:
+
+1. Create a json file in the repository root with the following format (note
+   that the `gh_access_token` key is required):
+
+   ```json
+   {
+     "gh_access_token": "paste your token here"
+   }
+   ```
+
+1. OR add a variable to the `.env` file in the following format
+
+     ```.env
+     GH_ACCESS_TOKEN="paste your token here"
+     ```
+
+### Writing Config
+
+SheetShuttle relies on user written YAML configuration to
+collect data from Google Sheets and organize it in regions.
+GitHub interactions are also managed by
+YAML configuration. To read more about the structure of SheetShuttle
+configuration, please refer to our [schema documentation](docs/schemas.md).
+
+#### Sheets Collector
+
+Sheets Collector is the component of SheetShuttle that is responsible
+for making Google Sheets API calls and retrieving data from user
+specified files and sheets. Additionally, it creates an object
+oriented structure for regions and sheets of data.
+In order to use this component, configuration YAML files are needed
+in the `config/sheet_sources` directory. Multiple files can be used if multiple
+sheets are being read at the same time.
+
+#### Github Interactions
+
+Another component of SheetShuttle is the GitHub Interaction interface. It is
+responsible for making API requests to GitHub and posting user specified
+information to GitHub in the form of issue trackers, ull requests, and files.
+The user has complete control of this component's behavior through YAML
+configuration files found in `config/github_interactions` directory. Multiple
+files can be used if preferred.
+
+### Using Command Line Interface
+
+After installing SheetShuttle using `pip`, the command `sheetshuttle` becomes
+available to run the tool from any location on your system. To get help on the
+CLI commands for SheetShuttle, you can always run `sheetshuttle --help` to get
+the available options. This section gives additional details on the available
+subcommands for the tool.
+
+#### Initialize a New Plugin
+
+To make the process of creating a new plugin more convenient and less error
+prone, the `init` command will create a plugin template that
+fulfils the structural requirement.
+
+```shell
+sheetshuttle init my_plugin_name
+```
+
+This command creates a Python file named `my_plugin_name.py` in the same
+directory the command was ran in. This file can then be edited and used as the
+plugin for SheetShuttle.
+
+#### Running an Existing Plugin
+
+The `run` command is responsible for executing a user defined plugin. It
+supports a help message that displays all the available arguments and their
+description. Some of these arguments are required while others are optional.
+Additionally, most of them already hold a default value that gets used when no
+value is passed through the command.
+
+```shell
+$ sheetshuttle run --help
+
+Usage: sheetshuttle run [OPTIONS]
+
+  Run sheetshuttle using your custom plugin.
+
+Options:
+  -kf, --sheets-keys-file TEXT    Path to the Sheets api keys, either .json or
+                                  .env file  [default: .env]
+
+  -sd, --sheets-config-directory TEXT
+                                  Directory to get the sheets configuration
+                                  .yaml files from  [default:
+                                  config/sheet_sources/]
+
+  -gd, --gh-config-directory TEXT
+                                  Directory to get the Github configuration
+                                  .yaml files from  [default:
+                                  config/gh_sources/]
+
+  -pd, --plugins-directory TEXT   Directory to get plugins from  [default:
+                                  plugins/]
+
+  -pn, --plugin-name TEXT         Name of plugin to use for processing
+                                  [default: default]
+
+  -ja, --json-args TEXT           Path to the JSON file with additional
+                                  arguments. [Optional]
+
+  --help                          Show this message and exit.
+
+```
+
+### Plugin System
+
+SheetShuttle supports user defined plugins that use the API provided by the
+tool. These plugins typically follow a specific format where they must contain a
+`run` function. When the directory and name of the plugin are provided in the
+`sheetshuttle run` command, the plugin is validated and then immediately ran.
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/noorbuchi"><img src="https://avatars.githubusercontent.com/u/55197145?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Noor Buchi</b></sub></a><br /><a href="https://github.com/GatorEducator/SheetShuttle/commits?author=noorbuchi" title="Code">💻</a> <a href="https://github.com/GatorEducator/SheetShuttle/commits?author=noorbuchi" title="Documentation">📖</a> <a href="#plugin-noorbuchi" title="Plugin/utility libraries">🔌</a> <a href="https://github.com/GatorEducator/SheetShuttle/pulls?q=is%3Apr+reviewed-by%3Anoorbuchi" title="Reviewed Pull Requests">👀</a> <a href="https://github.com/GatorEducator/SheetShuttle/commits?author=noorbuchi" title="Tests">⚠️</a> <a href="#projectManagement-noorbuchi" title="Project Management">📆</a></td>
+    <td align="center"><a href="https://tommyantle.netlify.app/"><img src="https://avatars.githubusercontent.com/u/55158626?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Tommy Antle</b></sub></a><br /><a href="https://github.com/GatorEducator/SheetShuttle/commits?author=antlet" title="Documentation">📖</a> <a href="https://github.com/GatorEducator/SheetShuttle/pulls?q=is%3Apr+reviewed-by%3Aantlet" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://github.com/tuduun"><img src="https://avatars.githubusercontent.com/u/62280291?v=4?s=100" width="100px;" alt=""/><br /><sub><b>tuduun</b></sub></a><br /><a href="https://github.com/GatorEducator/SheetShuttle/commits?author=tuduun" title="Code">💻</a> <a href="https://github.com/GatorEducator/SheetShuttle/pulls?q=is%3Apr+reviewed-by%3Atuduun" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://github.com/Yanqiao4396"><img src="https://avatars.githubusercontent.com/u/79415648?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Yanqiao4396</b></sub></a><br /><a href="https://github.com/GatorEducator/SheetShuttle/commits?author=Yanqiao4396" title="Code">💻</a> <a href="https://github.com/GatorEducator/SheetShuttle/pulls?q=is%3Apr+reviewed-by%3AYanqiao4396" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://www.gregorykapfhammer.com/"><img src="https://avatars.githubusercontent.com/u/926029?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Gregory M. Kapfhammer</b></sub></a><br /><a href="#mentoring-gkapfham" title="Mentoring">🧑‍🏫</a> <a href="#projectManagement-gkapfham" title="Project Management">📆</a> <a href="#ideas-gkapfham" title="Ideas, Planning, & Feedback">🤔</a></td>
+    <td align="center"><a href="http://www.douglasjluman.com/"><img src="https://avatars.githubusercontent.com/u/1552764?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Douglas Luman</b></sub></a><br /><a href="#ideas-dluman" title="Ideas, Planning, & Feedback">🤔</a> <a href="#design-dluman" title="Design">🎨</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!

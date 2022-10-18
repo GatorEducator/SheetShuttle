@@ -1,26 +1,16 @@
-site_name: team4_pkg
+site_name: SheetShuttle API Documentation
 site url: https://SheetShuttle.github.io
 nav:
     - Home: index.md
-    - Google_API_Setup: Google_API_Setup.md
-    - Getting_Started: Getting_Started.md
+    - Google API Setup: Google_API_Setup.md
+    - Getting Started: Getting_Started.md
     - Schemas: Schemas.md
-    - Tutorial: tutorial.md
+    - Tutorial: Tutorial.md
 
 
 theme:
-  name: null
-  custom_dir: 'mkdocs_docskimmer'
-  include_search_page: true
-  search_index_only: false
-  static_templates:
-  - 404.html
-
-plugins: ['search']
-
-# add theme version number here
-extra:
-    version: 0.3.x
-
-
+    name: mkdocs
+    nav_style: dark 
+    palette:
+      primary: green
 
