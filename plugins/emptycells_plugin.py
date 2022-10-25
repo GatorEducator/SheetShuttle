@@ -16,4 +16,5 @@ def run(sheets_keys_file, sheets_config_directory, gh_config_directory, **kwargs
     my_collector = sheet_collector.SheetCollector(key_file=sheets_keys_file, sources_dir=sheets_config_directory)
     my_collector.collect_files()
     used_config = my_collector.sheets_data["git_creative_config"]
+    my_collector.print_contents()
     pass
