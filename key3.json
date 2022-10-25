@@ -1,0 +1,12 @@
+{
+    "type": "service_account",
+    "project_id": "sheetshuttle-api",
+    "private_key_id": "f92e412394fbea132051297e1c82710f46d23aac",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC9sv35hfQTcF+S\nG4VxGx01RkVZMCJ6ghmG1naAp4iHpaeZOdrdi6fC8GGv/V8LJ/z2OVYus24DxPUO\nEOHZP/TG/xzsMFJjx5bSPHmPtWaJZkKAfcFELpsblKNfp8IEhN94wyG++eIrpLFf\nvJyTHwk1VAYRyo1T26iHCp3XSvQc7fGALA8ZbZMo7MdeRtBPUrkgmn5pgrCkgvgn\n1OI60jZq+18nIE3ryUX7RDi0vBnFGT0bQQjY5/DETNwsDe5dZ/8IdYWrcSzotyJs\nDjaR6RzZEkCxJ4OlyyUqaUxAUmRNxa8IQlfgWATDw7YANVjzem+RLcnfm0R0Vki8\n59cBx3kxAgMBAAECggEAAPmERlcUwEa8DflmBHpm6l74tJ7rlsOtUgZEcaV9Yog0\ndzmEb+3uPsFFjjipUiqfyTaAPxaOd1azP+Hl3YFKLp17/SnD0EXjxu4hvYOEB1W9\nvBtmo0pw7cm0E8XuKF/pUPLMjRwLcwK/o3oEjQQMVABhKi/x9+h634vrhad5tOjr\njdJFC58qzXxo+PqZHvccpi7wJzBMBTRkjFl7Pc4cQ+C1H9/tTLGCq0kAH162OYde\nHPZzmgG7S2kPjzs+xoeIwoRCFET/phYttTPeNvHDHJp/gP1BykFO3waUSRUevvGT\nGA5AOklFy5HVCmagzcWebe3xx7idEnvr3jjRI3hJwQKBgQDc4cAlK3SMQOhXYgk8\nkIIZWpHGLMrY62Max6Xlc1d0yhI2CpGASqbmr3gAAmNdXWGymLHmbL9hVND+9OR0\nl0LuRMeyNWrnHxz2mYKBv5TUwxuNwTCPqHEYfEEJ1HyWb/jxuwn0VG/S7OlHAKr+\nw16w2hllGUFqI7XE4yjzTD4KQQKBgQDb3A6ZSFQ4UTroCBjyFGNoqw7QsNJbJqbC\noU4q/ASgN898AwjJY2GcEORBaVBZQyucD748uwDYcE56RWQa5crhz8gsCphd9LAb\nB1+QSCupCo45j0Lwv9bLL+nXIk4F8zkwkkCNVRLJSBT387UWdWnp+zPZJGL5fYjS\nbZHS4FdS8QKBgDxKvukmeHTETudzUjQe+fQzvbDLjz8w2Wd48ba1Cj1N3zSzI85S\nEkbLxMSz4i2dDMr0VTMhogfOYBIIBMgydcmWKrBhVmHqIzzI4E/MXLLK4x2Ji1jb\nUKuvVw14290wiVJqjKgN2ExJ8M85xnMuHw3FKsNm5m0zfC1XGFl5CUJBAoGBAM3a\ngsi+UizQ0ajDPCgdMt6jmyGHDc5OqED/qyLQCLzCxMBGTwnQxWnM3wrnwlVxcPmU\nO/i81xPQQ4p0QkB0+7rmQ3QJD5SZL/J+utlq2YZS3cvC+VhVJpXkbLwD4K3th5SU\nu2AZUZeoqAlo5Br9IIf1rhwX15vmEB+Ge8zIRLrhAoGBALWHgYApT9pi7EpkKMFK\nqz4tojyoD6iwAnM0+RlpOrxqq1qzn52G49/P7o0UIBM8oCFyiar04sfSRYLiNuvG\nQo+EmKI/m4FxKnojsypBvS2JhbfOG3cylhK2J8UsT3re4TDtpvvqhcipUGC7cttw\nA949ZVwWrPcvL+FDFMmN+/B1\n-----END PRIVATE KEY-----\n",
+    "client_email": "test2sheetshuttleapi@sheetshuttle-api.iam.gserviceaccount.com",
+    "client_id": "105190047594915618483",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/test2sheetshuttleapi%40sheetshuttle-api.iam.gserviceaccount.com"
+  }
