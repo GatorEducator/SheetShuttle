@@ -31,17 +31,10 @@ def extract_sheet_id(url: str) -> str:
     try:
         url_segments = url.split("/")
         # Return the url_segment following the segment that contains only "d"
-        return next(
-            (
-                url_segments[i + 1]
-                for i in range(len(url_segments))
-                if url_segments[i] == "d"
-            ),
-            url,
-        )
+        idx = url_segments.index("d")
+        return url_segments[idx + 1]
     except IndexError:
-        print("The URL provided is not valid for Google Sheets ID extraction.")
-        return url
+        raise Exception(f"The URL {url} is not valid for Google Sheets ID extraction.")
 
 
 def calculate_dimensions(start_range: str, end_range: str) -> Tuple[int, int]:
