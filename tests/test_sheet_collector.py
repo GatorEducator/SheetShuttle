@@ -403,16 +403,16 @@ def test_empty_cells_in_sheets_get_type_none():
     """Check that blank cells are type None."""
     # input data with empty strings as empty cells
     input_data = [
-    ["col1", "col2", "col3", "col4"],
-    ["fizz", "", "fooz", "fizz2"],
-    ["buzz", "fooz2", "buzz2", ""],
+        ["col1", "col2", "col3", "col4"],
+        ["fizz", "", "fooz", "fizz2"],
+        ["buzz", "fooz2", "buzz2", ""],
     ]
 
     # expected data with None as empty cells
     expected_data = [
-    ["col1", "col2", "col3", "col4"],
-    ["fizz", None, "fooz", "fizz2"],
-    ["buzz", "fooz2", "buzz2", None],
+        ["col1", "col2", "col3", "col4"],
+        ["fizz", None, "fooz", "fizz2"],
+        ["buzz", "fooz2", "buzz2", None],
     ]
 
     # append None where there is a mismatch in data and number of columns/rows
