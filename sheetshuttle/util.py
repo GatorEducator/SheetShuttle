@@ -72,7 +72,7 @@ def fill_to_dimensions(
             # Add the difference in None values
             col_difference = columns - value_nums
             row.extend([None] * col_difference)
-        for i in range(len(row)):
+        for i, _ in enumerate(row):
             if row[i] == "":
                 row[i] = None
     # check that the correct number of rows is present
