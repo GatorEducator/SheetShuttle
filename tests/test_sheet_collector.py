@@ -11,6 +11,8 @@ import pandas as pd
 
 from sheetshuttle import sheet_collector
 
+from sheetshuttle import util
+
 
 def test_region_initialize():
     """Check that a Region object is correctly initialized with instance variables."""
@@ -396,33 +398,25 @@ def test_sheet_collector_collect_files_prints_output(tmpdir, test_data, capfd):
     for print_item in test_data["collect_files_test"]["expected_print"]:
         assert print_item in captured.out
 
+
 def test_empty_cells_in_sheets_get_type_none():
     """Check that blank cells are type None."""
-    
-    from sheetshuttle import util
+    # input data with empty strings as empty cells
+    input_data = [
+    ["col1", "col2", "col3", "col4"],
+    ["fizz", "", "fooz", "fizz2"],
+    ["buzz", "fooz2", "buzz2", ""],
+    ]
 
-    # create SheetCollector object
-    #   -pass in key and directory of group's config
-    my_sheet_collector = sheet_collector.SheetCollector(
-        key_file="key3.json", sources_dir="config/sheet_sources"
-        )
-    # create api variable
-    api = my_sheet_collector.sheets
-
-    # expected data with None in blank cells
+    # expected data with None as empty cells
     expected_data = [
     ["col1", "col2", "col3", "col4"],
     ["fizz", None, "fooz", "fizz2"],
     ["buzz", "fooz2", "buzz2", None],
     ]
 
-    # execute an API call to get data from google sheets
-    data_from_call = sheet_collector.Sheet.execute_sheets_call(
-        api, "1b1e0ml8klRF4VOq03D1M_Quk_33KBYONigQ3WXhbNkU", "sheet1", "A1", "D3"
-        )
-
     # append None where there is a mismatch in data and number of columns/rows
-    new_data = util.fill_to_dimensions(data_from_call, 4, 3)
+    new_data = util.fill_to_dimensions(input_data, 4, 3)
 
     # check to see if empty elements get None
     assert new_data == expected_data
