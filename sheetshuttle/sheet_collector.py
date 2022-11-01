@@ -304,11 +304,9 @@ class Sheet:
 
     def print_sheet(self):
         """Iterate through self.regions and print the contents."""
-        # update this with the new indexing structure
-        # Fixed indexing structure in this function
-        for region_id, region in self.tabs[sheet[regions.items()]]:
-            print(f"******\t {region_id} \t ******")
-            region.print_region()
+        for tab_name, tab_obj in self.tabs.items():
+            print(f"******\t {tab_name} \t ******")
+            tab_obj.print_tab()
             print("*********************************")
 
     @staticmethod
@@ -468,3 +466,10 @@ class Tab:
     def __init__(self, name: str, regions: Dict[str, Region]) -> None:
         self.name = name
         self.regions = regions
+
+    def print_tab(self):
+        print(f"\t- Tab name: {self.name}")
+        for region_name, region_obj in self.regions.items():
+            print(f"###############  {region_obj.region_name} ###############")
+            region_obj.print_region()
+            print(f"##########################################")
