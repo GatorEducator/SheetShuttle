@@ -28,6 +28,7 @@ PyGithub = "^1.55"
 openpyxl = "^3.0.9"
 openpyxl-stubs = "^0.1.21"
 types-jsonschema = "^4.4.1"
+pytest-cov = "^4.0.0"
 
 [tool.poetry.dev-dependencies]
 black = "^21.8b0"
