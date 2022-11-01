@@ -285,7 +285,8 @@ class Sheet:
                 regions_dict[region_object.region_name] = region_object
             self.tabs[sheet["name"]] = regions_dict
 
-    def get_region(self, region_name: str):
+    def get_tab(self, tab_name: str):
+        # change doc
         """Return a region object from the regions dictionary.
 
         Args:
@@ -298,8 +299,7 @@ class Sheet:
         # requested_region: Region = self.regions[region_name]
         # return requested_region
         # New Approach
-        requested_tab: Tab = self.tabs[sheet[region_name]]
-        print(requested_tab)
+        requested_tab: Tab = self.tabs[tab_name]
         return requested_tab
 
     def print_sheet(self):
@@ -433,7 +433,7 @@ class Region:
         # Make a decision on the new file naming style
         # Fixed naming
         with open(
-            pathlib.Path(".") / directory / f"{self.region, self.full_name}.pkl", "wb"
+            pathlib.Path(".") / directory / f"{self.full_name}.pkl", "wb"
         ) as outfile:
             pickle.dump(self, outfile)
 
@@ -463,13 +463,33 @@ class Region:
 
 
 class Tab:
+    """Store data frame and metadata about Google Sheet tabs."""
+
     def __init__(self, name: str, regions: Dict[str, Region]) -> None:
+        """Initialize Tab."""
         self.name = name
         self.regions = regions
 
     def print_tab(self):
+        """Print Tab."""
         print(f"\t- Tab name: {self.name}")
         for region_name, region_obj in self.regions.items():
-            print(f"###############  {region_obj.region_name} ###############")
+            print(f"###############  {region_name} ###############")
             region_obj.print_region()
-            print(f"##########################################")
+            print("##########################################")
+
+    def get_region(self, region_name: str):
+        """Return a region object from the regions dictionary.
+
+        Args:
+            region_name (str): name of the region to get
+
+        Returns:
+            Region: the region object from the self.regions dictionary
+        """
+        # update this with the new indexing structure
+        # requested_region: Region = self.regions[region_name]
+        # return requested_region
+        # New Approach
+        requested_region: Region = self.regions[region_name]
+        return requested_region

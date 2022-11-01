@@ -125,6 +125,7 @@ def test_print_sheet_empty(capfd, test_data):
 
 def test_print_sheet_with_data(capfd, test_data):
     """Check that sheets are printed correctly when regions data exist."""
+    # Set up my data in objects
     sample_config = test_data["sheets_schema_test"]["passing"][0]
     my_sheet = sheet_collector.Sheet(sample_config, None)
     first_data = pd.DataFrame([["name", "class", "grade"], ["Noor", "2022", "94"]])
@@ -133,29 +134,35 @@ def test_print_sheet_with_data(capfd, test_data):
     )
     second_data = pd.DataFrame([["name", "lab1", "lab2"], ["Noor", "100", "94"]])
     second_region = sheet_collector.Region("labs", "CMPCS102", "A2", "H20", second_data)
-    my_sheet.regions = {"overall": first_region, "labs": second_region}
-    assert my_sheet.get_region("overall") == first_region
+    regions_dict = {"overall": first_region, "labs": second_region}
+    my_tab = sheet_collector.Tab("test_data", regions_dict)
+    my_sheet.tabs = {"test_data", my_tab}
+    # Start assertions
+    # Verify that my regions are in the sheet
+    assert my_sheet.get_tab("test_data").get_region("overall") == first_region
+    assert my_sheet.get_tab("test_data").get_region("labs") == second_region
     my_sheet.print_sheet()
-    captured = capfd.readouterr()
-    first_item = """******	 overall 	 ******
-start range: A1
-end range: Z20
-|    | 0    | 1     | 2     |
-|---:|:-----|:------|:------|
-|  0 | name | class | grade |
-|  1 | Noor | 2022  | 94    |
-*********************************"""
-    second_item = """******	 labs 	 ******
-start range: A2
-end range: H20
-|    | 0    | 1    | 2    |
-|---:|:-----|:-----|:-----|
-|  0 | name | lab1 | lab2 |
-|  1 | Noor | 100  | 94   |
-*********************************
-"""
-    assert first_item in captured.out
-    assert second_item in captured.out
+    assert False
+#     captured = capfd.readouterr()
+#     first_item = """******	 overall 	 ******
+# start range: A1
+# end range: Z20
+# |    | 0    | 1     | 2     |
+# |---:|:-----|:------|:------|
+# |  0 | name | class | grade |
+# |  1 | Noor | 2022  | 94    |
+# *********************************"""
+#     second_item = """******	 labs 	 ******
+# start range: A2
+# end range: H20
+# |    | 0    | 1    | 2    |
+# |---:|:-----|:-----|:-----|
+# |  0 | name | lab1 | lab2 |
+# |  1 | Noor | 100  | 94   |
+# *********************************
+# """
+#     assert first_item in captured.out
+#     assert second_item in captured.out
 
 
 def test_sheet_to_dataframe_no_error_with_headers():
