@@ -11,8 +11,6 @@ import pandas as pd
 
 from sheetshuttle import sheet_collector
 
-from sheetshuttle import util
-
 
 def test_region_initialize():
     """Check that a Region object is correctly initialized with instance variables."""
