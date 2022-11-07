@@ -397,26 +397,3 @@ def test_sheet_collector_collect_files_prints_output(tmpdir, test_data, capfd):
     captured = capfd.readouterr()
     for print_item in test_data["collect_files_test"]["expected_print"]:
         assert print_item in captured.out
-
-
-def test_empty_cells_in_sheets_get_type_none():
-    """Check that blank cells are type None."""
-    # input data with empty strings as empty cells
-    input_data = [
-        ["col1", "col2", "col3", "col4"],
-        ["fizz", "", "fooz", "fizz2"],
-        ["buzz", "fooz2", "buzz2", ""],
-    ]
-
-    # expected data with None as empty cells
-    expected_data = [
-        ["col1", "col2", "col3", "col4"],
-        ["fizz", None, "fooz", "fizz2"],
-        ["buzz", "fooz2", "buzz2", None],
-    ]
-
-    # append None where there is a mismatch in data and number of columns/rows
-    new_data = util.fill_to_dimensions(input_data, 4, 3)
-
-    # check to see if empty elements get None
-    assert new_data == expected_data
