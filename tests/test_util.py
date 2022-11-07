@@ -3,7 +3,7 @@
 from sheetshuttle import util
 
 
-def test_fill_to_dimensions_appends_None_to_empty_strings():
+def test_fill_to_dimensions_appends_none_to_empty_strings():
     """Check that blank cells are type None."""
     # input data with empty strings as empty cells
     input_data = [
@@ -26,7 +26,7 @@ def test_fill_to_dimensions_appends_None_to_empty_strings():
     assert new_data == expected_data
 
 
-def test_fill_to_dimensions_appends_None_to_col_mismatch():
+def test_fill_to_dimensions_appends_none_to_col_mismatch():
     """Check that column missing from input is added."""
     # input data with 3 columns
     input_data = [
@@ -49,7 +49,7 @@ def test_fill_to_dimensions_appends_None_to_col_mismatch():
     assert new_data == expected_data
 
 
-def test_fill_to_dimensions_appends_None_to_row_mismatch():
+def test_fill_to_dimensions_appends_none_to_row_mismatch():
     """Check that row missing from input is added."""
     # input data with 2 rows
     input_data = [
