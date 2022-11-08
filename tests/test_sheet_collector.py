@@ -111,7 +111,6 @@ def test_sheet_initialize_correct_config(test_data):
     my_sheet = sheet_collector.Sheet(sample_config, None)
     assert not my_sheet.api
     assert not len(my_sheet.config) == 0
-    assert not my_sheet.regions
 
 
 def test_print_sheet_empty(capfd, test_data):
