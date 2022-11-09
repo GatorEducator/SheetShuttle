@@ -28,15 +28,15 @@ def gh_token_exists() -> bool:
 
 def extract_sheet_id(url: str) -> str:
     """Extract a sheet ID from a Google Sheets URL."""
-    try:
-        url_segments = url.split("/")
-        # Return the url_segment following the segment that contains only "d"
-        idx = url_segments.index("d")
-        return url_segments[idx + 1]
-    except IndexError as exc:
-        raise Exception(
-            f"The URL {url} is not valid for Google Sheets ID extraction."
-        ) from exc
+    url_segments = url.split("/")
+    if "d" not in url_segments:
+        raise ValueError(f"The URL {url} is not valid for Google Sheets ID extraction.")
+    # Return the url_segment following the segment that contains only "d"
+    idx = url_segments.index("d")
+    if idx == (len(url_segments) - 1):
+        raise IndexError(f"The URL {url} is not valid for Google Sheets ID extraction.")
+    return url_segments[idx + 1]
+
 
 
 def calculate_dimensions(start_range: str, end_range: str) -> Tuple[int, int]:
