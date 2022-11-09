@@ -111,6 +111,7 @@ def test_sheet_initialize_correct_config(test_data):
     my_sheet = sheet_collector.Sheet(sample_config, None)
     assert not my_sheet.api
     assert not len(my_sheet.config) == 0
+    assert not my_sheet.tabs
 
 
 def test_print_sheet_empty(capfd, test_data):
@@ -135,33 +136,53 @@ def test_print_sheet_with_data(capfd, test_data):
     second_region = sheet_collector.Region("labs", "CMPCS102", "A2", "H20", second_data)
     regions_dict = {"overall": first_region, "labs": second_region}
     my_tab = sheet_collector.Tab("test_data", regions_dict)
-    my_sheet.tabs = {"test_data", my_tab}
+    my_sheet.tabs = {"test_data": my_tab}
     # Start assertions
     # Verify that my regions are in the sheet
     assert my_sheet.get_tab("test_data").get_region("overall") == first_region
     assert my_sheet.get_tab("test_data").get_region("labs") == second_region
     my_sheet.print_sheet()
-    assert False
-#     captured = capfd.readouterr()
-#     first_item = """******	 overall 	 ******
-# start range: A1
-# end range: Z20
-# |    | 0    | 1     | 2     |
-# |---:|:-----|:------|:------|
-# |  0 | name | class | grade |
-# |  1 | Noor | 2022  | 94    |
-# *********************************"""
-#     second_item = """******	 labs 	 ******
-# start range: A2
-# end range: H20
-# |    | 0    | 1    | 2    |
-# |---:|:-----|:-----|:-----|
-# |  0 | name | lab1 | lab2 |
-# |  1 | Noor | 100  | 94   |
-# *********************************
-# """
-#     assert first_item in captured.out
-#     assert second_item in captured.out
+
+    # Actual print output
+
+    #  ******         test_data       ******
+    #         - Tab name: test_data
+    # ###############  overall ###############
+    # start range: A1
+    # end range: Z20
+    # |    | 0    | 1     | 2     |
+    # |---:|:-----|:------|:------|
+    # |  0 | name | class | grade |
+    # |  1 | Noor | 2022  | 94    |
+    # ##########################################
+    # ###############  labs ###############
+    # start range: A2
+    # end range: H20
+    # |    | 0    | 1    | 2    |
+    # |---:|:-----|:-----|:-----|
+    # |  0 | name | lab1 | lab2 |
+    # |  1 | Noor | 100  | 94   |
+    # ##########################################
+    # *********************************
+    captured = capfd.readouterr()
+    first_item = """###############  overall ###############
+start range: A1
+end range: Z20
+|    | 0    | 1     | 2     |
+|---:|:-----|:------|:------|
+|  0 | name | class | grade |
+|  1 | Noor | 2022  | 94    |
+##########################################"""
+    second_item = """###############  labs ###############
+start range: A2
+end range: H20
+|    | 0    | 1    | 2    |
+|---:|:-----|:-----|:-----|
+|  0 | name | lab1 | lab2 |
+|  1 | Noor | 100  | 94   |
+##########################################"""
+    assert first_item in captured.out
+    assert second_item in captured.out
 
 
 def test_sheet_to_dataframe_no_error_with_headers():
@@ -291,13 +312,13 @@ def test_sheet_collect_regions(test_data):
     my_sheet = sheet_collector.Sheet(sample_config, api)
     my_sheet.collect_regions()
     regions_keys = [
-        "sheet1_lab_grades",
-        "sheet1_roster",
-        "sheet1_overall_grades",
-        "sheet2_lab_grades",
+        ("sheet1", "lab_grades"),
+        ("sheet1", "roster"),
+        ("sheet1", "overall_grades"),
+        ("sheet2", "lab_grades"),
     ]
-    for region_key in regions_keys:
-        assert region_key in my_sheet.regions
+    for tab_name, region_name in regions_keys:
+        assert region_name in my_sheet.tabs[tab_name]
 
 
 @pytest.mark.webtest
