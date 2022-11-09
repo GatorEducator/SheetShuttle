@@ -418,7 +418,3 @@ def test_sheet_collector_collect_files_prints_output(tmpdir, test_data, capfd):
     my_collector.collect_files()
     for sheet_key in test_data["collect_files_test"]["expected_keys"]:
         assert sheet_key in my_collector.sheets_data
-    my_collector.print_contents()
-    captured = capfd.readouterr()
-    for print_item in test_data["collect_files_test"]["expected_print"]:
-        assert print_item in captured.out
