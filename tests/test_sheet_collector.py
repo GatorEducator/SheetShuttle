@@ -398,7 +398,7 @@ def test_sheet_collector_collect_files_throws_error():
         my_collector.collect_files()
 
 
-def test_sheet_collector_collect_files_prints_output(tmpdir, test_data, capfd):
+def test_sheet_collector_collect_files_prints_output(tmpdir, test_data):
     """Check that a dictionary of Sheet objects is created correctly in collect_files()"""
     try:
         my_collector = sheet_collector.SheetCollector()
