@@ -222,12 +222,6 @@ class SheetCollector:
         return credentials, service, sheets
 
 
-# Fix the failing tests due to the change in the indexing structure
-# Run: poetry run task test
-# go through through existing documentation and update the examples with the new indexing structure
-# Viewed docs
-# Update the ee_grade plugin with the new indexing structure
-# Changed some stuff in the plugin
 class Sheet:
     """Retrieve Google Sheets data and store as Regions."""
 
@@ -286,19 +280,14 @@ class Sheet:
             self.tabs[sheet["name"]] = regions_dict
 
     def get_tab(self, tab_name: str):
-        # change doc
-        """Return a region object from the regions dictionary.
+        """Return a Tab object from the tabs dictionary.
 
         Args:
-            region_name (str): name of the region to get
+            tab_name (str): name of the Tab to get
 
         Returns:
-            Region: the region object from the self.regions dictionary
+            Tab: the Tab object from the self.tabs dictionary
         """
-        # update this with the new indexing structure
-        # requested_region: Region = self.regions[region_name]
-        # return requested_region
-        # New Approach
         requested_tab: Tab = self.tabs[tab_name]
         return requested_tab
 
@@ -430,8 +419,6 @@ class Region:
             directory (pathlib.PosixPath): path to the directory where the file
                 be stored
         """
-        # Make a decision on the new file naming style
-        # Fixed naming
         with open(
             pathlib.Path(".") / directory / f"{self.full_name}.pkl", "wb"
         ) as outfile:
@@ -444,11 +431,9 @@ class Region:
             directory (pathlib.PosixPath): path to the directory where the file
                 be stored
         """
-        # Make a decision on the new file naming style
         self_data = {
             "region_name": self.region_name,
             "parent_name": self.parent_sheet_name,
-            # keep full_name, but use it just for opening the file
             "full_name": self.full_name,
             "start_range": self.start_range,
             "end_range": self.end_range,
@@ -487,9 +472,5 @@ class Tab:
         Returns:
             Region: the region object from the self.regions dictionary
         """
-        # update this with the new indexing structure
-        # requested_region: Region = self.regions[region_name]
-        # return requested_region
-        # New Approach
         requested_region: Region = self.regions[region_name]
         return requested_region
