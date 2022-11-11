@@ -10,6 +10,10 @@ from openpyxl.utils.cell import coordinate_from_string, column_index_from_string
 GH_ENV_VAR_NAME = "GH_ACCESS_TOKEN"
 
 
+class InvalidSheetInfo(Exception):
+    """Raised when a Sheet passes invalid information."""
+
+
 def get_yaml_files(path_obj):
     """Get a list of .yaml and .yml files in the path."""
     extensions = ["*.yaml", "*.yml"]
@@ -30,11 +34,11 @@ def extract_sheet_id(url: str) -> str:
     """Extract a sheet ID from a Google Sheets URL."""
     url_segments = url.split("/")
     if "d" not in url_segments:
-        raise ValueError(f"The URL {url} is not valid for Google Sheets ID extraction.")
+        raise InvalidSheetInfo(f"The URL {url} is not valid for Google Sheets ID extraction.")
     # Return the url_segment following the segment that contains only "d"
     idx = url_segments.index("d")
     if idx == (len(url_segments) - 1):
-        raise IndexError(f"The URL {url} is not valid for Google Sheets ID extraction.")
+        raise InvalidSheetInfo(f"The URL {url} is not valid for Google Sheets ID extraction.")
     return url_segments[idx + 1]
 
 
