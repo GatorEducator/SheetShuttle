@@ -34,13 +34,16 @@ def extract_sheet_id(url: str) -> str:
     """Extract a sheet ID from a Google Sheets URL."""
     url_segments = url.split("/")
     if "d" not in url_segments:
-        raise InvalidSheetInfo(f"The URL {url} is not valid for Google Sheets ID extraction.")
+        raise InvalidSheetInfo(
+            f"The URL {url} is not valid for Google Sheets ID extraction."
+        )
     # Return the url_segment following the segment that contains only "d"
     idx = url_segments.index("d")
     if idx == (len(url_segments) - 1):
-        raise InvalidSheetInfo(f"The URL {url} is not valid for Google Sheets ID extraction.")
+        raise InvalidSheetInfo(
+            f"The URL {url} is not valid for Google Sheets ID extraction."
+        )
     return url_segments[idx + 1]
-
 
 
 def calculate_dimensions(start_range: str, end_range: str) -> Tuple[int, int]:

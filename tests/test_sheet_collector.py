@@ -398,19 +398,30 @@ def test_sheet_collector_collect_files_prints_output(tmpdir, test_data, capfd):
         assert print_item in captured.out
 
 
-def test_grab_returns_actual_url():
+def test_extract_sheet_id_returns_expected_id():
     """Test that function returns correct ID from full URL."""
     expected_id = "1XKnoa1BBzEnJ1TA_LTRs5e0zcva0SCgNyt7cfMVGHWc"
-    url_one = util.extract_sheet_id(
-        "https://docs.google.com/spreadsheets/d/1XKnoa1BBzEnJ1TA_LTRs5e0zcva0SCgNyt7cfMVGHWc/edit"
-    )
-    assert url_one == expected_id
+    url = "https://docs.google.com/spreadsheets/d/1XKnoa1BBzEnJ1TA_LTRs5e0zcva0SCgNyt7cfMVGHWc/edit"
+    extracted_id = util.extract_sheet_id(url)
+    assert extracted_id == expected_id
 
 
-def test_grab_returns_no_prefix():
-    """Test that function returns correct ID from partial URL."""
-    expected_id = "my_very_important_key"
-    url_two = util.extract_sheet_id(
-        "docs.google.com/spreadsheets/d/my_very_important_key/edit#gid=0"
-    )
-    assert url_two == expected_id
+def test_extract_sheet_id_throws_error_on_empty_string():
+    """Test that function returns an error when provided an empty string."""
+    url = ""
+    with pytest.raises(util.InvalidSheetInfo):
+        util.extract_sheet_id(url)
+
+
+def test_extract_sheet_id_throws_error_on_invalid_url():
+    """Test that function returns an error when provided a non-Google Sheets URL."""
+    url = "https://www.reddit.com"
+    with pytest.raises(util.InvalidSheetInfo):
+        util.extract_sheet_id(url)
+
+
+def test_extract_sheet_id_throws_error_when_missing_id_start_token():
+    """Test that function returns an error when provided a URL without start token '/d/'."""
+    url = "https://docs.google.com/spreadsheets/1XKnoa1BBzEnJ1TA_LTRs5e0zcva0SCgNyt7cfMVGHWc/edit"
+    with pytest.raises(util.InvalidSheetInfo):
+        util.extract_sheet_id(url)
