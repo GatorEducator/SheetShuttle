@@ -10,6 +10,7 @@ import yaml
 import pandas as pd
 
 from sheetshuttle import sheet_collector
+from sheetshuttle import util
 
 
 def test_region_initialize():
@@ -418,3 +419,32 @@ def test_sheet_collector_collect_files_prints_output(tmpdir, test_data):
     my_collector.collect_files()
     for sheet_key in test_data["collect_files_test"]["expected_keys"]:
         assert sheet_key in my_collector.sheets_data
+
+
+def test_extract_sheet_id_returns_expected_id():
+    """Test that function returns correct ID from full URL."""
+    expected_id = "1XKnoa1BBzEnJ1TA_LTRs5e0zcva0SCgNyt7cfMVGHWc"
+    url = "https://docs.google.com/spreadsheets/d/1XKnoa1BBzEnJ1TA_LTRs5e0zcva0SCgNyt7cfMVGHWc/edit"
+    extracted_id = util.extract_sheet_id(url)
+    assert extracted_id == expected_id
+
+
+def test_extract_sheet_id_throws_error_on_empty_string():
+    """Test that function returns an error when provided an empty string."""
+    url = ""
+    with pytest.raises(util.InvalidSheetInfo):
+        util.extract_sheet_id(url)
+
+
+def test_extract_sheet_id_throws_error_on_invalid_url():
+    """Test that function returns an error when provided a non-Google Sheets URL."""
+    url = "https://www.reddit.com"
+    with pytest.raises(util.InvalidSheetInfo):
+        util.extract_sheet_id(url)
+
+
+def test_extract_sheet_id_throws_error_when_missing_id_start_token():
+    """Test that function returns an error when provided a URL without start token '/d/'."""
+    url = "https://docs.google.com/spreadsheets/1XKnoa1BBzEnJ1TA_LTRs5e0zcva0SCgNyt7cfMVGHWc/edit"
+    with pytest.raises(util.InvalidSheetInfo):
+        util.extract_sheet_id(url)

@@ -10,6 +10,10 @@ from openpyxl.utils.cell import coordinate_from_string, column_index_from_string
 GH_ENV_VAR_NAME = "GH_ACCESS_TOKEN"
 
 
+class InvalidSheetInfo(Exception):
+    """Raised when a Sheet passes invalid information."""
+
+
 def get_yaml_files(path_obj):
     """Get a list of .yaml and .yml files in the path."""
     extensions = ["*.yaml", "*.yml"]
@@ -24,6 +28,22 @@ def gh_token_exists() -> bool:
     if not token:
         return True
     return False
+
+
+def extract_sheet_id(url: str) -> str:
+    """Extract a sheet ID from a Google Sheets URL."""
+    url_segments = url.split("/")
+    if "d" not in url_segments:
+        raise InvalidSheetInfo(
+            f"The URL {url} is not valid for Google Sheets ID extraction."
+        )
+    # Return the url_segment following the segment that contains only "d"
+    idx = url_segments.index("d")
+    if idx == (len(url_segments) - 1):
+        raise InvalidSheetInfo(
+            f"The URL {url} is not valid for Google Sheets ID extraction."
+        )
+    return url_segments[idx + 1]
 
 
 def calculate_dimensions(start_range: str, end_range: str) -> Tuple[int, int]:
@@ -72,10 +92,12 @@ def fill_to_dimensions(
             # Add the difference in None values
             col_difference = columns - value_nums
             row.extend([None] * col_difference)
+        for i, value in enumerate(row):
+            if value == "":
+                row[i] = None
     # check that the correct number of rows is present
     if len(data) < rows:
         row_difference = rows - len(data)
         for _ in range(0, row_difference):
             data.append([None] * columns)
-
     return data
