@@ -112,7 +112,7 @@ def test_sheet_initialize_correct_config(test_data):
     my_sheet = sheet_collector.Sheet(sample_config, None)
     assert not my_sheet.api
     assert not len(my_sheet.config) == 0
-    assert not my_sheet.regions
+    assert not my_sheet.tabs
 
 
 def test_print_sheet_empty(capfd, test_data):
@@ -126,6 +126,7 @@ def test_print_sheet_empty(capfd, test_data):
 
 def test_print_sheet_with_data(capfd, test_data):
     """Check that sheets are printed correctly when regions data exist."""
+    # Set up my data in objects
     sample_config = test_data["sheets_schema_test"]["passing"][0]
     my_sheet = sheet_collector.Sheet(sample_config, None)
     first_data = pd.DataFrame([["name", "class", "grade"], ["Noor", "2022", "94"]])
@@ -134,27 +135,53 @@ def test_print_sheet_with_data(capfd, test_data):
     )
     second_data = pd.DataFrame([["name", "lab1", "lab2"], ["Noor", "100", "94"]])
     second_region = sheet_collector.Region("labs", "CMPCS102", "A2", "H20", second_data)
-    my_sheet.regions = {"overall": first_region, "labs": second_region}
-    assert my_sheet.get_region("overall") == first_region
+    regions_dict = {"overall": first_region, "labs": second_region}
+    my_tab = sheet_collector.Tab("test_data", regions_dict)
+    my_sheet.tabs = {"test_data": my_tab}
+    # Start assertions
+    # Verify that my regions are in the sheet
+    assert my_sheet.get_tab("test_data").get_region("overall") == first_region
+    assert my_sheet.get_tab("test_data").get_region("labs") == second_region
     my_sheet.print_sheet()
+
+    # Actual print output
+
+    #  ******         test_data       ******
+    #         - Tab name: test_data
+    # ###############  overall ###############
+    # start range: A1
+    # end range: Z20
+    # |    | 0    | 1     | 2     |
+    # |---:|:-----|:------|:------|
+    # |  0 | name | class | grade |
+    # |  1 | Noor | 2022  | 94    |
+    # ##########################################
+    # ###############  labs ###############
+    # start range: A2
+    # end range: H20
+    # |    | 0    | 1    | 2    |
+    # |---:|:-----|:-----|:-----|
+    # |  0 | name | lab1 | lab2 |
+    # |  1 | Noor | 100  | 94   |
+    # ##########################################
+    # *********************************
     captured = capfd.readouterr()
-    first_item = """******	 overall 	 ******
+    first_item = """###############  overall ###############
 start range: A1
 end range: Z20
 |    | 0    | 1     | 2     |
 |---:|:-----|:------|:------|
 |  0 | name | class | grade |
 |  1 | Noor | 2022  | 94    |
-*********************************"""
-    second_item = """******	 labs 	 ******
+##########################################"""
+    second_item = """###############  labs ###############
 start range: A2
 end range: H20
 |    | 0    | 1    | 2    |
 |---:|:-----|:-----|:-----|
 |  0 | name | lab1 | lab2 |
 |  1 | Noor | 100  | 94   |
-*********************************
-"""
+##########################################"""
     assert first_item in captured.out
     assert second_item in captured.out
 
@@ -286,13 +313,13 @@ def test_sheet_collect_regions(test_data):
     my_sheet = sheet_collector.Sheet(sample_config, api)
     my_sheet.collect_regions()
     regions_keys = [
-        "sheet1_lab_grades",
-        "sheet1_roster",
-        "sheet1_overall_grades",
-        "sheet2_lab_grades",
+        ("sheet1", "lab_grades"),
+        ("sheet1", "roster"),
+        ("sheet1", "overall_grades"),
+        ("sheet2", "lab_grades"),
     ]
-    for region_key in regions_keys:
-        assert region_key in my_sheet.regions
+    for tab_name, region_name in regions_keys:
+        assert region_name in my_sheet.tabs[tab_name]
 
 
 @pytest.mark.webtest
@@ -372,7 +399,7 @@ def test_sheet_collector_collect_files_throws_error():
         my_collector.collect_files()
 
 
-def test_sheet_collector_collect_files_prints_output(tmpdir, test_data, capfd):
+def test_sheet_collector_collect_files_prints_output(tmpdir, test_data):
     """Check that a dictionary of Sheet objects is created correctly in collect_files()"""
     try:
         my_collector = sheet_collector.SheetCollector()
@@ -392,10 +419,6 @@ def test_sheet_collector_collect_files_prints_output(tmpdir, test_data, capfd):
     my_collector.collect_files()
     for sheet_key in test_data["collect_files_test"]["expected_keys"]:
         assert sheet_key in my_collector.sheets_data
-    my_collector.print_contents()
-    captured = capfd.readouterr()
-    for print_item in test_data["collect_files_test"]["expected_print"]:
-        assert print_item in captured.out
 
 
 def test_extract_sheet_id_returns_expected_id():
