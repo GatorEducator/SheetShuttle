@@ -121,8 +121,6 @@ Example:
 `None` will then get converted to Not a Number `NaN` values in the resulting
 Pandas dataframe.
 
-**A problem with this approach is the following:**
-
 Using a similar example where the missing data is not in the last row/column as
 seen here:
 
@@ -142,8 +140,19 @@ The resulting data from the API is the following:
 ]
 ```
 
-In this case, the `''` will not be replace by `None` and will stay the same even
-when `fill` is enabled.
+In this case, the `''` will be replaced by `None` when `fill` is enabled.
+
+```python
+[
+    ['Student Name', 'EE1-1', 'EE1-2', 'EE1-3'],
+    ['name1', '85', None, '0'],
+    ['name2', '100', None, '1'],
+    ['name3', '100', None, '0'],
+    ['name4', '100', None, '1'],
+    ['name5', '100', None, '0'],
+    ['name6', '100', None, '0']
+]
+```
 
 **IMPORTANT NOTE:** If working with numerical data with possibly some missing
 fields, you MUST use the `float` type. This is because `int` cannot be converted

@@ -236,11 +236,15 @@ class Sheet:
         self.api = sheets_api
         self.config: Dict = config
         Sheet.check_config_schema(self.config)
-        self.regions: Dict[str, Region] = {}
+        self.tabs: Dict[str, Tab] = {}
 
     def collect_regions(self):
         """Iterate through configuration and request data through API."""
+        # Extract ID if URL used as source_id
+        if "/" in self.config["source_id"]:
+            self.config["source_id"] = util.extract_sheet_id(self.config["source_id"])
         for sheet in self.config["sheets"]:
+            regions_dict = {}
             for region in sheet["regions"]:
                 region_data = Sheet.execute_sheets_call(
                     self.api,
@@ -275,25 +279,26 @@ class Sheet:
                     region["end"],
                     data,
                 )
-                self.regions[region_object.full_name] = region_object
+                regions_dict[region_object.region_name] = region_object
+            self.tabs[sheet["name"]] = regions_dict
 
-    def get_region(self, region_name: str):
-        """Return a region object from the regions dictionary.
+    def get_tab(self, tab_name: str):
+        """Return a Tab object from the tabs dictionary.
 
         Args:
-            region_name (str): name of the region to get
+            tab_name (str): name of the Tab to get
 
         Returns:
-            Region: the region object from the self.regions dictionary
+            Tab: the Tab object from the self.tabs dictionary
         """
-        requested_region: Region = self.regions[region_name]
-        return requested_region
+        requested_tab: Tab = self.tabs[tab_name]
+        return requested_tab
 
     def print_sheet(self):
         """Iterate through self.regions and print the contents."""
-        for region_id, region in self.regions.items():
-            print(f"******\t {region_id} \t ******")
-            region.print_region()
+        for tab_name, tab_obj in self.tabs.items():
+            print(f"******\t {tab_name} \t ******")
+            tab_obj.print_tab()
             print("*********************************")
 
     @staticmethod
@@ -443,3 +448,32 @@ class Region:
             encoding="utf-8",
         ) as outfile:
             json.dump(self_data, outfile, indent=4)
+
+
+class Tab:
+    """Store data frame and metadata about Google Sheet tabs."""
+
+    def __init__(self, name: str, regions: Dict[str, Region]) -> None:
+        """Initialize Tab."""
+        self.name = name
+        self.regions = regions
+
+    def print_tab(self):
+        """Print Tab."""
+        print(f"\t- Tab name: {self.name}")
+        for region_name, region_obj in self.regions.items():
+            print(f"###############  {region_name} ###############")
+            region_obj.print_region()
+            print("##########################################")
+
+    def get_region(self, region_name: str):
+        """Return a region object from the regions dictionary.
+
+        Args:
+            region_name (str): name of the region to get
+
+        Returns:
+            Region: the region object from the self.regions dictionary
+        """
+        requested_region: Region = self.regions[region_name]
+        return requested_region
