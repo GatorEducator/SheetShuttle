@@ -59,14 +59,14 @@ def sheetshuttle_run(
         help="Path to the Sheets api keys, either .json or .env file",
     ),
     sheets_config: List[Path] = typer.Option(
-        [Path("config/sheet_sources/")],
+        [],
         "--sheets-config",
         "-sc",
         help="List of YAML files or directories containing YAML"
         " files for Google Sheets configuration",
     ),
     gh_config: List[Path] = typer.Option(
-        [Path("config/gh_sources/")],
+        [],
         "--github-config",
         "-gh",
         help="List of YAML files or directories containing YAML"
