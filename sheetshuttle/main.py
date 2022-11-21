@@ -5,6 +5,7 @@
 
 import json
 from pathlib import Path
+from typing import List
 import typer
 
 from pluginbase import PluginBase  # type: ignore[import]
@@ -14,15 +15,21 @@ PLUGIN_BASE = PluginBase("sheetshuttle.plugins")
 
 app = typer.Typer(name="sheetshuttle")
 
-STANDARD_PLUGIN = '''""""Standard empty plugin for SheetShuttle."""
+STANDARD_PLUGIN = '''""""SheetShuttle Plugin Template."""
+
+from pathlib import Path
+from typing import List
 
 from sheetshuttle import github_objects
 from sheetshuttle import sheet_collector
 
-# This function is required
-def run(sheets_keys_file, sheets_config_directory, gh_config_directory, **kwargs):
+def run(sheets_keys_file: str, sheets_config: List[Path], gh_config: List[Path], **kwargs):
     """Standard run function."""
-    pass
+    print("hello from the default plugin")
+    print(f"sheets_keys_file: {sheets_keys_file}")
+    print(f"sheets_config: {sheets_config}")
+    print(f"gh_config: {gh_config}")
+    print(f"Additional arguments {kwargs}")
 '''
 
 
@@ -51,17 +58,19 @@ def sheetshuttle_run(
         "-kf",
         help="Path to the Sheets api keys, either .json or .env file",
     ),
-    sheets_config_directory: str = typer.Option(
-        "config/sheet_sources/",
-        "--sheets-config-directory",
-        "-sd",
-        help="Directory to get the sheets configuration .yaml files from",
+    sheets_config: List[Path] = typer.Option(
+        [],
+        "--sheets-config",
+        "-sc",
+        help="List of YAML files or directories containing YAML"
+        " files for Google Sheets configuration",
     ),
-    gh_config_directory: str = typer.Option(
-        "config/gh_sources/",
-        "--gh-config-directory",
-        "-gd",
-        help="Directory to get the Github configuration .yaml files from",
+    gh_config: List[Path] = typer.Option(
+        [],
+        "--github-config",
+        "-gh",
+        help="List of YAML files or directories containing YAML"
+        " files for GitHub configuration",
     ),
     plugins_directory: str = typer.Option(
         "plugins/",
@@ -93,8 +102,8 @@ def sheetshuttle_run(
         raise Exception(f"ERROR: function run was not found in {plugin_name} plugin.")
     my_plugin.run(
         sheets_keys_file,
-        sheets_config_directory,
-        gh_config_directory,
+        sheets_config,
+        gh_config,
         args=load_json_file(json_args),
     )
 

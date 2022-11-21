@@ -236,7 +236,9 @@ def test_sheet_execute_sheet_call_no_error():
     Will be skipped if authentication environment variables don't exist."""
     # initialize with environment variables authentication
     try:
-        my_sheet_collector = sheet_collector.SheetCollector()
+        my_sheet_collector = sheet_collector.SheetCollector(
+            pathlib.Path("example.yaml")
+        )
     except sheet_collector.MissingAuthenticationVariable:
         pytest.skip("Sheets authentication environment variables not found")
     expected_data = [
@@ -265,7 +267,9 @@ def test_sheet_execute_sheet_call_empty_return():
     Will be skipped if authentication environment variables don't exist."""
     # initialize with environment variables authentication
     try:
-        my_sheet_collector = sheet_collector.SheetCollector()
+        my_sheet_collector = sheet_collector.SheetCollector(
+            pathlib.Path("example.yaml")
+        )
     except sheet_collector.MissingAuthenticationVariable:
         pytest.skip("Sheets authentication environment variables not found")
     api = my_sheet_collector.sheets
@@ -284,7 +288,9 @@ def test_sheet_execute_sheet_call_throws_error():
     Will be skipped if authentication environment variables don't exist."""
     # initialize with environment variables authentication
     try:
-        my_sheet_collector = sheet_collector.SheetCollector()
+        my_sheet_collector = sheet_collector.SheetCollector(
+            pathlib.Path("example.yaml")
+        )
     except sheet_collector.MissingAuthenticationVariable:
         pytest.skip("Sheets authentication environment variables not found")
     api = my_sheet_collector.sheets
@@ -305,7 +311,9 @@ def test_sheet_collect_regions(test_data):
 
     Can be skipped if authentication variables aren't available"""
     try:
-        my_sheet_collector = sheet_collector.SheetCollector()
+        my_sheet_collector = sheet_collector.SheetCollector(
+            pathlib.Path("example.yaml")
+        )
     except sheet_collector.MissingAuthenticationVariable:
         pytest.skip("Sheets authentication environment variables not found")
     api = my_sheet_collector.sheets
@@ -391,7 +399,7 @@ def test_sheet_collector_collect_files_throws_error():
 
     Can be skipped if environment variables isn't set."""
     try:
-        my_collector = sheet_collector.SheetCollector()
+        my_collector = sheet_collector.SheetCollector(pathlib.Path("example.yaml"))
     except sheet_collector.MissingAuthenticationVariable:
         pytest.skip("Sheets authentication environment variables not found")
     my_collector.sheets = None
@@ -402,20 +410,21 @@ def test_sheet_collector_collect_files_throws_error():
 def test_sheet_collector_collect_files_prints_output(tmpdir, test_data):
     """Check that a dictionary of Sheet objects is created correctly in collect_files()"""
     try:
-        my_collector = sheet_collector.SheetCollector()
+        my_collector = sheet_collector.SheetCollector(pathlib.Path("example.yaml"))
     except sheet_collector.MissingAuthenticationVariable:
         pytest.skip("Sheets authentication environment variables not found")
 
     # setting up temporary config files using test_data
     temporary_directory = tmpdir.mkdir("temp")
     temp_path = str(temporary_directory)
+    config_list = []
     for file_name, config_val in test_data["collect_files_test"]["temp_files"].items():
-        with open(
-            pathlib.Path(".") / temp_path / file_name, "w+", encoding="utf-8"
-        ) as outfile:
+        current_file = pathlib.Path(".") / temp_path / file_name
+        config_list.append(current_file)
+        with open(current_file, "w+", encoding="utf-8") as outfile:
             yaml.dump(config_val, outfile)
     # Initialize the sheet collector and collect the files from the temporary directory
-    my_collector = sheet_collector.SheetCollector(sources_dir=temp_path)
+    my_collector = sheet_collector.SheetCollector(config_list)
     my_collector.collect_files()
     for sheet_key in test_data["collect_files_test"]["expected_keys"]:
         assert sheet_key in my_collector.sheets_data

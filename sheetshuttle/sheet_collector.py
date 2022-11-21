@@ -2,9 +2,9 @@
 
 import json
 import os
-import pathlib
 import pickle
 from typing import Dict, List
+from pathlib import Path, PosixPath
 
 import pandas as pd  # type: ignore[import]
 import yaml
@@ -112,18 +112,18 @@ class MissingAuthenticationVariable(Exception):
 class SheetCollector:
     """Authenticate Sheets api and store retrieved data."""
 
-    def __init__(self, key_file=".env", sources_dir="config/sheet_sources") -> None:
+    def __init__(self, yaml_sources: List[Path], key_file=".env") -> None:
         """
         Create a SheetCollector object that stores a dictionary of sheets.
 
         Uses the yaml files in the config/sheet_sources directory.
 
         Args:
+            yaml_sources (List[Path]): List of paths where the sheet collector
+            should retrive yamls from. Must be yaml files.
+
             key_file (str, optional): path to Google Sheets API user keys and
             tokens. Defaults to ".env".
-
-            sources_dir (str, optional): path to where the configuration
-            is stored. Defaults to "config/sheet_sources"
         """
         self.key_file: str = key_file
         (
@@ -131,7 +131,8 @@ class SheetCollector:
             self.service,
             self.sheets,
         ) = SheetCollector.authenticate_api(self.key_file)
-        self.config_dir = pathlib.Path(sources_dir)
+        assert yaml_sources, "Sheets config sources cannot be empty"
+        self.yaml_sources = yaml_sources
         self.sheets_data: Dict[str, Sheet] = {}
 
     def print_contents(self) -> None:
@@ -150,11 +151,22 @@ class SheetCollector:
         """
         if not self.sheets:
             raise Exception("ERROR: Collector was not authenticated")
-        # get a list of all yaml and yml path objects in the config_dir
-        config_files: List[pathlib.Path] = util.get_yaml_files(self.config_dir)
-        if not config_files:
-            raise Exception(f"ERROR: No configuration files found in {self.config_dir}")
-        for yaml_file in config_files:
+        # Check all yaml sources before trying to open them
+        issues: List[str] = []
+        for source in self.yaml_sources:
+            if source.suffix not in [".yaml", ".yml"]:
+                issues.append(f"\t-{str(source)} is not a YAML file\n")
+            if not source.is_file():
+                issues.append(f"\t-{str(source)} is not a file\n")
+            if not source.exists():
+                issues.append(f"\t-{str(source)} does not exist\n")
+        # if issues has some items then exit and print out the issues
+        if issues:
+            raise Exception(
+                "Error while collecting yaml configurations."
+                f' Here are the found issues:\n{"".join(issues)}'
+            )
+        for yaml_file in self.yaml_sources:
             # Open yaml file as read
             with open(yaml_file, "r", encoding="utf-8") as config_file:
                 config_data = yaml.safe_load(config_file)
@@ -415,23 +427,21 @@ class Region:
         print(f"end range: {self.end_range}")
         print(self.data.to_markdown())
 
-    def region_to_pickle(self, directory: pathlib.PosixPath):
+    def region_to_pickle(self, directory: PosixPath):
         """Write the region object to a Pickle file.
 
         Args:
-            directory (pathlib.PosixPath): path to the directory where the file
+            directory (PosixPath): path to the directory where the file
                 be stored
         """
-        with open(
-            pathlib.Path(".") / directory / f"{self.full_name}.pkl", "wb"
-        ) as outfile:
+        with open(Path(".") / directory / f"{self.full_name}.pkl", "wb") as outfile:
             pickle.dump(self, outfile)
 
-    def region_to_json(self, directory: pathlib.PosixPath):
+    def region_to_json(self, directory: PosixPath):
         """Write the region object to a JSON file.
 
         Args:
-            directory (pathlib.PosixPath): path to the directory where the file
+            directory (PosixPath): path to the directory where the file
                 be stored
         """
         self_data = {
@@ -443,7 +453,7 @@ class Region:
             "data": self.data.to_dict("index"),
         }
         with open(
-            pathlib.Path(".") / directory / f"{self.full_name}.json",
+            Path(".") / directory / f"{self.full_name}.json",
             "w+",
             encoding="utf-8",
         ) as outfile:
