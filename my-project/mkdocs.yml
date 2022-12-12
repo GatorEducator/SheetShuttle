@@ -1,4 +1,4 @@
-site_name: my-project
+site_name: SheetShuttle API Documentation
 site url: https://SheetShuttle.github.io
 nav:
     - Home: index.md
