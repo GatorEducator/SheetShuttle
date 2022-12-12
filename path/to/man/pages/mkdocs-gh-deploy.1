@@ -1,0 +1,54 @@
+.TH "MKDOCS GH-DEPLOY" "1" "2022-12-06" "1.4.1" "mkdocs gh-deploy Manual"
+.SH NAME
+mkdocs\-gh-deploy \- Deploy your documentation to GitHub Pages
+.SH SYNOPSIS
+.B mkdocs gh-deploy
+[OPTIONS]
+.SH DESCRIPTION
+Deploy your documentation to GitHub Pages
+.SH OPTIONS
+.TP
+\fB\-c,\fP \-\-clean / \-\-dirty
+Remove old files from the site_dir before building (the default).
+.TP
+\fB\-m,\fP \-\-message TEXT
+A commit message to use when committing to the GitHub Pages remote branch. Commit {sha} and MkDocs {version} are available as expansions
+.TP
+\fB\-b,\fP \-\-remote\-branch TEXT
+The remote branch to commit to for GitHub Pages. This overrides the value specified in config
+.TP
+\fB\-r,\fP \-\-remote\-name TEXT
+The remote name to commit to for GitHub Pages. This overrides the value specified in config
+.TP
+\fB\-\-force\fP
+Force the push to the repository.
+.TP
+\fB\-\-no\-history\fP
+Replace the whole Git history with one new commit.
+.TP
+\fB\-\-ignore\-version\fP
+Ignore check that build is not being deployed with an older version of MkDocs.
+.TP
+\fB\-\-shell\fP
+Use the shell when invoking Git.
+.TP
+\fB\-f,\fP \-\-config\-file FILENAME
+Provide a specific MkDocs config
+.TP
+\fB\-s,\fP \-\-strict
+Enable strict mode. This will cause MkDocs to abort the build on any warnings.
+.TP
+\fB\-t,\fP \-\-theme [material|mkdocs|readthedocs]
+The theme to use when building your documentation.
+.TP
+\fB\-\-use\-directory\-urls\fP / \-\-no\-directory\-urls
+Use directory URLs when building pages (the default).
+.TP
+\fB\-d,\fP \-\-site\-dir PATH
+The directory to output the result of the documentation build.
+.TP
+\fB\-q,\fP \-\-quiet
+Silence warnings
+.TP
+\fB\-v,\fP \-\-verbose
+Enable verbose output

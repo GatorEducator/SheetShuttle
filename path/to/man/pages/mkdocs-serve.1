@@ -1,0 +1,45 @@
+.TH "MKDOCS SERVE" "1" "2022-12-06" "1.4.1" "mkdocs serve Manual"
+.SH NAME
+mkdocs\-serve \- Run the builtin development server
+.SH SYNOPSIS
+.B mkdocs serve
+[OPTIONS]
+.SH DESCRIPTION
+Run the builtin development server
+.SH OPTIONS
+.TP
+\fB\-a,\fP \-\-dev\-addr <IP:PORT>
+IP address and port to serve documentation locally (default: localhost:8000)
+.TP
+\fB\-\-livereload\fP
+Enable the live reloading in the development server (this is the default)
+.TP
+\fB\-\-no\-livereload\fP
+Disable the live reloading in the development server.
+.TP
+\fB\-\-dirtyreload\fP
+Enable the live reloading in the development server, but only re-build files that have changed
+.TP
+\fB\-\-watch\-theme\fP
+Include the theme in list of files to watch for live reloading. Ignored when live reload is not used.
+.TP
+\fB\-w,\fP \-\-watch PATH
+A directory or file to watch for live reloading. Can be supplied multiple times.
+.TP
+\fB\-f,\fP \-\-config\-file FILENAME
+Provide a specific MkDocs config
+.TP
+\fB\-s,\fP \-\-strict
+Enable strict mode. This will cause MkDocs to abort the build on any warnings.
+.TP
+\fB\-t,\fP \-\-theme [material|mkdocs|readthedocs]
+The theme to use when building your documentation.
+.TP
+\fB\-\-use\-directory\-urls\fP / \-\-no\-directory\-urls
+Use directory URLs when building pages (the default).
+.TP
+\fB\-q,\fP \-\-quiet
+Silence warnings
+.TP
+\fB\-v,\fP \-\-verbose
+Enable verbose output
