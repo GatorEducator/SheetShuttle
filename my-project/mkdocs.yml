@@ -1,0 +1,6 @@
+site_name: my-project
+site url: https://SheetShuttle.github.io
+nav:
+    - Home: index.md
+   
+
